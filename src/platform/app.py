@@ -15,7 +15,9 @@ from src.platform.games import GameExitAction, GameLaunchOptions, GameRegistry
 from src.platform.scenes.base import PlatformAction
 from src.platform.scenes.game_details_scene import run_about_scene
 from src.platform.scenes.home_scene import run_home_scene
+from src.platform.scenes.leaderboard_scene import run_leaderboard_scene
 from src.platform.scenes.library_scene import run_library_scene
+from src.platform.scenes.rewards_scene import run_rewards_scene
 from src.platform.scenes.settings_scene import run_settings_scene
 from src.platform.services import AssetService, AudioService, LocalizationService, SaveService, SettingsService
 
@@ -89,6 +91,10 @@ class PlatformApp:
                     result = run_settings_scene(pygame, context)
                 elif scene == PlatformAction.ABOUT:
                     result = run_about_scene(pygame, context)
+                elif scene == PlatformAction.LEADERBOARD:
+                    result = run_leaderboard_scene(pygame, context)
+                elif scene == PlatformAction.REWARDS:
+                    result = run_rewards_scene(pygame, context)
                 else:
                     result = run_home_scene(pygame, context)
 

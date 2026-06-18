@@ -1,6 +1,8 @@
 """Desktop-first game hub scene driven by GameRegistry."""
 
 from dataclasses import dataclass
+from datetime import date
+import random
 
 from src.platform.blockchain.domain.network import ChainHealthStatus
 from src.platform.games import GameCapability
@@ -23,7 +25,7 @@ MODE_SINGLE = "single-player"
 MODE_TWO = "two-player"
 
 SIDEBAR_GROUPS = (
-    ("Discover", (("all", "All Games"), (MODE_SINGLE, "1 Player"), (MODE_TWO, "2 Players"))),
+    ("Discover", (("all", "All Games"),)),
     ("Categories", (("strategy", "Strategy"), ("puzzle", "Puzzle"), ("quick", "Quick Play"), ("on-chain", "On-chain"))),
     ("Library", (("favorites", "Favorites"),)),
 )
@@ -107,20 +109,55 @@ def wallet_requirement_label(descriptor) -> str:
     return "Wallet only required before on-chain actions"
 
 
-def filter_games(games, selected_filter: str):
-    if selected_filter == MODE_ALL:
-        return list(games)
-    if selected_filter == MODE_SINGLE:
-        return [game for game in games if game_mode(game.descriptor) == MODE_SINGLE]
-    if selected_filter == MODE_TWO:
-        return [game for game in games if game.descriptor.max_players >= 2]
+def eligible_tournament_games(games):
+    """Return real registered games that can participate in a local 2P tournament."""
+
+    return [game for game in games if game.descriptor.enabled and game.descriptor.max_players >= 2]
+
+
+def select_tournament_games(games, limit: int = 7):
+    selected = eligible_tournament_games(games)
+    random.shuffle(selected)
+    return selected[:limit]
+
+
+def daily_challenge_title(games, today: date | None = None) -> str:
+    enabled = [game for game in games if game.descriptor.enabled]
+    if not enabled:
+        return "Random game"
+    day = today or date.today()
+    index = day.toordinal() % len(enabled)
+    return enabled[index].descriptor.title
+
+
+def filter_games(games, selected_filter: str, selected_mode: str = MODE_ALL, search_query: str = ""):
+    """Filter by one category, one player mode, and an optional search query."""
+
+    filtered = list(games)
     if selected_filter == "on-chain":
-        return [game for game in games if settlement_mode(game.descriptor) != "off-chain"]
-    if selected_filter == "quick":
-        return [game for game in games if game.descriptor.max_players == 1 or "arcade" in game.descriptor.tags]
-    if selected_filter == "favorites":
-        return []
-    return [game for game in games if selected_filter in game.descriptor.tags]
+        filtered = [game for game in filtered if settlement_mode(game.descriptor) != "off-chain"]
+    elif selected_filter == "quick":
+        filtered = [game for game in filtered if game.descriptor.max_players == 1 or "arcade" in game.descriptor.tags]
+    elif selected_filter == "favorites":
+        filtered = []
+    elif selected_filter != MODE_ALL:
+        filtered = [game for game in filtered if selected_filter in game.descriptor.tags]
+
+    if selected_mode == MODE_SINGLE:
+        filtered = [game for game in filtered if game_mode(game.descriptor) == MODE_SINGLE]
+    elif selected_mode == MODE_TWO:
+        filtered = [game for game in filtered if game.descriptor.max_players >= 2]
+
+    query = search_query.strip().lower()
+    if query:
+        filtered = [
+            game
+            for game in filtered
+            if query in game.descriptor.title.lower()
+            or query in game.descriptor.short_description.lower()
+            or any(query in tag.lower() for tag in game.descriptor.tags)
+        ]
+    return filtered
 
 
 def wallet_summary(context) -> dict[str, str]:
@@ -131,7 +168,7 @@ def wallet_summary(context) -> dict[str, str]:
         return {
             "status": "disconnected",
             "network": "Oasis Sapphire",
-            "balance": "Unavailable",
+            "balance": "---- ROSE",
             "detail": "Wallet provider unavailable",
         }
 
@@ -157,7 +194,7 @@ def wallet_summary(context) -> dict[str, str]:
     return {
         "status": status,
         "network": network,
-        "balance": "Unavailable",
+        "balance": "---- ROSE",
         "detail": detail,
     }
 
@@ -213,13 +250,10 @@ def _draw_top_nav(pygame, screen, rect, fonts, wallet):
 
     title_font = fonts["body_bold"] if rect.width < 760 else fonts["title"]
     title = title_font.render("Game Game Go", True, (55, 62, 75))
-    subtitle = fonts["small_bold"].render("Play. Compete. Earn.", True, (76, 98, 111))
-    screen.blit(title, (logo.right + 12, 19 if rect.width < 760 else 12))
-    if rect.width >= 760:
-        screen.blit(subtitle, (logo.right + 14, 48))
+    screen.blit(title, (logo.right + 12, 24 if rect.width < 760 else 18))
 
     if rect.width >= 1120:
-        nav_items = ("Home", "Games", "Tournament", "Leaderboard", "Rewards")
+        nav_items = ("Home", "Games", "Leaderboard", "Rewards")
         right_reserved = 430 if wallet["status"] == "connected" else 310
         x = max(360, min(430, rect.width // 3))
         max_nav_right = rect.width - right_reserved
@@ -263,10 +297,35 @@ def _draw_top_nav(pygame, screen, rect, fonts, wallet):
         _draw_pill(pygame, screen, pygame.Rect(right - 124, 18, 124, 42), "Sapphire", fonts["small_bold"], theme.BLUE, (255, 255, 255))
     elif rect.width >= 900:
         right = wallet_rect.left - 10
-        _draw_pill(pygame, screen, pygame.Rect(right - 124, 18, 124, 42), "Sapphire", fonts["small_bold"], theme.BLUE, (255, 255, 255))
+        _draw_pill(pygame, screen, pygame.Rect(right - 118, 18, 118, 42), "---- ROSE", fonts["small_bold"], (255, 255, 255), (55, 62, 75), (188, 218, 228))
 
 
-def _draw_sidebar(pygame, screen, rect, fonts, selected_filter):
+def _top_nav_targets(pygame, width, wallet):
+    right = width - 24
+    targets = {}
+    if width >= 760:
+        settings = pygame.Rect(right - 44, 17, 44, 44)
+        targets["settings"] = settings
+        right = settings.left - 10
+    wallet_width = 150 if width >= 760 else 104
+    wallet_rect = pygame.Rect(right - wallet_width, 18, wallet_width, 42)
+    targets["wallet"] = wallet_rect
+    if width >= 1120:
+        nav_items = (("home", "Home"), ("games", "Games"), ("leaderboard", "Leaderboard"), ("rewards", "Rewards"))
+        right_reserved = 430 if wallet["status"] == "connected" else 310
+        x = max(360, min(430, width // 3))
+        max_nav_right = width - right_reserved
+        for key, item in nav_items:
+            surface = pygame.font.SysFont("segoeui", theme.TEXT_MD, bold=True).render(item, True, (55, 62, 75))
+            item_rect = pygame.Rect(x - 12, 17, surface.get_width() + 24, 44)
+            if item_rect.right > max_nav_right:
+                break
+            targets[key] = item_rect
+            x = item_rect.right + 6
+    return targets
+
+
+def _draw_sidebar(pygame, screen, rect, fonts, selected_filter, daily_game_title="Random game"):
     if rect.width <= 0:
         return []
     _draw_panel(pygame, screen, rect, theme.SIDEBAR, theme.BORDER_SUBTLE)
@@ -296,22 +355,22 @@ def _draw_sidebar(pygame, screen, rect, fonts, selected_filter):
             y += 46
         y += theme.SPACE_3
 
-    footer = pygame.Rect(rect.x + theme.SPACE_3, rect.bottom - 132, rect.width - theme.SPACE_6, 112)
+    footer = pygame.Rect(rect.x + theme.SPACE_3, rect.bottom - 112, rect.width - theme.SPACE_6, 92)
     pygame.draw.rect(screen, (228, 244, 249), footer, border_radius=theme.RADIUS_MD)
     pygame.draw.rect(screen, (188, 218, 228), footer, 1, border_radius=theme.RADIUS_MD)
-    screen.blit(fonts["small_bold"].render("Daily Challenge", True, (55, 62, 75)), (footer.x + 14, footer.y + 14))
-    screen.blit(fonts["small"].render("Current streak: 3", True, (76, 98, 111)), (footer.x + 14, footer.y + 40))
-    screen.blit(fonts["small"].render("Help  -  Settings", True, (76, 98, 111)), (footer.x + 14, footer.y + 68))
+    screen.blit(fonts["small_bold"].render("Daily Challenge", True, (55, 62, 75)), (footer.x + 14, footer.y + 12))
+    _draw_truncated_text(pygame, screen, fonts["small"], daily_game_title, (footer.x + 14, footer.y + 38), footer.width - 28, (76, 98, 111))
+    screen.blit(fonts["small"].render("Daily streak: 3", True, (76, 98, 111)), (footer.x + 14, footer.y + 64))
     return clickable
 
 
 def _draw_mode_tabs(pygame, screen, rect, fonts, selected_filter):
     tabs = []
-    labels = ((MODE_TWO, "2 Players"), (MODE_SINGLE, "1 Player"))
-    tab_width = min(156, (rect.width - theme.SPACE_2) // 2)
+    labels = ((MODE_ALL, "All"), (MODE_SINGLE, "1 Player"), (MODE_TWO, "2 Players"))
+    tab_width = min(120, (rect.width - theme.SPACE_2 * 2) // 3)
     for index, (key, label) in enumerate(labels):
         tab = pygame.Rect(rect.x + index * (tab_width + theme.SPACE_2), rect.y, tab_width, 44)
-        selected = (key == selected_filter) or (selected_filter == MODE_ALL and index == 0)
+        selected = key == selected_filter
         fill = theme.BLUE if selected else theme.PANEL
         color = (255, 255, 255) if selected else theme.MUTED
         pygame.draw.rect(screen, fill, tab, border_radius=theme.RADIUS_MD)
@@ -403,8 +462,8 @@ def _draw_game_detail_strip(pygame, screen, rect, fonts, game):
     _draw_panel(pygame, screen, rect, theme.PANEL, theme.BORDER_SUBTLE, theme.RADIUS_MD)
     x = rect.x + theme.SPACE_4
     mode_label = "2 Players" if descriptor.max_players >= 2 else "1 Player"
-    summary = f"{descriptor.short_description}  |  {mode_label}  |  {wallet_requirement_label(descriptor)}"
-    _draw_truncated_text(pygame, screen, fonts["small"], summary, (x, rect.y + 12), rect.width - 220, (205, 216, 225))
+    summary = f"{descriptor.title}  |  {mode_label}"
+    _draw_truncated_text(pygame, screen, fonts["small_bold"], summary, (x, rect.y + 12), rect.width - 220, (205, 216, 225))
     settlement = settlement_mode(descriptor).replace("-", " ").title()
     _draw_pill(
         pygame,
@@ -428,33 +487,74 @@ def _draw_game_detail_strip(pygame, screen, rect, fonts, game):
     )
 
 
-def _draw_game_browser(pygame, screen, rect, fonts, games, selected_filter, mouse_pos, focused_index, hover_amounts):
+def _draw_search_box(pygame, screen, rect, fonts, search_query, search_active):
+    fill = theme.HOVER if search_active else theme.PANEL
+    border = theme.BRAND_PRIMARY if search_active else theme.BORDER_SUBTLE
+    pygame.draw.rect(screen, fill, rect, border_radius=theme.RADIUS_MD)
+    pygame.draw.rect(screen, border, rect, 2 if search_active else 1, border_radius=theme.RADIUS_MD)
+    label = search_query if search_query else "Search games"
+    color = theme.TEXT if search_query else theme.MUTED
+    _draw_truncated_text(pygame, screen, fonts["small"], label, (rect.x + 16, rect.y + 13), rect.width - 54, color)
+    if search_query:
+        clear = pygame.Rect(rect.right - 36, rect.y + 8, 28, 28)
+        pygame.draw.rect(screen, theme.RAISED, clear, border_radius=theme.RADIUS_SM)
+        marker = fonts["small_bold"].render("x", True, theme.TEXT)
+        screen.blit(marker, marker.get_rect(center=clear.center))
+    elif search_active:
+        cursor = pygame.Rect(rect.x + 104, rect.y + 13, 2, 18)
+        pygame.draw.rect(screen, theme.BRAND_PRIMARY, cursor)
+
+
+def _draw_game_browser(
+    pygame,
+    screen,
+    rect,
+    fonts,
+    games,
+    selected_filter,
+    selected_mode,
+    search_query,
+    search_active,
+    mouse_pos,
+    focused_index,
+    hover_amounts,
+    control_panel=None,
+):
     title = fonts["heading"].render("Choose Your Challenge", True, theme.TEXT)
     screen.blit(title, (rect.x, rect.y))
-    subtitle = fonts["body"].render("Arcade mini-games with Sapphire-ready rewards and future NFT souvenirs.", True, (196, 207, 216))
+    subtitle = fonts["body"].render("Pick a game and start playing.", True, (196, 207, 216))
     screen.blit(subtitle, (rect.x, rect.y + 42))
 
     control_y = rect.y + 82
-    tabs = _draw_mode_tabs(pygame, screen, pygame.Rect(rect.x, control_y, min(320, rect.width), 44), fonts, selected_filter)
+    tabs = _draw_mode_tabs(pygame, screen, pygame.Rect(rect.x, control_y, min(384, rect.width), 44), fonts, selected_mode)
     detail_top = control_y + 58
     detail_height = 44 if games and rect.width > 520 else 0
     grid_top = control_y + 70 + detail_height
+    search_target = None
+    control_targets = {}
     if rect.width > 760:
         search = pygame.Rect(rect.right - 360, control_y, 212, 44)
         filter_btn = pygame.Rect(rect.right - 138, control_y, 66, 44)
         sort_btn = pygame.Rect(rect.right - 64, control_y, 64, 44)
-        _draw_pill(pygame, screen, search, "Search games", fonts["small"], theme.PANEL, theme.MUTED, theme.BORDER_SUBTLE)
+        _draw_search_box(pygame, screen, search, fonts, search_query, search_active)
         _draw_pill(pygame, screen, filter_btn, "Filter", fonts["small_bold"], theme.PANEL, theme.TEXT, theme.BORDER_SUBTLE)
         _draw_pill(pygame, screen, sort_btn, "Sort", fonts["small_bold"], theme.PANEL, theme.TEXT, theme.BORDER_SUBTLE)
+        search_target = search
+        control_targets["filter"] = filter_btn
+        control_targets["sort"] = sort_btn
     elif rect.width > 420:
         search = pygame.Rect(rect.x, control_y + 56, rect.width, 44)
-        _draw_pill(pygame, screen, search, "Search games", fonts["small"], theme.PANEL, theme.MUTED, theme.BORDER_SUBTLE)
+        _draw_search_box(pygame, screen, search, fonts, search_query, search_active)
         grid_top += 56
         detail_top += 56
+        search_target = search
 
     if games and detail_height:
         focused_game = games[max(0, min(focused_index, len(games) - 1))]
         _draw_game_detail_strip(pygame, screen, pygame.Rect(rect.x, detail_top, rect.width, detail_height), fonts, focused_game)
+    elif search_query or selected_filter != MODE_ALL or selected_mode != MODE_ALL:
+        reset_rect = pygame.Rect(rect.x, detail_top, min(220, rect.width), 34)
+        _draw_pill(pygame, screen, reset_rect, "No matches - reset filters", fonts["small_bold"], theme.PANEL, theme.TEXT, theme.BORDER_SUBTLE)
 
     grid = pygame.Rect(rect.x, grid_top, rect.width, rect.bottom - grid_top)
     columns = grid_columns(grid.width)
@@ -484,7 +584,20 @@ def _draw_game_browser(pygame, screen, rect, fonts, games, selected_filter, mous
         empty = pygame.Rect(grid.x, grid.y + 20, grid.width, 150)
         _draw_panel(pygame, screen, empty, theme.PANEL, theme.BORDER_SUBTLE)
         draw_text(pygame, screen, fonts["body_bold"], "No games in this category yet", empty.center, theme.MUTED)
-    return clickable, tabs
+    result_text = f"{len(games)} game" + ("" if len(games) == 1 else "s")
+    result_surface = fonts["small"].render(result_text, True, theme.SUBTLE)
+    screen.blit(result_surface, (rect.x, max(rect.y + 64, control_y - 22)))
+    if control_panel:
+        panel_rect = pygame.Rect(rect.right - 280, control_y + 54, 260, 96)
+        _draw_panel(pygame, screen, panel_rect, theme.SIDEBAR, theme.BORDER_SUBTLE, theme.RADIUS_MD)
+        if control_panel == "filter":
+            lines = ("Filters", "Use category + All / 1P / 2P", "More filters coming soon")
+        else:
+            lines = ("Sort", "Featured first", "Name sort coming soon")
+        screen.blit(fonts["body_bold"].render(lines[0], True, theme.TEXT), (panel_rect.x + 14, panel_rect.y + 12))
+        screen.blit(fonts["small"].render(lines[1], True, theme.MUTED), (panel_rect.x + 14, panel_rect.y + 42))
+        screen.blit(fonts["small"].render(lines[2], True, theme.SUBTLE), (panel_rect.x + 14, panel_rect.y + 66))
+    return clickable, tabs, search_target, control_targets
 
 
 def _draw_right_panel(pygame, screen, rect, fonts, wallet):
@@ -518,18 +631,16 @@ def _draw_right_panel(pygame, screen, rect, fonts, wallet):
         screen.blit(fonts["small"].render(line, True, theme.MUTED), (x, y + 34 + offset * 24))
 
 
-def _draw_tournament_dock(pygame, screen, rect, fonts):
+def _draw_tournament_dock(pygame, screen, rect, fonts, eligible_count=0):
     pygame.draw.rect(screen, (35, 47, 58), rect)
     pygame.draw.line(screen, theme.BORDER, (0, rect.y), (rect.width, rect.y), 1)
     if rect.width < 560:
         cta = pygame.Rect(theme.SPACE_4, rect.y + 14, rect.width - theme.SPACE_8, rect.height - 28)
         pygame.draw.rect(screen, theme.ACCENT, cta, border_radius=theme.RADIUS_LG)
         pygame.draw.rect(screen, (39, 139, 59), cta, 2, border_radius=theme.RADIUS_LG)
-        title = _fit_text(pygame, fonts["body_bold"], "Tournament - Play", cta.width - 24, (255, 255, 255))
-        entry = _fit_text(pygame, fonts["small_bold"], "Confirm before wallet signature", cta.width - 24, (236, 255, 236))
-        screen.blit(title, title.get_rect(center=(cta.centerx, cta.centery - 10)))
-        screen.blit(entry, entry.get_rect(center=(cta.centerx, cta.centery + 18)))
-        return
+        title = _fit_text(pygame, fonts["heading"], "Tournament", cta.width - 24, (255, 255, 255))
+        screen.blit(title, title.get_rect(center=cta.center))
+        return cta
 
     collapse = pygame.Rect(rect.right - 42, rect.y + 22, 28, 28)
     pygame.draw.rect(screen, theme.RAISED, collapse, border_radius=theme.RADIUS_SM)
@@ -544,22 +655,33 @@ def _draw_tournament_dock(pygame, screen, rect, fonts):
     pygame.draw.rect(screen, (40, 68, 78), right, border_radius=theme.RADIUS_LG)
     pygame.draw.circle(screen, theme.PLAYER_ONE, (left.x + 28, left.centery), 18)
     pygame.draw.circle(screen, theme.PLAYER_TWO, (right.x + 28, right.centery), 18)
-    screen.blit(fonts["small_bold"].render("Player 1", True, theme.TEXT), (left.x + 56, left.y + 12))
+    screen.blit(fonts["small_bold"].render("Me", True, theme.TEXT), (left.x + 56, left.y + 12))
     screen.blit(fonts["body_bold"].render("Score 0", True, theme.TEXT), (left.x + 56, left.y + 34))
-    screen.blit(fonts["small_bold"].render("Waiting rival", True, theme.TEXT), (right.x + 56, right.y + 12))
+    screen.blit(fonts["small_bold"].render("Waiting for a rival", True, theme.TEXT), (right.x + 56, right.y + 12))
     screen.blit(fonts["body_bold"].render("Score 0", True, theme.TEXT), (right.x + 56, right.y + 34))
     pygame.draw.rect(screen, theme.ACCENT, cta, border_radius=theme.RADIUS_LG)
     pygame.draw.rect(screen, (39, 139, 59), cta, 2, border_radius=theme.RADIUS_LG)
-    title = _fit_text(pygame, fonts["body_bold"], "Tournament - Play", cta.width - 28, (255, 255, 255))
-    entry = _fit_text(
-        pygame,
-        fonts["small_bold"],
-        "Idle - Entry shown before confirmation - Wallet required for on-chain matches",
-        cta.width - 28,
-        (236, 255, 236),
-    )
-    screen.blit(title, title.get_rect(center=(cta.centerx, cta.centery - 10)))
-    screen.blit(entry, entry.get_rect(center=(cta.centerx, cta.centery + 18)))
+    title = _fit_text(pygame, fonts["heading"], "Tournament", cta.width - 28, (255, 255, 255))
+    screen.blit(title, title.get_rect(center=cta.center))
+    return cta
+
+
+def _draw_tournament_lobby(pygame, screen, fonts, games):
+    width, height = screen.get_size()
+    overlay = pygame.Rect(max(24, (width - 560) // 2), 110, min(560, width - 48), min(430, height - 180))
+    _draw_panel(pygame, screen, overlay, theme.SIDEBAR, theme.BORDER, theme.RADIUS_XL)
+    screen.blit(fonts["heading"].render("Tournament lobby", True, theme.TEXT), (overlay.x + 24, overlay.y + 22))
+    count_text = f"{len(games)} two-player game" + ("" if len(games) == 1 else "s")
+    screen.blit(fonts["body"].render(count_text, True, theme.MUTED), (overlay.x + 24, overlay.y + 64))
+    y = overlay.y + 108
+    if not games:
+        screen.blit(fonts["body"].render("No tournament-ready games yet.", True, theme.MUTED), (overlay.x + 24, y))
+    for index, game in enumerate(games):
+        row = pygame.Rect(overlay.x + 24, y + index * 48, overlay.width - 48, 38)
+        pygame.draw.rect(screen, theme.PANEL, row, border_radius=theme.RADIUS_MD)
+        screen.blit(fonts["body_bold"].render(f"{index + 1}. {game.descriptor.title}", True, theme.TEXT), (row.x + 14, row.y + 8))
+    hint = fonts["small"].render("Local 2-player tournament. Press Esc to close.", True, theme.SUBTLE)
+    screen.blit(hint, (overlay.x + 24, overlay.bottom - 38))
 
 
 def run_library_scene(pygame, context, registry) -> SceneResult:
@@ -578,65 +700,173 @@ def run_library_scene(pygame, context, registry) -> SceneResult:
         "tiny_bold": pygame.font.SysFont("segoeui", theme.TEXT_XS, bold=True),
     }
     selected_filter = MODE_ALL
+    selected_mode = MODE_ALL
+    search_query = ""
+    search_active = False
     focused_card_index = 0
+    hover_amounts: dict[str, float] = {}
     sidebar_targets = []
     card_targets = []
     tab_targets = []
+    search_target = None
+    control_targets = {}
+    top_nav_targets = {}
+    tournament_start_rect = None
+    control_panel = None
+    feedback = ""
+    tournament_lobby_games = None
 
     while True:
+        context.audio.update()
         mouse_pos = pygame.mouse.get_pos()
         games = registry.list_all()
-        visible_games = filter_games(games, selected_filter)
+        visible_games = filter_games(games, selected_filter, selected_mode, search_query)
         if visible_games:
             focused_card_index = max(0, min(focused_card_index, len(visible_games) - 1))
         else:
             focused_card_index = 0
         layout = compute_hub_layout(pygame, screen.get_size())
         wallet = wallet_summary(context)
+        hovered_game_ids = {
+            game.descriptor.game_id
+            for rect, game in card_targets
+            if rect.collidepoint(mouse_pos)
+        }
+        visible_game_ids = {game.descriptor.game_id for game in visible_games}
+        for game_id in list(hover_amounts):
+            if game_id not in visible_game_ids:
+                del hover_amounts[game_id]
+        for game in visible_games:
+            game_id = game.descriptor.game_id
+            current = hover_amounts.get(game_id, 0.0)
+            target = 1.0 if game_id in hovered_game_ids else 0.0
+            hover_amounts[game_id] = current + (target - current) * 0.24
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return SceneResult(PlatformAction.QUIT)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return SceneResult(PlatformAction.HOME)
-                if event.key == pygame.K_1:
-                    selected_filter = MODE_SINGLE
+                    if tournament_lobby_games is not None:
+                        tournament_lobby_games = None
+                    elif control_panel:
+                        control_panel = None
+                    elif search_active or search_query:
+                        search_active = False
+                        search_query = ""
+                        focused_card_index = 0
+                    else:
+                        return SceneResult(PlatformAction.HOME)
+                elif event.key == pygame.K_SLASH:
+                    search_active = True
+                elif search_active and event.key == pygame.K_BACKSPACE:
+                    search_query = search_query[:-1]
                     focused_card_index = 0
-                if event.key == pygame.K_2:
-                    selected_filter = MODE_TWO
+                elif search_active and event.key == pygame.K_RETURN:
+                    search_active = False
+                elif search_active and event.unicode and event.unicode.isprintable():
+                    search_query = (search_query + event.unicode)[:32]
                     focused_card_index = 0
-                if event.key == pygame.K_a:
-                    selected_filter = MODE_ALL
+                if not search_active and event.key == pygame.K_1:
+                    selected_mode = MODE_SINGLE
                     focused_card_index = 0
-                if event.key in (pygame.K_RIGHT, pygame.K_DOWN, pygame.K_TAB) and visible_games:
+                if not search_active and event.key == pygame.K_2:
+                    selected_mode = MODE_TWO
+                    focused_card_index = 0
+                if not search_active and event.key == pygame.K_a:
+                    selected_mode = MODE_ALL
+                    focused_card_index = 0
+                if not search_active and event.key in (pygame.K_RIGHT, pygame.K_DOWN, pygame.K_TAB) and visible_games:
                     focused_card_index = (focused_card_index + 1) % len(visible_games)
-                if event.key in (pygame.K_LEFT, pygame.K_UP) and visible_games:
+                if not search_active and event.key in (pygame.K_LEFT, pygame.K_UP) and visible_games:
                     focused_card_index = (focused_card_index - 1) % len(visible_games)
-                if event.key in (pygame.K_RETURN, pygame.K_SPACE) and visible_games:
+                if not search_active and event.key in (pygame.K_RETURN, pygame.K_SPACE) and visible_games:
                     game = visible_games[focused_card_index]
                     if game.descriptor.enabled:
                         return SceneResult(PlatformAction.LAUNCH_GAME, game_id=game.descriptor.game_id)
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if tournament_lobby_games is not None:
+                    tournament_lobby_games = None
+                    continue
+                if top_nav_targets.get("settings") and top_nav_targets["settings"].collidepoint(event.pos):
+                    return SceneResult(PlatformAction.SETTINGS)
+                if top_nav_targets.get("home") and top_nav_targets["home"].collidepoint(event.pos):
+                    return SceneResult(PlatformAction.HOME)
+                if top_nav_targets.get("leaderboard") and top_nav_targets["leaderboard"].collidepoint(event.pos):
+                    return SceneResult(PlatformAction.LEADERBOARD)
+                if top_nav_targets.get("rewards") and top_nav_targets["rewards"].collidepoint(event.pos):
+                    return SceneResult(PlatformAction.REWARDS)
+                if top_nav_targets.get("wallet") and top_nav_targets["wallet"].collidepoint(event.pos):
+                    feedback = "No compatible wallet found"
+                if search_target and search_target.collidepoint(event.pos):
+                    search_active = True
+                else:
+                    search_active = False
+                if control_targets.get("filter") and control_targets["filter"].collidepoint(event.pos):
+                    control_panel = None if control_panel == "filter" else "filter"
+                    feedback = "Filters ready"
+                elif control_targets.get("sort") and control_targets["sort"].collidepoint(event.pos):
+                    control_panel = None if control_panel == "sort" else "sort"
+                    feedback = "Featured first"
+                if tournament_start_rect and tournament_start_rect.collidepoint(event.pos):
+                    tournament_lobby_games = select_tournament_games(games)
+                    feedback = f"Tournament ready: {len(tournament_lobby_games)} games"
                 for rect, key in sidebar_targets + tab_targets:
                     if rect.collidepoint(event.pos):
-                        selected_filter = key
+                        if key in (MODE_ALL, MODE_SINGLE, MODE_TWO):
+                            selected_mode = key
+                        else:
+                            selected_filter = key
                         focused_card_index = 0
+                if not visible_games and (search_query or selected_filter != MODE_ALL or selected_mode != MODE_ALL):
+                    reset_rect = pygame.Rect(layout.main.x, layout.main.y + 140, min(220, layout.main.width), 34)
+                    if reset_rect.collidepoint(event.pos):
+                        selected_filter = MODE_ALL
+                        selected_mode = MODE_ALL
+                        search_query = ""
+                        search_active = False
                 for rect, game in card_targets:
                     if rect.collidepoint(event.pos) and game.descriptor.enabled:
                         return SceneResult(PlatformAction.LAUNCH_GAME, game_id=game.descriptor.game_id)
 
         screen.fill(theme.BG)
         _draw_top_nav(pygame, screen, layout.top_nav, fonts, wallet)
-        next_sidebar_targets = _draw_sidebar(pygame, screen, layout.sidebar, fonts, selected_filter)
-        next_card_targets, next_tab_targets = _draw_game_browser(
-            pygame, screen, layout.main, fonts, visible_games, selected_filter, mouse_pos, focused_card_index
+        next_top_nav_targets = _top_nav_targets(pygame, screen.get_width(), wallet)
+        next_sidebar_targets = _draw_sidebar(
+            pygame, screen, layout.sidebar, fonts, selected_filter, daily_challenge_title(games)
+        )
+        next_card_targets, next_tab_targets, next_search_target, next_control_targets = _draw_game_browser(
+            pygame,
+            screen,
+            layout.main,
+            fonts,
+            visible_games,
+            selected_filter,
+            selected_mode,
+            search_query,
+            search_active,
+            mouse_pos,
+            focused_card_index,
+            hover_amounts,
+            control_panel,
         )
         _draw_right_panel(pygame, screen, layout.right_panel, fonts, wallet)
-        _draw_tournament_dock(pygame, screen, layout.tournament, fonts)
+        next_tournament_start_rect = _draw_tournament_dock(
+            pygame, screen, layout.tournament, fonts, len(eligible_tournament_games(games))
+        )
+        if tournament_lobby_games is not None:
+            _draw_tournament_lobby(pygame, screen, fonts, tournament_lobby_games)
+        if feedback:
+            toast = pygame.Rect(screen.get_width() // 2 - 150, TOP_NAV_HEIGHT + 10, 300, 40)
+            _draw_panel(pygame, screen, toast, theme.PANEL, theme.BORDER_SUBTLE, theme.RADIUS_MD)
+            draw_text(pygame, screen, fonts["small_bold"], feedback, toast.center, theme.TEXT)
         sidebar_targets = next_sidebar_targets
         card_targets = next_card_targets
         tab_targets = next_tab_targets
+        search_target = next_search_target
+        control_targets = next_control_targets
+        top_nav_targets = next_top_nav_targets
+        tournament_start_rect = next_tournament_start_rect
 
         pygame.display.flip()
         clock.tick(60)

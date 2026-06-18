@@ -9,6 +9,8 @@ class PlatformAction(str, Enum):
     GAME_LIBRARY = "game_library"
     SETTINGS = "settings"
     ABOUT = "about"
+    LEADERBOARD = "leaderboard"
+    REWARDS = "rewards"
     LAUNCH_GAME = "launch_game"
     QUIT = "quit"
 
@@ -18,4 +20,3 @@ class SceneResult:
     action: PlatformAction
     game_id: str | None = None
     payload: object | None = None
-
