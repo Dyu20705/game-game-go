@@ -28,6 +28,7 @@ Scene flow hiện tại là transitional blocking flow:
 HOME
   -> GAME_LIBRARY
       -> COLOR_WARS launch options -> ColorWarsSession.run()
+      -> SQUARE_XO launch options -> SquareXOLocalSession.run()
       -> DEMO_GAME session -> DemoGameSession.run()
   -> SETTINGS
   -> ABOUT
@@ -69,6 +70,15 @@ Platform settings tách khỏi launch options/game preferences:
 - `LocalizationService`: key-based VI/EN cho platform text.
 - `AssetService`: resolver platform/game/legacy asset bằng `pathlib`.
 
+## Blockchain/Oasis Layer
+
+`src/platform/blockchain` defines public ports and local adapters. Games depend
+on these ports, not raw RPC, ABI, wallet, Sapphire SDK, or ROFL clients.
+
+Local mode is the default implementation for development and tests. Oasis
+testnet adapters are explicit integration boundaries and are not required for
+the platform to boot or for local gameplay.
+
 ## Color Wars Ownership
 
 Các phần vẫn thuộc Color Wars:
@@ -87,4 +97,3 @@ Các phần shared mới thuộc platform:
 - registry/contract;
 - platform settings/save/audio/localization/assets;
 - home/library/settings/about platform scenes.
-

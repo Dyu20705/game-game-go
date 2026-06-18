@@ -1,0 +1,32 @@
+[
+  {
+    "name": "source opening 1x1 first edge",
+    "rows": 1,
+    "cols": 1,
+    "moves": [
+      {"player": "X", "from": {"row": 0, "col": 0}, "to": {"row": 0, "col": 1}}
+    ],
+    "expected": {
+      "score": {"X": 0, "O": 0},
+      "currentPlayer": "O",
+      "boxes": []
+    }
+  },
+  {
+    "name": "source completes 1x1 square and keeps turn",
+    "rows": 1,
+    "cols": 1,
+    "moves": [
+      {"player": "X", "from": {"row": 0, "col": 0}, "to": {"row": 0, "col": 1}},
+      {"player": "O", "from": {"row": 0, "col": 0}, "to": {"row": 1, "col": 0}},
+      {"player": "X", "from": {"row": 1, "col": 0}, "to": {"row": 1, "col": 1}},
+      {"player": "O", "from": {"row": 0, "col": 1}, "to": {"row": 1, "col": 1}}
+    ],
+    "expected": {
+      "score": {"X": 0, "O": 1},
+      "currentPlayer": "O",
+      "boxes": [{"row": 0, "col": 0, "owner": "O"}]
+    }
+  }
+]
+

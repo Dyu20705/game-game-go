@@ -6,6 +6,8 @@
 tests/platform/              Platform registry, descriptor, settings, save, assets, scene action.
 tests/games/color_wars/      Color Wars contract and launch option adapter tests.
 tests/games/demo_game/       Demo game contract/lifecycle tests.
+tests/games/square_xo/       SquareXO domain, conformance, replay and contract tests.
+tests/platform/blockchain/   Local blockchain adapter/config/health tests.
 tests/game_logic/            Legacy Color Wars rules/controller/explosion tests.
 tests/ai/                    Legacy Color Wars AI tests.
 tests/game/, tests/view/     Runtime/view tests that require pygame.
@@ -25,6 +27,7 @@ Results in the current environment:
 - Platform/game contract tests: 22 passed.
 - Legacy Color Wars logic/AI tests: 18 passed.
 - Combined non-Pygame subset: 40 passed.
+- SquareXO/Oasis expanded non-Pygame subset: 55 passed.
 - Compileall: passed.
 - Full `py -m pytest -q`: blocked during collection because this Python environment lacks `pygame`.
 - Two `pytest-cache-files-*` temp directories created during a sandboxed pytest run could not be removed by Windows; `pytest.ini` excludes that pattern from collection.

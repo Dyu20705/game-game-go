@@ -60,4 +60,5 @@ Thumbs.db
 
 pytest-cache-*/
 *tmp/
+.external/
 

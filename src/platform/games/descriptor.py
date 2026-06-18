@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .capability import GameCapability
+
 
 @dataclass(frozen=True)
 class GameDescriptor:
@@ -17,6 +19,7 @@ class GameDescriptor:
     enabled: bool = True
     sort_order: int = 100
     tags: tuple[str, ...] = field(default_factory=tuple)
+    capabilities: tuple[GameCapability, ...] = field(default_factory=tuple)
     author: str | None = None
     min_players: int = 1
     max_players: int = 1
@@ -30,4 +33,3 @@ class GameDescriptor:
             raise ValueError(f"GameDescriptor({self.game_id}) min_players must be >= 1")
         if self.max_players < self.min_players:
             raise ValueError(f"GameDescriptor({self.game_id}) max_players must be >= min_players")
-

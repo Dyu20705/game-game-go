@@ -1,0 +1,2 @@
+"""SquareXO view package."""
+

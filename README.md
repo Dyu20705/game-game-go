@@ -5,6 +5,7 @@ Game Game Go là nền tảng desktop đa mini-game viết bằng Python và Pyg
 ## Mini-Games
 
 - Color Wars: game chiến thuật theo lượt với PvP, PvBot, AI easy/medium/hard, HUD, tutorial, settings và animation nổ dây chuyền.
+- SquareXO: game 1v1 kiểu Dots & Boxes, port core từ SquareXO TypeScript sang Python/Pygame, local 1v1 mặc định không stake.
 - Click Sprint: demo mini-game nhỏ để chứng minh platform có thể đăng ký và launch nhiều game qua cùng contract.
 
 ## Cài Đặt
@@ -40,9 +41,13 @@ Trong môi trường sandbox hiện tại, `py -m pytest ... -p no:cacheprovider
 src/
   main.py                    Entry point Game Game Go.
   platform/                  Platform shell, registry, contract, services, scenes, UI.
+  platform/blockchain/       Shared Oasis/blockchain ports, local adapters, typed errors.
   games/
     color_wars/              Color Wars mini-game package và adapter.
+    square_xo/               SquareXO deterministic domain, Pygame local session, verifier integration.
     demo_game/               Click Sprint demo mini-game.
+contracts/                   Platform-level no-wager Solidity MVP contracts.
+rofl/game-service/           ROFL verifier scaffold.
   ai/, engine/, game/, view/  Compatibility modules cũ của Color Wars.
 tests/
   platform/                  Tests cho registry, settings, save, assets, lifecycle.
@@ -66,8 +71,10 @@ docs/
 - [Development](docs/DEVELOPMENT.md)
 - [Testing](docs/TESTING.md)
 - [Roadmap](docs/ROADMAP.md)
+- [SquareXO Integration](docs/SQUARE_XO_INTEGRATION.md)
+- [Oasis Architecture](docs/OASIS_ARCHITECTURE.md)
+- [Security](docs/SECURITY.md)
 
 ## License
 
 Dự án dùng giấy phép MIT. Xem [LICENSE](LICENSE).
-

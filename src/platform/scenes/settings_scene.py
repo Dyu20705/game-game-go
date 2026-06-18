@@ -56,6 +56,9 @@ def run_settings_scene(pygame, context) -> SceneResult:
         volume_text = f"{loc.get('platform.settings.volume')}: {context.settings.platform.master_volume:.1f}"
         draw_text(pygame, screen, body_font, volume_text, (screen.get_width() // 2, 455), theme.MUTED)
         draw_button(pygame, screen, lang_rect, f"{loc.get('platform.settings.language')}: {context.settings.platform.language}", button_font, color=theme.PANEL)
+        if context.blockchain is not None:
+            health = context.blockchain.health()
+            status = f"Blockchain: {health.mode} | Sapphire: {health.sapphire.value} | ROFL: {health.rofl.value}"
+            draw_text(pygame, screen, body_font, status, (screen.get_width() // 2, 510), theme.MUTED)
         pygame.display.flip()
         clock.tick(60)
-

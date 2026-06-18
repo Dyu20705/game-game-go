@@ -1,0 +1,5 @@
+name: game-game-go-verifier
+version: 0.1.0
+tee: tdx
+kind: container
+

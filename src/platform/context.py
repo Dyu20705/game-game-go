@@ -15,5 +15,5 @@ class PlatformContext:
     assets: Any
     save: Any
     localization: Any
+    blockchain: Any = None
     logger: Any = None
-

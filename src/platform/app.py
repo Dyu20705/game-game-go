@@ -4,6 +4,11 @@ from pathlib import Path
 
 from src.games.color_wars.game import ColorWarsGame
 from src.games.demo_game.game import DemoGame
+from src.games.square_xo.game import SquareXOGame
+from src.games.square_xo.application.result_submission import verify_square_xo_replay
+from src.platform.blockchain.config import OasisNetworkConfig
+from src.platform.blockchain.adapters.local import LocalIdentity, LocalMatchRegistry, LocalResultVerifier
+from src.platform.blockchain.services.blockchain_service import BlockchainService
 from src.platform.config import PlatformConfig
 from src.platform.context import PlatformContext
 from src.platform.games import GameExitAction, GameLaunchOptions, GameRegistry
@@ -20,6 +25,7 @@ def build_default_registry() -> GameRegistry:
 
     registry = GameRegistry()
     registry.register(ColorWarsGame())
+    registry.register(SquareXOGame())
     registry.register(DemoGame())
     return registry
 
@@ -37,6 +43,15 @@ class PlatformApp:
         localization = LocalizationService(settings.platform.language)
         assets = AssetService(self.config.repository_root)
         audio = AudioService(settings)
+        chain_config = OasisNetworkConfig.from_environment()
+        verifier = LocalResultVerifier()
+        verifier.register("square_xo", verify_square_xo_replay)
+        blockchain = BlockchainService(
+            config=chain_config,
+            identity=LocalIdentity(),
+            match_registry=LocalMatchRegistry(),
+            result_verifier=verifier,
+        )
         audio_dir = self.config.repository_root / "asset" / "aud"
         if audio_dir.exists():
             audio.set_music_paths(sorted(Path(audio_dir).glob("*.mp3")))
@@ -53,6 +68,7 @@ class PlatformApp:
             assets=assets,
             save=save,
             localization=localization,
+            blockchain=blockchain,
         )
 
     def run(self) -> int:
@@ -111,4 +127,3 @@ def main() -> int:
     """Run the default Game Game Go app."""
 
     return PlatformApp().run()
-
