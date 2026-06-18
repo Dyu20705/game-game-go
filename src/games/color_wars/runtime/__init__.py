@@ -1,8 +1,4 @@
-"""Legacy Color Wars runtime compatibility exports.
-
-Runtime-heavy exports are loaded lazily so logic-only imports do not require
-pygame during test collection.
-"""
+"""Color Wars runtime package exports."""
 
 from .state import GameState
 
@@ -19,3 +15,5 @@ def __getattr__(name):
 
         return {"CoreSystems": CoreSystems, "LaunchConfig": LaunchConfig, "SceneName": SceneName}[name]
     raise AttributeError(name)
+
+

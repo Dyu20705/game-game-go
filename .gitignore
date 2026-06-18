@@ -57,3 +57,7 @@ Thumbs.db
 *.log
 *.tmp
 *.bak
+
+pytest-cache-*/
+*tmp/
+

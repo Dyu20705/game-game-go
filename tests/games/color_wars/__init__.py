@@ -1,0 +1,2 @@
+"""Color Wars platform tests."""
+

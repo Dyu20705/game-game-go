@@ -1,0 +1,2 @@
+"""Demo game tests."""
+
