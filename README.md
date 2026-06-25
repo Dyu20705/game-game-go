@@ -1,6 +1,6 @@
 # Game Game Go
 
-Game Game Go là nền tảng desktop đa mini-game viết bằng Python và Pygame. Dự án được refactor từ Color Wars: Color Wars hiện là mini-game đầu tiên, còn platform chịu trách nhiệm boot app, registry, game library, settings, audio, asset resolving và lifecycle chung.
+Game Game Go là nền tảng desktop đa mini-game viết bằng Python và Pygame. Dự án được refactor từ Color Wars: Color Wars hiện là mini-game đầu tiên, còn platform chịu trách nhiệm boot app, registry, game library, settings, audio, asset pipeline và lifecycle chung.
 
 ## Mini-Games
 
@@ -49,6 +49,7 @@ src/
     nuts_and_bolts/          Nuts & Bolts puzzle package, adapter, session, domain rules và UI.
     demo_game/               Click Sprint demo mini-game.
 contracts/                   Platform-level no-wager Solidity MVP contracts.
+assets/                      Canonical brand, platform, game, audio, font và asset metadata root.
 rofl/game-service/           ROFL verifier scaffold.
   ai/, engine/, game/, view/  Compatibility modules cũ của Color Wars.
 tests/
@@ -73,6 +74,7 @@ docs/
 - [Development](docs/DEVELOPMENT.md)
 - [Testing](docs/TESTING.md)
 - [Roadmap](docs/ROADMAP.md)
+- [Asset and UX Audit](docs/ASSET_AND_UX_AUDIT.md)
 - [SquareXO Integration](docs/SQUARE_XO_INTEGRATION.md)
 - [Nuts & Bolts Integration](docs/NUTS_AND_BOLTS_INTEGRATION.md)
 - [Oasis Architecture](docs/OASIS_ARCHITECTURE.md)

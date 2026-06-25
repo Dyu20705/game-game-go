@@ -7,8 +7,8 @@ import pygame
 
 
 def _resolve_music_paths():
-    """Return all mp3 files sorted by name under asset/aud."""
-    asset_dir = Path(__file__).resolve().parent.parent.parent / "asset" / "aud"
+    """Return all mp3 files sorted by name under assets/audio."""
+    asset_dir = Path(__file__).resolve().parents[4] / "assets" / "audio"
     if not asset_dir.exists():
         return []
     return sorted(asset_dir.glob("*.mp3"))

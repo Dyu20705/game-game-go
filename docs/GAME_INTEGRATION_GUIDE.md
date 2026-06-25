@@ -9,7 +9,6 @@ src/games/my_game/
   __init__.py
   manifest.py
   game.py
-  assets/
 ```
 
 ## 2. Khai Báo Descriptor
@@ -87,7 +86,15 @@ Home/library không được import game cụ thể. Chỉ registry biết danh 
 
 ## 6. Assets
 
-Dùng `context.assets.game("my_game", "images/foo.png")` để resolve asset game. Nếu asset thiếu, game nên dùng fallback UI thay vì crash.
+Đặt asset runtime trong canonical root:
+
+```text
+assets/games/my_game/
+  thumbnails/card.png
+  images/foo.png
+```
+
+Dùng `context.assets.game("my_game", "images/foo.png")` để resolve asset game, hoặc khai báo `thumbnail=Path("games/my_game/thumbnails/card.png")` trong descriptor. Nếu asset thiếu, game nên dùng fallback UI hoặc `AssetService.image/scaled_image` thay vì crash.
 
 ## 7. Tests
 
@@ -97,4 +104,3 @@ Tối thiểu nên có:
 - `create_session` test;
 - lifecycle/result mapping test nếu có thể fake pygame;
 - launch options test nếu game có cấu hình.
-

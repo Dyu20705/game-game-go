@@ -10,9 +10,10 @@ def run_home_scene(pygame, context) -> SceneResult:
 
     screen = context.screen
     clock = context.clock
-    title_font = pygame.font.SysFont("segoeui", 56, bold=True)
-    button_font = pygame.font.SysFont("segoeui", 24, bold=True)
-    body_font = pygame.font.SysFont("segoeui", 20)
+    title_font = context.assets.font(pygame, "display", 56, bold=True)
+    button_font = context.assets.font(pygame, "body", 24, bold=True)
+    body_font = context.assets.font(pygame, "body", 20)
+    logo = context.assets.scaled_image(pygame, context.assets.brand("logo_mark.png"), (88, 88))
 
     actions = [
         ("Browse games", PlatformAction.GAME_LIBRARY),
@@ -48,9 +49,11 @@ def run_home_scene(pygame, context) -> SceneResult:
         align_center = width < 760
         title_pos = (title_x, 190)
         if align_center:
+            screen.blit(logo, logo.get_rect(center=(title_x, 112)))
             draw_text(pygame, screen, title_font, "Game Game Go", title_pos)
             draw_text(pygame, screen, body_font, "Ready for another round?", (title_x, 250), theme.MUTED)
         else:
+            screen.blit(logo, (title_x, 66))
             title_surface = title_font.render("Game Game Go", True, theme.TEXT)
             screen.blit(title_surface, (title_x, 160))
             body_surface = body_font.render("Ready for another round?", True, theme.MUTED)

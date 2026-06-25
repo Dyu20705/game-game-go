@@ -1,5 +1,7 @@
 """SquareXO manifest."""
 
+from pathlib import Path
+
 from src.platform.games import GameCapability, GameDescriptor
 
 
@@ -9,6 +11,7 @@ DESCRIPTOR = GameDescriptor(
     short_description="Claim edges, complete squares, and outscore your opponent.",
     version="0.1.0",
     supported_modes=("local_1v1",),
+    thumbnail=Path("games/square_xo/thumbnails/card.png"),
     enabled=True,
     sort_order=15,
     tags=("strategy", "1v1", "dots-and-boxes"),
@@ -22,4 +25,3 @@ DESCRIPTOR = GameDescriptor(
     min_players=2,
     max_players=2,
 )
-

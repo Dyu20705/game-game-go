@@ -5,17 +5,17 @@ from pathlib import Path
 import pygame
 
 
-ASSETS_ROOT = Path(__file__).resolve().parent.parent.parent.parent / "asset"
+ASSETS_ROOT = Path(__file__).resolve().parents[5] / "assets" / "games" / "color_wars"
 
 
 def get_asset_path(*parts):
-    """Return an absolute asset path under asset/."""
+    """Return an absolute Color Wars asset path under assets/."""
     return ASSETS_ROOT.joinpath(*parts)
 
 
 def get_home_asset_path(filename):
     """Resolve a home asset from the new image/gameplay layout or fallback to root."""
-    for folder in ("img", "gameplay", "home"):
+    for folder in ("images", "gameplay", "home"):
         candidate = ASSETS_ROOT / folder / filename
         if candidate.exists():
             return candidate

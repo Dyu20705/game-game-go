@@ -300,7 +300,7 @@ def _draw_top_nav(pygame, screen, rect, fonts, wallet):
         _draw_pill(pygame, screen, pygame.Rect(right - 118, 18, 118, 42), "---- ROSE", fonts["small_bold"], (255, 255, 255), (55, 62, 75), (188, 218, 228))
 
 
-def _top_nav_targets(pygame, width, wallet):
+def _top_nav_targets(pygame, width, wallet, nav_font):
     right = width - 24
     targets = {}
     if width >= 760:
@@ -316,7 +316,7 @@ def _top_nav_targets(pygame, width, wallet):
         x = max(360, min(430, width // 3))
         max_nav_right = width - right_reserved
         for key, item in nav_items:
-            surface = pygame.font.SysFont("segoeui", theme.TEXT_MD, bold=True).render(item, True, (55, 62, 75))
+            surface = nav_font.render(item, True, (55, 62, 75))
             item_rect = pygame.Rect(x - 12, 17, surface.get_width() + 24, 44)
             if item_rect.right > max_nav_right:
                 break
@@ -381,11 +381,20 @@ def _draw_mode_tabs(pygame, screen, rect, fonts, selected_filter):
     return tabs
 
 
-def _draw_artwork(pygame, screen, rect, descriptor):
+def _draw_artwork(pygame, screen, rect, descriptor, asset_service=None):
+    if asset_service is not None:
+        image = asset_service.scaled_image(pygame, descriptor.thumbnail, rect.size)
+        previous_clip = screen.get_clip()
+        screen.set_clip(rect)
+        screen.blit(image, rect)
+        screen.set_clip(previous_clip)
+        return
+
     palette = {
         "color_wars": ((255, 87, 80), (29, 190, 222), (255, 207, 43)),
         "square_xo": ((74, 108, 255), (75, 212, 114), (255, 207, 43)),
         "demo_game": ((255, 89, 142), (29, 190, 222), (255, 255, 255)),
+        "nuts_and_bolts": ((232, 228, 218), (105, 108, 112), (255, 193, 65)),
     }
     c1, c2, c3 = palette.get(descriptor.game_id, (theme.DANGER, theme.BLUE, theme.AMBER))
     previous_clip = screen.get_clip()
@@ -410,7 +419,7 @@ def _draw_artwork(pygame, screen, rect, descriptor):
     screen.set_clip(previous_clip)
 
 
-def _draw_game_card(pygame, screen, rect, fonts, game, hover_amount=0.0, focused=False):
+def _draw_game_card(pygame, screen, rect, fonts, game, hover_amount=0.0, focused=False, asset_service=None):
     descriptor = game.descriptor
     interactive_amount = max(hover_amount, 1.0 if focused else 0.0)
     lift = int(-5 * interactive_amount)
@@ -426,7 +435,7 @@ def _draw_game_card(pygame, screen, rect, fonts, game, hover_amount=0.0, focused
     padding = theme.SPACE_4
     art = pygame.Rect(card.x + padding, card.y + padding, card.width - padding * 2, int((card.width - padding * 2) * 9 / 16))
     art.height = min(art.height, 142)
-    _draw_artwork(pygame, screen, art, descriptor)
+    _draw_artwork(pygame, screen, art, descriptor, asset_service)
     pygame.draw.rect(screen, (255, 255, 255), art, 1, border_radius=theme.RADIUS_LG)
 
     if descriptor.sort_order <= 15:
@@ -519,6 +528,7 @@ def _draw_game_browser(
     focused_index,
     hover_amounts,
     control_panel=None,
+    asset_service=None,
 ):
     title = fonts["heading"].render("Choose Your Challenge", True, theme.TEXT)
     screen.blit(title, (rect.x, rect.y))
@@ -578,6 +588,7 @@ def _draw_game_browser(
             game,
             hover_amount=hover_amounts.get(game.descriptor.game_id, 0.0),
             focused=index == focused_index,
+            asset_service=asset_service,
         )
         clickable.append((drawn, game))
     if not games:
@@ -690,14 +701,14 @@ def run_library_scene(pygame, context, registry) -> SceneResult:
     screen = context.screen
     clock = context.clock
     fonts = {
-        "title": pygame.font.SysFont("segoeui", theme.TEXT_2XL, bold=True),
-        "heading": pygame.font.SysFont("segoeui", theme.TEXT_XL, bold=True),
-        "card_title": pygame.font.SysFont("segoeui", 24, bold=True),
-        "body": pygame.font.SysFont("segoeui", theme.TEXT_MD),
-        "body_bold": pygame.font.SysFont("segoeui", theme.TEXT_MD, bold=True),
-        "small": pygame.font.SysFont("segoeui", 14),
-        "small_bold": pygame.font.SysFont("segoeui", 14, bold=True),
-        "tiny_bold": pygame.font.SysFont("segoeui", theme.TEXT_XS, bold=True),
+        "title": context.assets.font(pygame, "display", theme.TEXT_2XL, bold=True),
+        "heading": context.assets.font(pygame, "display", theme.TEXT_XL, bold=True),
+        "card_title": context.assets.font(pygame, "body", 24, bold=True),
+        "body": context.assets.font(pygame, "body", theme.TEXT_MD),
+        "body_bold": context.assets.font(pygame, "body", theme.TEXT_MD, bold=True),
+        "small": context.assets.font(pygame, "body", 14),
+        "small_bold": context.assets.font(pygame, "body", 14, bold=True),
+        "tiny_bold": context.assets.font(pygame, "body", theme.TEXT_XS, bold=True),
     }
     selected_filter = MODE_ALL
     selected_mode = MODE_ALL
@@ -831,7 +842,7 @@ def run_library_scene(pygame, context, registry) -> SceneResult:
 
         screen.fill(theme.BG)
         _draw_top_nav(pygame, screen, layout.top_nav, fonts, wallet)
-        next_top_nav_targets = _top_nav_targets(pygame, screen.get_width(), wallet)
+        next_top_nav_targets = _top_nav_targets(pygame, screen.get_width(), wallet, fonts["body_bold"])
         next_sidebar_targets = _draw_sidebar(
             pygame, screen, layout.sidebar, fonts, selected_filter, daily_challenge_title(games)
         )
@@ -849,6 +860,7 @@ def run_library_scene(pygame, context, registry) -> SceneResult:
             focused_card_index,
             hover_amounts,
             control_panel,
+            context.assets,
         )
         _draw_right_panel(pygame, screen, layout.right_panel, fonts, wallet)
         next_tournament_start_rect = _draw_tournament_dock(

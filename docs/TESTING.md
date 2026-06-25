@@ -20,7 +20,7 @@ tests/game/, tests/view/     Runtime/view tests that require pygame.
 py -m pytest tests\platform tests\games -q -p no:cacheprovider
 py -m pytest tests\game_logic tests\ai -q -p no:cacheprovider
 py -m pytest tests\platform tests\games tests\game_logic tests\ai -q -p no:cacheprovider
-py -m compileall -q src tests
+py -m compileall -q src tests tools
 ```
 
 Results in the current environment:

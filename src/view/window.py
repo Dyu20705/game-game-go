@@ -15,7 +15,7 @@ def _load_window_icon():
     if _ICON_SURFACE is not None:
         return _ICON_SURFACE
 
-    icon_path = Path(__file__).resolve().parents[2] / "asset" / "img" / "game_icon.png"
+    icon_path = Path(__file__).resolve().parents[2] / "assets" / "brand" / "app_icon.png"
     try:
         _ICON_SURFACE = pygame.image.load(str(icon_path)).convert_alpha()
     except (pygame.error, FileNotFoundError, OSError):
