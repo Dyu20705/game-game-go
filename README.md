@@ -6,6 +6,7 @@ Game Game Go là nền tảng desktop đa mini-game viết bằng Python và Pyg
 
 - Color Wars: game chiến thuật theo lượt với PvP, PvBot, AI easy/medium/hard, HUD, tutorial, settings và animation nổ dây chuyền.
 - SquareXO: game 1v1 kiểu Dots & Boxes, port core từ SquareXO TypeScript sang Python/Pygame, local 1v1 mặc định không stake.
+- Nuts & Bolts: game puzzle solo, di chuyển nut trên cùng giữa các screw để hoàn thành từng màu.
 - Click Sprint: demo mini-game nhỏ để chứng minh platform có thể đăng ký và launch nhiều game qua cùng contract.
 
 ## Cài Đặt
@@ -45,6 +46,7 @@ src/
   games/
     color_wars/              Color Wars mini-game package và adapter.
     square_xo/               SquareXO deterministic domain, Pygame local session, verifier integration.
+    nuts_and_bolts/          Nuts & Bolts puzzle package, adapter, session, domain rules và UI.
     demo_game/               Click Sprint demo mini-game.
 contracts/                   Platform-level no-wager Solidity MVP contracts.
 rofl/game-service/           ROFL verifier scaffold.
@@ -72,6 +74,7 @@ docs/
 - [Testing](docs/TESTING.md)
 - [Roadmap](docs/ROADMAP.md)
 - [SquareXO Integration](docs/SQUARE_XO_INTEGRATION.md)
+- [Nuts & Bolts Integration](docs/NUTS_AND_BOLTS_INTEGRATION.md)
 - [Oasis Architecture](docs/OASIS_ARCHITECTURE.md)
 - [Security](docs/SECURITY.md)
 

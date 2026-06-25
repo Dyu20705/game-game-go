@@ -4,6 +4,7 @@ from pathlib import Path
 
 from src.games.color_wars.game import ColorWarsGame
 from src.games.demo_game.game import DemoGame
+from src.games.nuts_and_bolts.game import NutsAndBoltsGame
 from src.games.square_xo.game import SquareXOGame
 from src.games.square_xo.application.result_submission import verify_square_xo_replay
 from src.platform.blockchain.config import OasisNetworkConfig
@@ -28,6 +29,7 @@ def build_default_registry() -> GameRegistry:
     registry = GameRegistry()
     registry.register(ColorWarsGame())
     registry.register(SquareXOGame())
+    registry.register(NutsAndBoltsGame())
     registry.register(DemoGame())
     return registry
 

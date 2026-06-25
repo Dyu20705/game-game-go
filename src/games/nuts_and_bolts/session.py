@@ -1,20 +1,21 @@
 from __future__ import annotations
 
-import math
-import sys
+from dataclasses import dataclass
 
 import pygame
 
-from ui import theme
-from ui.button import Button
-from ui.effects import Celebration
+from src.platform.context import PlatformContext
+from src.platform.games import GameExitAction, GameExitResult, GameLaunchOptions
+
+from .ui import theme
+from .ui.button import Button
+from .ui.effects import Celebration
 
 from .animation import MoveAnimation, Pulse, Shake
 from .level_generator import LevelGenerator
 from .models import COLOR_NAMES, DIFFICULTIES, GameMode, Screw, StackState
 from .rules import (
     can_move,
-    capture_state,
     is_completed_screw,
     is_victory,
     move_nut,
@@ -23,12 +24,19 @@ from .rules import (
 from .sound import SoundManager
 
 
-class GameApp:
-    def __init__(self) -> None:
-        pygame.init()
-        self.screen = pygame.display.set_mode(theme.DEFAULT_SIZE, pygame.RESIZABLE)
-        pygame.display.set_caption("Nuts & Bolts")
-        self.clock = pygame.time.Clock()
+GAME_ID = "nuts_and_bolts"
+DEFAULT_DIFFICULTY = "normal"
+VALID_DIFFICULTIES = tuple(DIFFICULTIES.keys())
+
+
+@dataclass
+class NutsAndBoltsSession:
+    context: PlatformContext
+    launch_options: GameLaunchOptions
+
+    def __post_init__(self) -> None:
+        self.screen = self.context.screen
+        self.clock = self.context.clock
         self.fonts = {
             "title": theme.font(32, bold=True),
             "hud": theme.font(20, bold=True),
@@ -39,10 +47,10 @@ class GameApp:
         }
 
         self.generator = LevelGenerator()
-        self.sound = SoundManager()
+        self.sound = SoundManager(self.context)
         self.celebration = Celebration()
 
-        self.difficulty_key = "normal"
+        self.difficulty_key = self._initial_difficulty()
         self.screws: list[Screw] = []
         self.initial_state: StackState = ()
         self.history: list[tuple[int, int]] = []
@@ -59,6 +67,7 @@ class GameApp:
         self.status_kind = "neutral"
         self.status_timer = 3.0
         self.win_alpha = 0.0
+        self.completion_recorded = False
         self.modal_buttons: list[Button] = []
         self.buttons: dict[str, Button] = {}
 
@@ -67,6 +76,40 @@ class GameApp:
     @property
     def difficulty(self):
         return DIFFICULTIES[self.difficulty_key]
+
+    def _initial_difficulty(self) -> str:
+        launch_difficulty = self.launch_options.difficulty
+        if launch_difficulty in VALID_DIFFICULTIES:
+            return launch_difficulty
+
+        settings = self.context.settings.get_game_settings(GAME_ID)
+        preferred = settings.get("last_difficulty")
+        if preferred in VALID_DIFFICULTIES:
+            return str(preferred)
+        return DEFAULT_DIFFICULTY
+
+    def _game_settings(self) -> dict[str, object]:
+        return self.context.settings.get_game_settings(GAME_ID)
+
+    def apply_difficulty(self, difficulty_key: str) -> None:
+        if difficulty_key not in VALID_DIFFICULTIES:
+            difficulty_key = DEFAULT_DIFFICULTY
+        self.difficulty_key = difficulty_key
+        self.context.settings.update_game_settings(GAME_ID, {"last_difficulty": difficulty_key})
+        self.new_puzzle()
+
+    def build_exit_payload(self) -> dict[str, object]:
+        return {
+            "difficulty": self.difficulty_key,
+            "moves": self.move_count,
+            "completed": self.mode == GameMode.COMPLETED,
+        }
+
+    def exit_to_library(self) -> GameExitResult:
+        return GameExitResult(GameExitAction.GAME_LIBRARY, self.build_exit_payload())
+
+    def exit_to_quit(self) -> GameExitResult:
+        return GameExitResult(GameExitAction.QUIT, self.build_exit_payload())
 
     def new_puzzle(self) -> None:
         level = self.generator.generate(self.difficulty)
@@ -79,6 +122,7 @@ class GameApp:
         self.animation_is_undo = False
         self.mode = GameMode.IDLE
         self.win_alpha = 0
+        self.completion_recorded = False
         self.completed_indices = {
             i for i, screw in enumerate(self.screws) if is_completed_screw(screw)
         }
@@ -93,6 +137,7 @@ class GameApp:
         self.animation_is_undo = False
         self.mode = GameMode.IDLE
         self.win_alpha = 0
+        self.completion_recorded = False
         self.completed_indices = {
             i for i, screw in enumerate(self.screws) if is_completed_screw(screw)
         }
@@ -105,23 +150,19 @@ class GameApp:
 
     def cycle_difficulty(self) -> None:
         keys = list(DIFFICULTIES.keys())
-        self.difficulty_key = keys[(keys.index(self.difficulty_key) + 1) % len(keys)]
-        self.new_puzzle()
+        self.apply_difficulty(keys[(keys.index(self.difficulty_key) + 1) % len(keys)])
 
     def update_layout(self) -> None:
         width, height = self.screen.get_size()
-        if width < theme.MIN_SIZE[0] or height < theme.MIN_SIZE[1]:
-            width = max(width, theme.MIN_SIZE[0])
-            height = max(height, theme.MIN_SIZE[1])
-            self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 
         toolbar_y = height - 78
-        button_w = 126
+        button_w = min(126, max(100, (width - 120) // 5))
         button_h = 48
-        gap = 14
-        total_w = button_w * 4 + gap * 3
+        gap = min(14, max(8, (width - button_w * 5 - 36) // 4))
+        total_w = button_w * 5 + gap * 4
         start_x = width // 2 - total_w // 2
         specs = [
+            ("back", "Library", "Esc"),
             ("undo", "Undo", "Z"),
             ("restart", "Restart", "R"),
             ("new", "New Puzzle", "Enter"),
@@ -140,6 +181,7 @@ class GameApp:
             GameMode.MOVING,
             GameMode.COMPLETED,
         }
+        self.buttons["back"].enabled = True
         for key in ("restart", "new", "difficulty"):
             self.buttons[key].enabled = self.mode != GameMode.MOVING
 
@@ -147,9 +189,19 @@ class GameApp:
         modal_x = width // 2 - modal_w // 2
         modal_y = height // 2 - 115
         self.modal_buttons = [
-            Button("modal_new", "New Puzzle", "Enter", pygame.Rect(modal_x + 60, modal_y + 154, 132, 48)),
-            Button("modal_restart", "Restart", "R", pygame.Rect(modal_x + 224, modal_y + 154, 132, 48)),
+            Button("modal_back", "Library", "Esc", pygame.Rect(modal_x + 30, modal_y + 154, 108, 48)),
+            Button("modal_new", "New Puzzle", "Enter", pygame.Rect(modal_x + 156, modal_y + 154, 116, 48)),
+            Button("modal_restart", "Restart", "R", pygame.Rect(modal_x + 290, modal_y + 154, 100, 48)),
         ]
+
+    def resize_surface(self, size: tuple[int, int]) -> None:
+        width = max(int(size[0]), theme.MIN_SIZE[0])
+        height = max(int(size[1]), theme.MIN_SIZE[1])
+        fullscreen = bool(getattr(self.context.settings.platform, "fullscreen", False))
+        flags = pygame.FULLSCREEN if fullscreen else pygame.RESIZABLE
+        self.screen = pygame.display.set_mode((width, height), flags)
+        self.context.screen = self.screen
+        self.context.settings.platform.window_size = (width, height)
 
     def screw_positions(self) -> list[int]:
         width, _ = self.screen.get_size()
@@ -227,11 +279,30 @@ class GameApp:
         if is_victory(self.screws):
             self.mode = GameMode.COMPLETED
             self.show_status("Puzzle complete!", "success")
+            self.record_completion()
             w, h = self.screen.get_size()
             self.celebration.burst((w // 2, h // 2 - 82))
             self.sound.play("win")
         else:
             self.mode = GameMode.IDLE
+
+    def record_completion(self) -> None:
+        if self.completion_recorded:
+            return
+        self.completion_recorded = True
+
+        settings = self._game_settings()
+        raw_total = settings.get("total_completed", 0)
+        total_completed = raw_total if isinstance(raw_total, int) and raw_total >= 0 else 0
+        updates: dict[str, object] = {"total_completed": total_completed + 1}
+
+        best_key = f"best_moves_{self.difficulty_key}"
+        raw_best = settings.get(best_key)
+        best_moves = raw_best if isinstance(raw_best, int) and raw_best > 0 else None
+        if best_moves is None or self.move_count < best_moves:
+            updates[best_key] = self.move_count
+
+        self.context.settings.update_game_settings(GAME_ID, updates)
 
     def update_completed_effects(self) -> None:
         new_completed = {
@@ -250,42 +321,40 @@ class GameApp:
                 return index
         return None
 
-    def handle_event(self, event: pygame.event.Event) -> None:
+    def handle_event(self, event: pygame.event.Event) -> GameExitResult | None:
+        if event.type == pygame.QUIT:
+            return self.exit_to_quit()
+
         if event.type == pygame.VIDEORESIZE:
-            width = max(event.w, theme.MIN_SIZE[0])
-            height = max(event.h, theme.MIN_SIZE[1])
-            self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
-            return
+            self.resize_surface((event.w, event.h))
+            return None
 
         if event.type == pygame.KEYDOWN:
-            self.handle_key(event.key)
-            return
+            return self.handle_key(event.key)
 
         if self.mode == GameMode.COMPLETED:
             for button in self.modal_buttons:
                 if button.handle_event(event):
-                    self.activate_button(button.key)
-                    return
-            return
+                    return self.activate_button(button.key)
+            return None
 
         for button in self.buttons.values():
             if button.handle_event(event):
-                self.activate_button(button.key)
-                return
+                return self.activate_button(button.key)
 
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             if self.mode == GameMode.MOVING:
-                return
+                return None
             screw_index = self.hit_screw(event.pos)
             if screw_index is not None:
                 self.handle_screw_click(screw_index)
+        return None
 
-    def handle_key(self, key: int) -> None:
+    def handle_key(self, key: int) -> GameExitResult | None:
         if key == pygame.K_ESCAPE:
-            pygame.quit()
-            sys.exit()
+            return self.exit_to_library()
         if self.mode == GameMode.MOVING:
-            return
+            return None
         if key == pygame.K_RETURN:
             self.new_puzzle()
         elif key == pygame.K_z and self.mode != GameMode.COMPLETED:
@@ -293,18 +362,18 @@ class GameApp:
         elif key == pygame.K_r:
             self.restart()
         elif key == pygame.K_1:
-            self.difficulty_key = "easy"
-            self.new_puzzle()
+            self.apply_difficulty("easy")
         elif key == pygame.K_2:
-            self.difficulty_key = "normal"
-            self.new_puzzle()
+            self.apply_difficulty("normal")
         elif key == pygame.K_3:
-            self.difficulty_key = "hard"
-            self.new_puzzle()
+            self.apply_difficulty("hard")
         elif key == pygame.K_m:
             self.sound.toggle()
+        return None
 
-    def activate_button(self, key: str) -> None:
+    def activate_button(self, key: str) -> GameExitResult | None:
+        if key in {"back", "modal_back"}:
+            return self.exit_to_library()
         if key in {"new", "modal_new"}:
             self.new_puzzle()
         elif key in {"restart", "modal_restart"}:
@@ -313,6 +382,7 @@ class GameApp:
             self.undo()
         elif key == "difficulty":
             self.cycle_difficulty()
+        return None
 
     def handle_screw_click(self, screw_index: int) -> None:
         screw = self.screws[screw_index]
@@ -559,13 +629,12 @@ class GameApp:
             button.draw(self.screen, self.fonts)
         self.celebration.draw(self.screen)
 
-    def run(self) -> None:
+    def run(self) -> GameExitResult:
         while True:
             dt = self.clock.tick(theme.FPS) / 1000.0
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                self.handle_event(event)
+                result = self.handle_event(event)
+                if result is not None:
+                    return result
             self.update(dt)
             self.draw()

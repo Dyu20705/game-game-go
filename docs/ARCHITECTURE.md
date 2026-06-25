@@ -29,6 +29,7 @@ HOME
   -> GAME_LIBRARY
       -> COLOR_WARS launch options -> ColorWarsSession.run()
       -> SQUARE_XO launch options -> SquareXOLocalSession.run()
+      -> NUTS_AND_BOLTS session -> NutsAndBoltsSession.run()
       -> DEMO_GAME session -> DemoGameSession.run()
   -> SETTINGS
   -> ABOUT

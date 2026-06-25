@@ -7,6 +7,7 @@ tests/platform/              Platform registry, descriptor, settings, save, asse
 tests/games/color_wars/      Color Wars contract and launch option adapter tests.
 tests/games/demo_game/       Demo game contract/lifecycle tests.
 tests/games/square_xo/       SquareXO domain, conformance, replay and contract tests.
+tests/games/nuts_and_bolts/  Nuts & Bolts manifest, domain, session lifecycle and registry tests.
 tests/platform/blockchain/   Local blockchain adapter/config/health tests.
 tests/game_logic/            Legacy Color Wars rules/controller/explosion tests.
 tests/ai/                    Legacy Color Wars AI tests.
