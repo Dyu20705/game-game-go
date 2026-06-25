@@ -150,7 +150,9 @@ class AssetService:
         width, height = max(1, int(size[0])), max(1, int(size[1]))
         surface = pygame.Surface((width, height), pygame.SRCALPHA)
         surface.fill((35, 185, 211, 255))
-        pygame.draw.rect(surface, (255, 255, 255, 190), surface.get_rect(), 2, border_radius=max(4, min(width, height) // 12))
+        pygame.draw.rect(
+            surface, (255, 255, 255, 190), surface.get_rect(), 2, border_radius=max(4, min(width, height) // 12)
+        )
         pygame.draw.circle(surface, (255, 190, 75), (width // 2, height // 2), max(8, min(width, height) // 5))
         pygame.draw.circle(surface, (255, 94, 98), (width // 2, height // 2), max(3, min(width, height) // 12))
         return surface

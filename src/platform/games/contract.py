@@ -33,4 +33,3 @@ class GameModule(Protocol):
         launch_options: GameLaunchOptions,
     ) -> GameSession:
         """Create a session for the supplied launch options."""
-

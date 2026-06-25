@@ -82,7 +82,7 @@ class Button:
         border_radius: int = 8,
     ):
         """Initialize button.
-        
+
         Args:
             rect: pygame.Rect for button position and size
             text: Button label text
@@ -101,7 +101,7 @@ class Button:
 
     def draw(self, screen: pygame.Surface):
         """Render button to screen.
-        
+
         Args:
             screen: pygame display surface
         """
@@ -111,17 +111,17 @@ class Button:
             self.rect,
             border_radius=self.border_radius,
         )
-        
+
         text_surf = self.font.render(self.text, True, self.text_color)
         text_rect = text_surf.get_rect(center=self.rect.center)
         screen.blit(text_surf, text_rect)
 
     def is_clicked(self, event: pygame.event.Event) -> bool:
         """Check if button was clicked.
-        
+
         Args:
             event: pygame MOUSEBUTTONDOWN event
-            
+
         Returns:
             bool indicating if button was clicked
         """
@@ -131,7 +131,7 @@ class Button:
 
     def update_hover(self, mouse_pos: tuple):
         """Update hover state based on mouse position.
-        
+
         Args:
             mouse_pos: (x, y) mouse position
         """
@@ -149,7 +149,7 @@ class Panel:
         border_width: int = 0,
     ):
         """Initialize panel.
-        
+
         Args:
             rect: pygame.Rect for panel position and size
             bg_color: RGB tuple for background color
@@ -163,7 +163,7 @@ class Panel:
 
     def draw(self, screen: pygame.Surface):
         """Render panel to screen.
-        
+
         Args:
             screen: pygame display surface
         """
@@ -183,7 +183,7 @@ class TextLabel:
         position: tuple,
     ):
         """Initialize text label.
-        
+
         Args:
             text: Text to display
             font: pygame.font.Font for rendering
@@ -199,7 +199,7 @@ class TextLabel:
 
     def draw(self, screen: pygame.Surface):
         """Render label to screen.
-        
+
         Args:
             screen: pygame display surface
         """
@@ -207,12 +207,10 @@ class TextLabel:
 
     def set_text(self, text: str):
         """Update label text.
-        
+
         Args:
             text: New text to display
         """
         self.text = text
         self.surface = self.font.render(text, True, self.color)
         self.rect = self.surface.get_rect(topleft=self.position)
-
-

@@ -1,17 +1,7 @@
 """Game Game Go platform application shell."""
 
-from pathlib import Path
-
-from src.games.color_wars.game import ColorWarsGame
-from src.games.demo_game.game import DemoGame
-from src.games.nuts_and_bolts.game import NutsAndBoltsGame
-from src.games.square_xo.game import SquareXOGame
-from src.games.square_xo.application.result_submission import verify_square_xo_replay
-from src.platform.blockchain.config import OasisNetworkConfig
-from src.platform.blockchain.adapters.local import LocalIdentity, LocalMatchRegistry, LocalResultVerifier
-from src.platform.blockchain.services.blockchain_service import BlockchainService
+from src.platform.bootstrap import build_default_registry, build_platform_context
 from src.platform.config import PlatformConfig
-from src.platform.context import PlatformContext
 from src.platform.games import GameExitAction, GameLaunchOptions, GameRegistry
 from src.platform.scenes.base import PlatformAction
 from src.platform.scenes.game_details_scene import run_about_scene
@@ -20,18 +10,6 @@ from src.platform.scenes.leaderboard_scene import run_leaderboard_scene
 from src.platform.scenes.library_scene import run_library_scene
 from src.platform.scenes.rewards_scene import run_rewards_scene
 from src.platform.scenes.settings_scene import run_settings_scene
-from src.platform.services import AssetService, AudioService, LocalizationService, SaveService, SettingsService
-
-
-def build_default_registry() -> GameRegistry:
-    """Create the static registry used by the current platform build."""
-
-    registry = GameRegistry()
-    registry.register(ColorWarsGame())
-    registry.register(SquareXOGame())
-    registry.register(NutsAndBoltsGame())
-    registry.register(DemoGame())
-    return registry
 
 
 class PlatformApp:
@@ -42,42 +20,7 @@ class PlatformApp:
         self.registry = registry or build_default_registry()
 
     def _build_context(self, pygame):
-        save = SaveService(self.config.save_path)
-        settings = SettingsService.from_document(save.load())
-        localization = LocalizationService(settings.platform.language)
-        assets = AssetService(self.config.repository_root)
-        audio = AudioService(settings)
-        chain_config = OasisNetworkConfig.from_environment()
-        verifier = LocalResultVerifier()
-        verifier.register("square_xo", verify_square_xo_replay)
-        blockchain = BlockchainService(
-            config=chain_config,
-            identity=LocalIdentity(),
-            match_registry=LocalMatchRegistry(),
-            result_verifier=verifier,
-        )
-        audio_dir = assets.audio("")
-        if audio_dir.exists():
-            audio.set_music_paths(sorted(Path(audio_dir).glob("*.mp3")))
-
-        flags = pygame.FULLSCREEN if settings.platform.fullscreen else pygame.RESIZABLE
-        screen = pygame.display.set_mode(settings.platform.window_size, flags)
-        pygame.display.set_caption(self.config.app_name)
-        try:
-            pygame.display.set_icon(assets.image(pygame, assets.brand("app_icon.png"), fallback_size=(64, 64)))
-        except pygame.error:
-            pass
-        clock = pygame.time.Clock()
-        return PlatformContext(
-            screen=screen,
-            clock=clock,
-            settings=settings,
-            audio=audio,
-            assets=assets,
-            save=save,
-            localization=localization,
-            blockchain=blockchain,
-        )
+        return build_platform_context(pygame, self.config, self.registry)
 
     def run(self) -> int:
         import pygame

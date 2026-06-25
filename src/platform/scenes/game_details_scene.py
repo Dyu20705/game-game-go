@@ -25,10 +25,25 @@ def run_about_scene(pygame, context) -> SceneResult:
                 return SceneResult(PlatformAction.HOME)
 
         screen.fill(theme.BG)
-        draw_button(pygame, screen, back_rect, context.localization.get("common.back"), button_font, color=theme.PANEL_ALT)
+        draw_button(
+            pygame, screen, back_rect, context.localization.get("common.back"), button_font, color=theme.PANEL_ALT
+        )
         draw_text(pygame, screen, title_font, "Game Game Go", (screen.get_width() // 2, 125))
-        draw_text(pygame, screen, body_font, "A local desktop platform for small Pygame games.", (screen.get_width() // 2, 190), theme.MUTED)
-        draw_text(pygame, screen, body_font, "Color Wars is now the first integrated mini-game.", (screen.get_width() // 2, 230), theme.MUTED)
+        draw_text(
+            pygame,
+            screen,
+            body_font,
+            "A local desktop platform for small Pygame games.",
+            (screen.get_width() // 2, 190),
+            theme.MUTED,
+        )
+        draw_text(
+            pygame,
+            screen,
+            body_font,
+            "Color Wars is now the first integrated mini-game.",
+            (screen.get_width() // 2, 230),
+            theme.MUTED,
+        )
         pygame.display.flip()
         clock.tick(60)
-

@@ -2,7 +2,6 @@
 
 from src.platform.games import GameDescriptor
 
-
 DESCRIPTOR = GameDescriptor(
     game_id="demo_game",
     title="Click Sprint",
@@ -16,4 +15,3 @@ DESCRIPTOR = GameDescriptor(
     min_players=1,
     max_players=1,
 )
-

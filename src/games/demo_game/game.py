@@ -1,7 +1,7 @@
 """A tiny interactive mini-game proving the platform can launch multiple games."""
 
-from dataclasses import dataclass
 import random
+from dataclasses import dataclass
 
 from src.platform.games import GameExitAction, GameExitResult, GameLaunchOptions
 
@@ -73,4 +73,3 @@ class DemoGame:
 
     def create_session(self, context, launch_options: GameLaunchOptions) -> DemoGameSession:
         return DemoGameSession(context=context, launch_options=launch_options)
-

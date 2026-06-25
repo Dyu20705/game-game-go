@@ -2,7 +2,7 @@
 
 import unittest
 
-from src.game.loop import run_game
+from src.games.color_wars.runtime.loop import run_game
 
 
 class TestRunGame(unittest.TestCase):

@@ -4,7 +4,6 @@ from pathlib import Path
 
 from src.platform.games import GameDescriptor
 
-
 DESCRIPTOR = GameDescriptor(
     game_id="nuts_and_bolts",
     title="Nuts & Bolts",

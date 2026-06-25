@@ -27,4 +27,3 @@ class SaveService:
             json.dump(document, handle, ensure_ascii=False, indent=2)
             temp_path = Path(handle.name)
         temp_path.replace(self.save_path)
-

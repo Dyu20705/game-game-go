@@ -1,2 +1,1 @@
 """SquareXO view package."""
-

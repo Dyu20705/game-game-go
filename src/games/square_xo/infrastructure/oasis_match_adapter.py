@@ -7,4 +7,3 @@ class OasisMatchAdapter:
 
     def submit_verified_result(self, envelope):
         return self.result_service.verify_and_submit(envelope)
-

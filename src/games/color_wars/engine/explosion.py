@@ -49,5 +49,3 @@ def resolve_explosions(board, dots, start_row, start_col, step_callback=None):
                     "targets": spread_targets,
                 }
             )
-
-

@@ -12,4 +12,3 @@ class GameCapability(str, Enum):
     CONFIDENTIAL_MATCH = "confidential_match"
     VERIFIED_RESULT = "verified_result"
     PLATFORM_ACHIEVEMENT = "platform_achievement"
-

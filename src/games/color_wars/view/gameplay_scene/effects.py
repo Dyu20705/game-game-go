@@ -38,4 +38,3 @@ def drawExplosionOverlay(screen, layout, step, progress):
         pygame.draw.circle(glow, (*base_color, travel_alpha), (px, py), dot_radius)
 
     screen.blit(glow, (0, 0))
-

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import json
 import time
+from dataclasses import dataclass
 from typing import Any, Protocol
 
 from src.games.square_xo.application.result_submission import verify_square_xo_replay
@@ -15,7 +15,6 @@ from src.platform.blockchain.domain.result import (
     MatchEnvelope,
     ReplayVerificationRequest,
 )
-
 
 SCHEMA_VERSION = 1
 VERIFIER_VERSION = "rofl-verifier-0.1.0"
@@ -55,11 +54,9 @@ class VerificationResponse:
 
 
 class VerifierPlugin(Protocol):
-    def supports(self, game_id: str, ruleset_version: str) -> bool:
-        ...
+    def supports(self, game_id: str, ruleset_version: str) -> bool: ...
 
-    def verify(self, envelope: MatchEnvelope) -> VerificationResponse:
-        ...
+    def verify(self, envelope: MatchEnvelope) -> VerificationResponse: ...
 
 
 class VerifierRegistry:
@@ -128,13 +125,17 @@ class VerificationService:
         request_id = str(payload.get("request_id") or "")
         idempotency_key = str(payload.get("idempotency_key") or request_id)
         if not request_id or not idempotency_key:
-            return self._error("missing_request_id", request_id=request_id, idempotency_key=idempotency_key, started=started)
+            return self._error(
+                "missing_request_id", request_id=request_id, idempotency_key=idempotency_key, started=started
+            )
         if idempotency_key in self._responses_by_idempotency:
             return self._responses_by_idempotency[idempotency_key]
         try:
             envelope = envelope_from_payload(payload)
         except (KeyError, TypeError, ValueError) as exc:
-            response = self._error(str(exc) or "schema_error", request_id=request_id, idempotency_key=idempotency_key, started=started)
+            response = self._error(
+                str(exc) or "schema_error", request_id=request_id, idempotency_key=idempotency_key, started=started
+            )
             self._responses_by_idempotency[idempotency_key] = response
             return response
 
@@ -235,7 +236,9 @@ def envelope_from_payload(payload: dict[str, Any]) -> MatchEnvelope:
     )
 
 
-def payload_for_envelope(envelope: MatchEnvelope, *, request_id: str, idempotency_key: str | None = None) -> dict[str, object]:
+def payload_for_envelope(
+    envelope: MatchEnvelope, *, request_id: str, idempotency_key: str | None = None
+) -> dict[str, object]:
     return {
         "schema_version": SCHEMA_VERSION,
         "request_id": request_id,

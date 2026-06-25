@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pygame
 
-
 ASSETS_ROOT = Path(__file__).resolve().parents[5] / "assets" / "games" / "color_wars"
 
 
@@ -45,5 +44,3 @@ def load_icon_or_placeholder(path, size, color):
         pygame.draw.circle(surface, color, center, radius)
         pygame.draw.circle(surface, (255, 255, 255), center, max(2, radius // 3), 2)
         return surface
-
-

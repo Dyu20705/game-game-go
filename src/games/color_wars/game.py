@@ -6,7 +6,6 @@ from src.platform.games import GameExitAction, GameExitResult, GameLaunchOptions
 
 from .manifest import DESCRIPTOR
 
-
 MODE_PVP = "pvp"
 MODE_PVBOT = "pvbot"
 DIFFICULTIES = ("easy", "medium", "hard")
@@ -138,10 +137,7 @@ def run_color_wars_launch_scene(context) -> GameLaunchOptions | None:
         back_rect = pygame.Rect(24, 24, 130, 44)
         pvp_rect = pygame.Rect(width // 2 - 230, 190, 210, 56)
         bot_rect = pygame.Rect(width // 2 + 20, 190, 210, 56)
-        diff_rects = [
-            pygame.Rect(width // 2 - 330 + index * 230, 290, 200, 56)
-            for index in range(3)
-        ]
+        diff_rects = [pygame.Rect(width // 2 - 330 + index * 230, 290, 200, 56) for index in range(3)]
         start_rect = pygame.Rect(width // 2 - 150, height - 130, 300, 60)
 
         for event in pygame.event.get():
@@ -176,6 +172,3 @@ def run_color_wars_launch_scene(context) -> GameLaunchOptions | None:
         button(start_rect, context.localization.get("common.start"), True)
         pygame.display.flip()
         clock.tick(60)
-
-
-

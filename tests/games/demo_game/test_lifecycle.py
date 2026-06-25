@@ -11,4 +11,3 @@ def test_demo_game_random_target_stays_inside_screen():
 
     assert 40 <= target[0] <= 600
     assert 110 <= target[1] <= 440
-

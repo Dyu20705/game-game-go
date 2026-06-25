@@ -23,4 +23,3 @@ class SignatureResult:
     identity: PlatformIdentity
     signature: bytes
     algorithm: str
-

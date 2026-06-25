@@ -4,8 +4,8 @@ import unittest
 
 import pygame
 
-from src.view.home_scene import compute_menu_icon_rects, difficulty_from_percent
-from src.view.home_scene.scene import draw_home_scene
+from src.games.color_wars.view.home_scene import compute_menu_icon_rects, difficulty_from_percent
+from src.games.color_wars.view.home_scene.scene import draw_home_scene
 
 
 class TestHomeScene(unittest.TestCase):
@@ -54,7 +54,9 @@ class TestHomeScene(unittest.TestCase):
             "quit_btn": pygame.Rect(0, 50, 100, 40),
         }
 
-        draw_home_scene(None, pygame.Rect(0, 0, 300, 200), {"button": None}, {"btn_green": (0, 0, 0), "btn_red": (0, 0, 0)}, rects)
+        draw_home_scene(
+            None, pygame.Rect(0, 0, 300, 200), {"button": None}, {"btn_green": (0, 0, 0), "btn_red": (0, 0, 0)}, rects
+        )
         self.assertEqual(labels, ["BẮT ĐẦU", "THOÁT"])
 
 

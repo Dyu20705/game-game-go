@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pygame
 
-from src.view.setting_scene.scene import draw_setting_scene
+from src.games.color_wars.view.setting_scene.scene import draw_setting_scene
 
 
 class TestSettingScene(unittest.TestCase):
@@ -43,7 +43,7 @@ class TestSettingScene(unittest.TestCase):
         back_rect = pygame.Rect(336, 186, 42, 42)
         back_icon = pygame.Surface((42, 42), pygame.SRCALPHA)
 
-        with patch("src.view.setting_scene.scene.blit_fitted_text") as mock_text:
+        with patch("src.games.color_wars.view.setting_scene.scene.blit_fitted_text") as mock_text:
             draw_setting_scene(screen, panel, fonts, colors, back_rect, back_icon, controls)
 
         rendered = [call.args[2] for call in mock_text.call_args_list]
@@ -74,7 +74,7 @@ class TestSettingScene(unittest.TestCase):
         back_icon = pygame.Surface((42, 42), pygame.SRCALPHA)
         removed_mark_center = (apply_btn.right + 18, apply_btn.centery)
 
-        with patch("src.view.setting_scene.scene.pygame.draw.circle") as mock_circle:
+        with patch("src.games.color_wars.view.setting_scene.scene.pygame.draw.circle") as mock_circle:
             draw_setting_scene(screen, panel, fonts, colors, back_rect, back_icon, controls)
 
         drawn_centers = [call.args[2] for call in mock_circle.call_args_list if len(call.args) >= 3]

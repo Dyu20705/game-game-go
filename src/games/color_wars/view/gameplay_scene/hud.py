@@ -2,8 +2,8 @@
 
 import pygame
 
-from src.games.color_wars.runtime.analysis import estimate_win_chances
 from src.games.color_wars.engine.rules import PLAYER_BLUE
+from src.games.color_wars.runtime.analysis import estimate_win_chances
 from src.games.color_wars.view.commons import ensure_readable_text, suggest_safe_palette
 
 from ..constants import BLUE_COLOR, HUD_TEXT_COLOR, RED_COLOR
@@ -156,7 +156,6 @@ def draw_move_history_panel(screen, state, layout):
     board_x = layout["board_x"]
     board_y = layout["board_y"]
     board_size = layout["board_size"]
-    width = layout["width"]
     height = layout["height"]
 
     panel_w = board_x - side_margin * 2
@@ -195,7 +194,6 @@ def drawHud(screen, state, current_player, blue_score, red_score, winner, game_m
     """Draw the HUD areas around the board."""
     start_x = layout["board_x"]
     start_y = layout["board_y"]
-    board_size = layout["board_size"]
     width = layout["width"]
     side_margin = layout["side_margin"]
 
@@ -226,4 +224,3 @@ def drawHud(screen, state, current_player, blue_score, red_score, winner, game_m
     draw_move_history_panel(screen, state, layout)
 
     _ = width  # keep signature stable for callers using layout info
-

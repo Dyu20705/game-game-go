@@ -6,6 +6,4 @@ from src.platform.blockchain.domain.result import ReplayVerificationRequest, Ver
 
 
 class ResultVerifierPort(Protocol):
-    def verify_replay(self, request: ReplayVerificationRequest) -> VerificationResult:
-        ...
-
+    def verify_replay(self, request: ReplayVerificationRequest) -> VerificationResult: ...

@@ -8,6 +8,7 @@ EXPLOSION_THRESHOLD = 4
 NEWHOLD = 3
 OLDHOLD = 1
 
+
 def in_bounds(row, col, size):
     """Kiểm tra tọa độ (row, col) có nằm trong bàn cờ hay không."""
     return 0 <= row < size and 0 <= col < size
@@ -45,5 +46,3 @@ def get_move_dot_increment(board, row, col):
         return NEWHOLD
 
     return OLDHOLD
-
-

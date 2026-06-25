@@ -7,4 +7,3 @@ class LocalTransport:
 
     def close(self):
         return True
-

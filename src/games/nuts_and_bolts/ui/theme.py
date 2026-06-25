@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pygame
 
-
 FPS = 60
 MIN_SIZE = (900, 620)
 DEFAULT_SIZE = (1000, 680)

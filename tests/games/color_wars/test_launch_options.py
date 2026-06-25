@@ -15,4 +15,3 @@ def test_color_wars_accepts_pvp_and_hard_options():
 
     assert session.launch_options.mode == "pvp"
     assert session.launch_options.difficulty == "hard"
-

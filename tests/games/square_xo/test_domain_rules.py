@@ -50,4 +50,3 @@ def test_completing_square_scores_and_keeps_turn_like_source():
     assert state.current_player == Player.O
     assert state.is_terminal
     assert state.winner == Player.O
-

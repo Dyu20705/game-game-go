@@ -27,4 +27,3 @@ def test_color_wars_create_session_normalizes_launch_options():
     assert isinstance(session, ColorWarsSession)
     assert session.launch_options.mode == "pvbot"
     assert session.launch_options.difficulty == "easy"
-

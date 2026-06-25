@@ -2,11 +2,10 @@
 
 import unittest
 
-from src.game.state import GameState
-from src.controller import apply_move
-from src.engine.rules import PLAYER_BLUE
-from src.view.gameplay_scene.hud import get_move_history_entries
-from src.view.gameplay_scene.hud import get_control_lines, get_status_lines
+from src.games.color_wars.controller import apply_move
+from src.games.color_wars.engine.rules import PLAYER_BLUE
+from src.games.color_wars.runtime.state import GameState
+from src.games.color_wars.view.gameplay_scene.hud import get_control_lines, get_move_history_entries, get_status_lines
 
 
 class TestHudView(unittest.TestCase):

@@ -9,4 +9,3 @@ class SceneManager:
 
     def go_to(self, scene_name: str):
         self.current = scene_name
-

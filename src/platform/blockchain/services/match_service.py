@@ -9,4 +9,3 @@ class MatchService:
 
     def create_match(self, request: CreateMatchRequest):
         return self.registry.create_match(request)
-

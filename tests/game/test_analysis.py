@@ -2,9 +2,9 @@
 
 import unittest
 
-from src.engine.rules import PLAYER_BLUE, PLAYER_RED
-from src.game.analysis import estimate_win_chances, format_cell_label
-from src.game.state import GameState
+from src.games.color_wars.engine.rules import PLAYER_BLUE, PLAYER_RED
+from src.games.color_wars.runtime.analysis import estimate_win_chances, format_cell_label
+from src.games.color_wars.runtime.state import GameState
 
 
 class TestAnalysis(unittest.TestCase):

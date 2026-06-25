@@ -76,6 +76,7 @@ docs/
 - [Roadmap](docs/ROADMAP.md)
 - [Asset and UX Audit](docs/ASSET_AND_UX_AUDIT.md)
 - [Source Dependency Audit](docs/SRC_DEPENDENCY_AUDIT.md)
+- [Architecture Refactor Report](docs/ARCHITECTURE_REFACTOR_REPORT.md)
 - [SquareXO Integration](docs/SQUARE_XO_INTEGRATION.md)
 - [Nuts & Bolts Integration](docs/NUTS_AND_BOLTS_INTEGRATION.md)
 - [Oasis Architecture](docs/OASIS_ARCHITECTURE.md)

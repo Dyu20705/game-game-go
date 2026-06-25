@@ -52,5 +52,3 @@ class CoreSystems:
     def request_quit(self):
         """Mark runtime for shutdown."""
         self.current_scene = SceneName.QUIT
-
-

@@ -11,4 +11,3 @@ class PlatformConfig:
     app_name: str = "Game Game Go"
     repository_root: Path = Path(__file__).resolve().parents[2]
     save_path: Path = Path.home() / ".game_game_go" / "settings.json"
-

@@ -3,7 +3,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.ai.ez_AI import get_ez_move
+from src.games.color_wars.ai.ez_AI import get_ez_move
 
 
 class TestEasyAI(unittest.TestCase):
@@ -19,10 +19,14 @@ class TestEasyAI(unittest.TestCase):
         board = [[0, 0], [0, 0]]
         dots = [[0, 0], [0, 0]]
 
-        with patch("src.ai.ez_AI.random.random", return_value=0.0), patch(
-            "src.ai.ez_AI._worst_half_moves",
-            return_value=[(1, 0)],
-        ) as weak_mock, patch("src.ai.ez_AI.random.choice", return_value=(1, 0)) as choice_mock:
+        with (
+            patch("src.games.color_wars.ai.ez_AI.random.random", return_value=0.0),
+            patch(
+                "src.games.color_wars.ai.ez_AI._worst_half_moves",
+                return_value=[(1, 0)],
+            ) as weak_mock,
+            patch("src.games.color_wars.ai.ez_AI.random.choice", return_value=(1, 0)) as choice_mock,
+        ):
             move = get_ez_move(board, dots)
 
         self.assertEqual(move, (1, 0))
@@ -33,9 +37,12 @@ class TestEasyAI(unittest.TestCase):
         board = [[0, 0], [0, 0]]
         dots = [[0, 0], [0, 0]]
 
-        with patch("src.ai.ez_AI.random.random", return_value=0.99), patch(
-            "src.ai.ez_AI.random.choice",
-            side_effect=lambda seq: seq[0],
+        with (
+            patch("src.games.color_wars.ai.ez_AI.random.random", return_value=0.99),
+            patch(
+                "src.games.color_wars.ai.ez_AI.random.choice",
+                side_effect=lambda seq: seq[0],
+            ),
         ):
             move = get_ez_move(board, dots)
 

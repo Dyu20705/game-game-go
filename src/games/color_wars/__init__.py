@@ -4,6 +4,3 @@ from .game import ColorWarsGame
 from .manifest import DESCRIPTOR
 
 __all__ = ["ColorWarsGame", "DESCRIPTOR"]
-
-
-

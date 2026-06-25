@@ -16,16 +16,25 @@ def test_asset_service_resolves_canonical_namespaces(tmp_path):
     service = AssetService(Path(tmp_path))
 
     assert service.brand("logo_mark.png") == tmp_path / "assets" / "brand" / "logo_mark.png"
-    assert service.platform("fallbacks/game_thumbnail.png") == tmp_path / "assets" / "platform" / "fallbacks" / "game_thumbnail.png"
+    assert (
+        service.platform("fallbacks/game_thumbnail.png")
+        == tmp_path / "assets" / "platform" / "fallbacks" / "game_thumbnail.png"
+    )
     assert service.audio("theme.mp3") == tmp_path / "assets" / "audio" / "theme.mp3"
-    assert service.game("color_wars", "images/game_icon.png") == tmp_path / "assets" / "games" / "color_wars" / "images" / "game_icon.png"
+    assert (
+        service.game("color_wars", "images/game_icon.png")
+        == tmp_path / "assets" / "games" / "color_wars" / "images" / "game_icon.png"
+    )
 
 
 def test_legacy_shim_maps_to_assets_not_old_asset_root(tmp_path):
     service = AssetService(Path(tmp_path))
 
     assert service.legacy("aud/song.mp3") == tmp_path / "assets" / "audio" / "song.mp3"
-    assert service.legacy("img/color-wars/game_icon.png") == tmp_path / "assets" / "games" / "color_wars" / "images" / "game_icon.png"
+    assert (
+        service.legacy("img/color-wars/game_icon.png")
+        == tmp_path / "assets" / "games" / "color_wars" / "images" / "game_icon.png"
+    )
 
 
 def test_missing_image_returns_placeholder_surface(tmp_path):

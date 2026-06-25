@@ -5,11 +5,11 @@ from unittest.mock import patch
 
 import pygame
 
-from src.engine.rules import PLAYER_BLUE
-from src.game.state import GameState
-from src.view.gameplay_scene.board import drawDot
-from src.view.gameplay_scene.effects import drawExplosionOverlay
-from src.view.gameplay_scene.scene import draw_gameplay_scene
+from src.games.color_wars.engine.rules import PLAYER_BLUE
+from src.games.color_wars.runtime.state import GameState
+from src.games.color_wars.view.gameplay_scene.board import drawDot
+from src.games.color_wars.view.gameplay_scene.effects import drawExplosionOverlay
+from src.games.color_wars.view.gameplay_scene.scene import draw_gameplay_scene
 
 
 class TestGameplayViewContracts(unittest.TestCase):
@@ -28,7 +28,7 @@ class TestGameplayViewContracts(unittest.TestCase):
     def test_draw_dot_uses_expected_circle_count(self):
         screen = pygame.Surface((320, 320), pygame.SRCALPHA)
 
-        with patch("src.view.gameplay_scene.board.pygame.draw.circle") as circle_mock:
+        with patch("src.games.color_wars.view.gameplay_scene.board.pygame.draw.circle") as circle_mock:
             drawDot(screen, 20, 20, 1, (255, 255, 255), 60)
             drawDot(screen, 20, 20, 2, (255, 255, 255), 60)
             drawDot(screen, 20, 20, 3, (255, 255, 255), 60)
@@ -53,7 +53,7 @@ class TestGameplayViewContracts(unittest.TestCase):
         state = GameState()
         board = state.board
         dots = state.dots
-        
+
         class FakeScreen:
             def __init__(self):
                 self.filled = False
@@ -66,11 +66,14 @@ class TestGameplayViewContracts(unittest.TestCase):
 
         screen = FakeScreen()
 
-        with patch(
-            "src.view.gameplay_scene.scene.drawBoard",
-        ) as board_mock, patch(
-            "src.view.gameplay_scene.scene.drawHud",
-        ) as hud_mock:
+        with (
+            patch(
+                "src.games.color_wars.view.gameplay_scene.scene.drawBoard",
+            ) as board_mock,
+            patch(
+                "src.games.color_wars.view.gameplay_scene.scene.drawHud",
+            ) as hud_mock,
+        ):
             draw_gameplay_scene(
                 screen,
                 state,

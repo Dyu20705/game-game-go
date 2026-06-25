@@ -7,10 +7,6 @@ import pygame
 from src.platform.context import PlatformContext
 from src.platform.games import GameExitAction, GameExitResult, GameLaunchOptions
 
-from .ui import theme
-from .ui.button import Button
-from .ui.effects import Celebration
-
 from .animation import MoveAnimation, Pulse, Shake
 from .level_generator import LevelGenerator
 from .models import COLOR_NAMES, DIFFICULTIES, GameMode, Screw, StackState
@@ -22,7 +18,9 @@ from .rules import (
     restore_state,
 )
 from .sound import SoundManager
-
+from .ui import theme
+from .ui.button import Button
+from .ui.effects import Celebration
 
 GAME_ID = "nuts_and_bolts"
 DEFAULT_DIFFICULTY = "normal"
@@ -123,9 +121,7 @@ class NutsAndBoltsSession:
         self.mode = GameMode.IDLE
         self.win_alpha = 0
         self.completion_recorded = False
-        self.completed_indices = {
-            i for i, screw in enumerate(self.screws) if is_completed_screw(screw)
-        }
+        self.completed_indices = {i for i, screw in enumerate(self.screws) if is_completed_screw(screw)}
         self.show_status("New puzzle ready.", "success")
 
     def restart(self) -> None:
@@ -138,9 +134,7 @@ class NutsAndBoltsSession:
         self.mode = GameMode.IDLE
         self.win_alpha = 0
         self.completion_recorded = False
-        self.completed_indices = {
-            i for i, screw in enumerate(self.screws) if is_completed_screw(screw)
-        }
+        self.completed_indices = {i for i, screw in enumerate(self.screws) if is_completed_screw(screw)}
         self.show_status("Puzzle restarted.", "neutral")
 
     def show_status(self, message: str, kind: str = "neutral") -> None:
@@ -305,9 +299,7 @@ class NutsAndBoltsSession:
         self.context.settings.update_game_settings(GAME_ID, updates)
 
     def update_completed_effects(self) -> None:
-        new_completed = {
-            i for i, screw in enumerate(self.screws) if is_completed_screw(screw)
-        }
+        new_completed = {i for i, screw in enumerate(self.screws) if is_completed_screw(screw)}
         for index in new_completed - self.completed_indices:
             self.pulses[index] = Pulse()
             self.sound.play("complete")
@@ -492,11 +484,7 @@ class NutsAndBoltsSession:
         selected = self.selected_index == index
         hovered = self.hovered_screw == index and self.mode != GameMode.MOVING
         completed = is_completed_screw(screw)
-        can_receive = (
-            self.mode == GameMode.SOURCE_SELECTED
-            and self.selected_index != index
-            and not screw.is_full()
-        )
+        can_receive = self.mode == GameMode.SOURCE_SELECTED and self.selected_index != index and not screw.is_full()
 
         shadow = pygame.Surface((132, 42), pygame.SRCALPHA)
         pygame.draw.ellipse(shadow, theme.SHADOW, shadow.get_rect())

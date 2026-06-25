@@ -13,4 +13,3 @@ def map_exception(error: Exception) -> BlockchainError:
     if "revert" in lowered:
         return BlockchainError(BlockchainErrorCode.TRANSACTION_REVERTED, message)
     return BlockchainError(BlockchainErrorCode.NETWORK_UNAVAILABLE, message)
-

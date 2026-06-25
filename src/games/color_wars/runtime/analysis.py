@@ -3,8 +3,7 @@
 from math import tanh
 
 from src.games.color_wars.controller import get_scores
-from src.games.color_wars.engine.rules import PLAYER_BLUE, PLAYER_RED
-from src.games.color_wars.engine.rules import get_valid_moves
+from src.games.color_wars.engine.rules import PLAYER_BLUE, PLAYER_RED, get_valid_moves
 
 
 def _sum_dots(state, owner):
@@ -55,12 +54,7 @@ def estimate_win_chances(state):
     mobility_w = 0.30 - 0.16 * phase
     hot_w = 0.10
 
-    score = (
-        territory_diff * territory_w
-        + dot_diff * dot_w
-        + mobility_diff * mobility_w
-        + hot_diff * hot_w
-    )
+    score = territory_diff * territory_w + dot_diff * dot_w + mobility_diff * mobility_w + hot_diff * hot_w
 
     if abs(score) < 1e-9:
         return 50.0, 50.0
@@ -76,4 +70,3 @@ def format_cell_label(row, col):
     if row is None or col is None:
         return "-"
     return f"{chr(ord('A') + col)}{row + 1}"
-

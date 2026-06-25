@@ -1,10 +1,9 @@
 """SquareXO replay verification and local result submission helpers."""
 
-from src.platform.blockchain.domain.result import ReplayVerificationRequest, VerificationResult
-from src.platform.blockchain.domain.commitment import result_commitment_for_envelope
-
 from src.games.square_xo.domain.replay import RULESET_VERSION, apply_replay, state_hash
 from src.games.square_xo.domain.result import result_from_state
+from src.platform.blockchain.domain.commitment import result_commitment_for_envelope
+from src.platform.blockchain.domain.result import ReplayVerificationRequest, VerificationResult
 
 
 def verify_square_xo_replay(request: ReplayVerificationRequest) -> VerificationResult:
@@ -21,6 +20,10 @@ def verify_square_xo_replay(request: ReplayVerificationRequest) -> VerificationR
     if final_hash != envelope.final_state_hash:
         return VerificationResult(False, reason="final_state_hash_mismatch")
     result = result_from_state(final)
-    if result.winner != envelope.result.winner or result.scores != dict(envelope.result.scores) or result.reason != envelope.result.terminal_reason:
+    if (
+        result.winner != envelope.result.winner
+        or result.scores != dict(envelope.result.scores)
+        or result.reason != envelope.result.terminal_reason
+    ):
         return VerificationResult(False, reason="result_mismatch")
     return VerificationResult(True, result_hash=result_commitment_for_envelope(envelope))

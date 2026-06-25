@@ -78,8 +78,8 @@ def _normalized_features(board, dots):
 
 
 def evaluate_board(board, dots):
-    material_norm, mobility_norm, threat_norm, danger_norm, stability_norm, dot_norm, position_norm = _normalized_features(
-        board, dots
+    material_norm, mobility_norm, threat_norm, danger_norm, stability_norm, dot_norm, position_norm = (
+        _normalized_features(board, dots)
     )
     return (
         1.50 * material_norm
@@ -141,9 +141,7 @@ def _can_player_win_next(board, dots, player, red_initialized, blue_initialized)
 
     for move in moves:
         nboard, ndots = _simulate_move(board, dots, move, player)
-        nred_initialized, nblue_initialized = _updated_initialized_flags(
-            nboard, red_initialized, blue_initialized
-        )
+        nred_initialized, nblue_initialized = _updated_initialized_flags(nboard, red_initialized, blue_initialized)
         if _winner_from_board(nboard, nred_initialized, nblue_initialized) == player:
             return True
 
@@ -171,10 +169,7 @@ def _ordered_moves(board, dots, player, top_k, red_initialized, blue_initialized
     if not moves:
         return []
 
-    scored = [
-        (move, _score_move(board, dots, move, player, red_initialized, blue_initialized))
-        for move in moves
-    ]
+    scored = [(move, _score_move(board, dots, move, player, red_initialized, blue_initialized)) for move in moves]
     scored.sort(key=lambda item: item[1], reverse=True)
     return [move for move, _ in scored[: min(top_k, len(scored))]]
 
@@ -201,9 +196,7 @@ def _alphabeta(board, dots, depth, alpha, beta, player, red_initialized, blue_in
         best_move = None
         for move in ordered:
             nboard, ndots = _simulate_move(board, dots, move, player)
-            nred_initialized, nblue_initialized = _updated_initialized_flags(
-                nboard, red_initialized, blue_initialized
-            )
+            nred_initialized, nblue_initialized = _updated_initialized_flags(nboard, red_initialized, blue_initialized)
             score, _ = _alphabeta(
                 nboard,
                 ndots,
@@ -226,9 +219,7 @@ def _alphabeta(board, dots, depth, alpha, beta, player, red_initialized, blue_in
     best_move = None
     for move in ordered:
         nboard, ndots = _simulate_move(board, dots, move, player)
-        nred_initialized, nblue_initialized = _updated_initialized_flags(
-            nboard, red_initialized, blue_initialized
-        )
+        nred_initialized, nblue_initialized = _updated_initialized_flags(nboard, red_initialized, blue_initialized)
         score, _ = _alphabeta(
             nboard,
             ndots,
@@ -281,5 +272,3 @@ def get_hard_move(board, dots):
         blue_initialized,
     )
     return best_move if best_move in moves else moves[0]
-
-

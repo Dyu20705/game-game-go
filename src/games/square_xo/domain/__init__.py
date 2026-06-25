@@ -17,4 +17,3 @@ __all__ = [
     "is_edge_taken",
     "legal_edges",
 ]
-

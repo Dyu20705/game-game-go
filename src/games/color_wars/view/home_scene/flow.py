@@ -2,8 +2,8 @@
 
 import pygame
 
-from src.games.color_wars.runtime.settings import AppSettings, clamp01
 from src.games.color_wars.runtime.core import CoreSystems
+from src.games.color_wars.runtime.settings import AppSettings, clamp01
 from src.games.color_wars.view.choose_diff_scene import draw_choose_diff_scene
 from src.games.color_wars.view.choose_gamemode_scene import draw_choose_gamemode_scene
 from src.games.color_wars.view.commons import draw_interactive_button, draw_tutorial_overlay, make_icon_surface
@@ -84,7 +84,9 @@ def compute_menu_icon_rects(panel):
     top_pad = 16
     right_pad = 18
     settings_icon_rect = pygame.Rect(panel.right - right_pad - icon_size, panel.y + top_pad, icon_size, icon_size)
-    tutorial_icon_rect = pygame.Rect(settings_icon_rect.x - icon_gap - icon_size, panel.y + top_pad, icon_size, icon_size)
+    tutorial_icon_rect = pygame.Rect(
+        settings_icon_rect.x - icon_gap - icon_size, panel.y + top_pad, icon_size, icon_size
+    )
     return tutorial_icon_rect, settings_icon_rect
 
 
@@ -214,9 +216,19 @@ def run_home_menu(settings=None, music=None, core=None):
         mode_btn_h = max(46, int(panel.height * 0.085))
         mode_btn_gap = max(10, int(panel.height * 0.015))
         pvp_btn = pygame.Rect(center_x - menu_btn_w // 2, panel.y + int(panel.height * 0.45), menu_btn_w, mode_btn_h)
-        pvbot_btn = pygame.Rect(center_x - menu_btn_w // 2, panel.y + int(panel.height * 0.45) + mode_btn_h + mode_btn_gap, menu_btn_w, mode_btn_h)
+        pvbot_btn = pygame.Rect(
+            center_x - menu_btn_w // 2,
+            panel.y + int(panel.height * 0.45) + mode_btn_h + mode_btn_gap,
+            menu_btn_w,
+            mode_btn_h,
+        )
 
-        slider_rect = pygame.Rect(center_x - min(180, panel.width // 3), panel.y + int(panel.height * 0.58), min(360, panel.width * 2 // 3), 22)
+        slider_rect = pygame.Rect(
+            center_x - min(180, panel.width // 3),
+            panel.y + int(panel.height * 0.58),
+            min(360, panel.width * 2 // 3),
+            22,
+        )
         knob_x = int(slider_rect.x + slider_rect.width * slider_percent)
         play_match_btn = pygame.Rect(
             center_x - menu_btn_w // 2,
@@ -236,8 +248,12 @@ def run_home_menu(settings=None, music=None, core=None):
             settings_slider_w,
             16,
         )
-        settings_sound_checkbox = pygame.Rect(settings_volume_slider.right + 16, settings_volume_slider.centery - 12, 24, 24)
-        settings_apply_btn = pygame.Rect(settings_panel.centerx - 90, settings_panel.bottom - int(settings_panel.height * 0.17), 180, 40)
+        settings_sound_checkbox = pygame.Rect(
+            settings_volume_slider.right + 16, settings_volume_slider.centery - 12, 24, 24
+        )
+        settings_apply_btn = pygame.Rect(
+            settings_panel.centerx - 90, settings_panel.bottom - int(settings_panel.height * 0.17), 180, 40
+        )
         settings_volume_knob_x = int(settings_volume_slider.x + settings_volume_slider.width * pending_sound_volume)
 
         tutorial_lines = [
@@ -247,6 +263,7 @@ def run_home_menu(settings=None, music=None, core=None):
             "Mẹo chơi: ưu tiên kiểm soát cạnh bàn cờ, tích lũy ô 3 chấm và chờ thời điểm tạo combo lớn.",
             "Phím tắt: Chuột trái để đi, M đổi chế độ, R chơi lại, H mở hướng dẫn, F11 bật/tắt fullscreen, Esc quay lại.",
         ]
+        tutorial_overlay_rects = {}
 
         palette = {
             "title": TITLE_COLOR,
@@ -391,12 +408,17 @@ def run_home_menu(settings=None, music=None, core=None):
                         pending_sound_enabled = not pending_sound_enabled
                     elif settings_volume_slider.collidepoint(mouse):
                         settings_dragging = True
-                        pending_sound_volume = clamp01((mouse[0] - settings_volume_slider.x) / max(1, settings_volume_slider.width))
-                    elif abs(mouse[0] - settings_volume_knob_x) <= 20 and abs(mouse[1] - settings_volume_slider.centery) <= 20:
+                        pending_sound_volume = clamp01(
+                            (mouse[0] - settings_volume_slider.x) / max(1, settings_volume_slider.width)
+                        )
+                    elif (
+                        abs(mouse[0] - settings_volume_knob_x) <= 20
+                        and abs(mouse[1] - settings_volume_slider.centery) <= 20
+                    ):
                         settings_dragging = True
 
                 if tutorial_open:
-                    close_rect = tutorial_overlay_rects.get("close_rect") if "tutorial_overlay_rects" in locals() else None
+                    close_rect = tutorial_overlay_rects.get("close_rect")
                     if close_rect is not None and close_rect.collidepoint(mouse):
                         tutorial_open = False
 
@@ -409,7 +431,9 @@ def run_home_menu(settings=None, music=None, core=None):
                 difficulty = difficulty_from_percent(slider_percent)
 
             if event.type == pygame.MOUSEMOTION and settings_dragging and state == SETTINGS:
-                pending_sound_volume = clamp01((event.pos[0] - settings_volume_slider.x) / max(1, settings_volume_slider.width))
+                pending_sound_volume = clamp01(
+                    (event.pos[0] - settings_volume_slider.x) / max(1, settings_volume_slider.width)
+                )
 
         slider_percent = max(0.0, min(1.0, slider_percent))
         pending_sound_volume = clamp01(pending_sound_volume)
@@ -462,7 +486,9 @@ def run_home_menu(settings=None, music=None, core=None):
                 {
                     "sound_checkbox": settings_sound_checkbox,
                     "volume_slider": settings_volume_slider,
-                    "volume_knob_x": int(settings_volume_slider.x + settings_volume_slider.width * pending_sound_volume),
+                    "volume_knob_x": int(
+                        settings_volume_slider.x + settings_volume_slider.width * pending_sound_volume
+                    ),
                     "sound_enabled": pending_sound_enabled,
                     "sound_volume": pending_sound_volume,
                     "apply_btn": settings_apply_btn,
@@ -483,5 +509,3 @@ def run_home_menu(settings=None, music=None, core=None):
 
         pygame.display.flip()
         clock.tick(60)
-
-

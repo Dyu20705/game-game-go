@@ -14,4 +14,3 @@ def test_scene_result_can_carry_game_id():
     result = SceneResult(PlatformAction.LAUNCH_GAME, game_id="color_wars")
 
     assert result.game_id == "color_wars"
-

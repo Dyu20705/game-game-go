@@ -1,7 +1,7 @@
 """Shared audio service for menu music and mini-games."""
 
-from pathlib import Path
 import random
+from pathlib import Path
 
 
 class AudioService:

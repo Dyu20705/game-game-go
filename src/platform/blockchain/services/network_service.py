@@ -8,4 +8,3 @@ class NetworkService:
     def status_text(self) -> str:
         health = self.blockchain.health()
         return f"Mode: {health.mode}, Sapphire: {health.sapphire.value}, ROFL: {health.rofl.value}"
-

@@ -9,4 +9,3 @@ from src.games.square_xo.domain.state import Edge, Player
 class ClaimEdgeCommand:
     edge: Edge
     player: Player
-

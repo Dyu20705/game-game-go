@@ -96,5 +96,3 @@ def draw_win_scene(screen, winner, icons):
     )
 
     return rects
-
-

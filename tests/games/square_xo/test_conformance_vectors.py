@@ -21,8 +21,6 @@ def test_square_xo_vectors_match_source_behavior():
 
         assert state.score == vector["expected"]["score"], vector["name"]
         assert state.current_player.value == vector["expected"]["currentPlayer"], vector["name"]
-        assert [
-            {"row": box.row, "col": box.col, "owner": box.owner.value}
-            for box in state.boxes
-        ] == vector["expected"]["boxes"], vector["name"]
-
+        assert [{"row": box.row, "col": box.col, "owner": box.owner.value} for box in state.boxes] == vector[
+            "expected"
+        ]["boxes"], vector["name"]

@@ -77,9 +77,5 @@ class SettingsService:
         games = document.get("games", {})
         if not isinstance(games, dict):
             games = {}
-        clean_games = {
-            str(game_id): dict(values)
-            for game_id, values in games.items()
-            if isinstance(values, dict)
-        }
+        clean_games = {str(game_id): dict(values) for game_id, values in games.items() if isinstance(values, dict)}
         return cls(settings=settings, games=clean_games)

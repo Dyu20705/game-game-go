@@ -2,9 +2,9 @@
 
 import unittest
 
-from src.controller import apply_move
-from src.game.state import GameState
-from src.engine.rules import PLAYER_BLUE
+from src.games.color_wars.controller import apply_move
+from src.games.color_wars.engine.rules import PLAYER_BLUE
+from src.games.color_wars.runtime.state import GameState
 
 
 class TestController(unittest.TestCase):

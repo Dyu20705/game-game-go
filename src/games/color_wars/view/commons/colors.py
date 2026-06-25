@@ -21,7 +21,9 @@ def contrast_ratio(c1: tuple[int, int, int], c2: tuple[int, int, int]) -> float:
     return (lighter + 0.05) / (darker + 0.05)
 
 
-def ensure_readable_text(bg: tuple[int, int, int], preferred=(24, 28, 33), min_ratio: float = 4.5) -> tuple[int, int, int]:
+def ensure_readable_text(
+    bg: tuple[int, int, int], preferred=(24, 28, 33), min_ratio: float = 4.5
+) -> tuple[int, int, int]:
     """Return preferred text color if readable, else fallback to black/white."""
     if contrast_ratio(bg, preferred) >= min_ratio:
         return preferred
@@ -40,5 +42,3 @@ def suggest_safe_palette() -> dict[str, tuple[int, int, int]]:
         "danger": (186, 78, 78),
         "success": (70, 145, 103),
     }
-
-

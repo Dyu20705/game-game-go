@@ -2,15 +2,14 @@
 
 from dataclasses import dataclass, field
 
-from src.platform.blockchain.domain.result import ReplayVerificationRequest
-from src.platform.games import GameExitAction, GameExitResult, GameLaunchOptions
-
 from src.games.square_xo.domain.board import create_game
 from src.games.square_xo.domain.move import ClaimEdge
 from src.games.square_xo.domain.replay import envelope_for_replay
 from src.games.square_xo.domain.rules import apply_move
 from src.games.square_xo.view.gameplay_scene import draw_gameplay, edge_from_mouse
 from src.games.square_xo.view.hud import status_line
+from src.platform.blockchain.domain.result import ReplayVerificationRequest
+from src.platform.games import GameExitAction, GameExitResult, GameLaunchOptions
 
 
 @dataclass

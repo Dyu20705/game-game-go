@@ -2,8 +2,8 @@
 
 import unittest
 
-from src.ai.hard_AI import get_hard_move
-from src.engine.rules import PLAYER_BLUE, PLAYER_RED, get_valid_moves
+from src.games.color_wars.ai.hard_AI import get_hard_move
+from src.games.color_wars.engine.rules import PLAYER_BLUE, PLAYER_RED, get_valid_moves
 
 
 class TestHardAI(unittest.TestCase):

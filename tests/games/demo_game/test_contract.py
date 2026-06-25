@@ -13,4 +13,3 @@ def test_demo_game_creates_session():
     session = DemoGame().create_session(object(), GameLaunchOptions())
 
     assert isinstance(session, DemoGameSession)
-

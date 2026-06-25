@@ -39,5 +39,6 @@ class GameRegistry:
 
     @staticmethod
     def _sorted(games: Iterable[GameModule]) -> list[GameModule]:
-        return sorted(games, key=lambda game: (game.descriptor.sort_order, game.descriptor.title, game.descriptor.game_id))
-
+        return sorted(
+            games, key=lambda game: (game.descriptor.sort_order, game.descriptor.title, game.descriptor.game_id)
+        )

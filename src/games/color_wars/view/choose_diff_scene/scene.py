@@ -48,5 +48,3 @@ def draw_choose_diff_scene(screen, panel, fonts, colors, rects, difficulty, icon
     )
 
     rects["draw_button"](screen, rects["play_match_btn"], "BẮT ĐẦU", current_color, fonts["button"])
-
-

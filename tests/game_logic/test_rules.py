@@ -2,7 +2,7 @@
 
 import unittest
 
-from src.engine.rules import (
+from src.games.color_wars.engine.rules import (
     EMPTY,
     PLAYER_BLUE,
     get_capacity,

@@ -4,7 +4,6 @@ from pathlib import Path
 
 from src.platform.games import GameCapability, GameDescriptor
 
-
 DESCRIPTOR = GameDescriptor(
     game_id="square_xo",
     title="SquareXO",

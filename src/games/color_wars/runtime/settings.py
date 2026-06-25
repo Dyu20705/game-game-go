@@ -25,4 +25,3 @@ class AppSettings:
 
     def set_fullscreen(self, fullscreen: bool):
         self.fullscreen = bool(fullscreen)
-

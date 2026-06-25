@@ -7,4 +7,3 @@ def draw_fallback_icon(pygame, screen, rect, label, color):
     font = pygame.font.SysFont("segoeui", max(16, rect.height // 3), bold=True)
     text = font.render(label[:2].upper(), True, (255, 255, 255))
     screen.blit(text, text.get_rect(center=rect.center))
-

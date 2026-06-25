@@ -139,10 +139,7 @@ def test_undo_restores_previous_logical_state(context):
     session = make_session(context)
     before = capture_state(session.screws)
     source, destination = next(
-        (s, d)
-        for s in range(len(session.screws))
-        for d in range(len(session.screws))
-        if can_move(session.screws, s, d)
+        (s, d) for s in range(len(session.screws)) for d in range(len(session.screws)) if can_move(session.screws, s, d)
     )
 
     session.start_move(source, destination)

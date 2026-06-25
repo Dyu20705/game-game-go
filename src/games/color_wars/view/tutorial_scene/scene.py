@@ -1,7 +1,5 @@
 """Tutorial scene and icon renderer."""
 
-import pygame
-
 from src.games.color_wars.view.commons import blit_fitted_text, make_icon_surface
 
 
@@ -70,5 +68,3 @@ def draw_tutorial_scene(screen, panel, fonts, colors, back_rect, tutorial_lines,
             screen.blit(text, text.get_rect(center=(panel.centerx, line_y + text.get_height() // 2)))
             line_y += max(22, int(panel.height * 0.05))
         line_y += 10
-
-

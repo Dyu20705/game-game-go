@@ -8,7 +8,7 @@ Game Game Go dùng kiến trúc platform shell + mini-game contract. Platform qu
 platform must not depend on games.color_wars internals
 games may depend on public platform contracts/services
 games must not depend on other games
-legacy compatibility modules may re-export old Color Wars paths during migration
+legacy compatibility modules must not re-export old Color Wars root paths
 ```
 
 Compatibility migration đã hoàn tất cho root Color Wars legacy: `src/ai`,

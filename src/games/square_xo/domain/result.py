@@ -19,4 +19,3 @@ def result_from_state(state: SquareXOState) -> SquareXOResult:
     if state.is_terminal and winner is None:
         reason = "draw"
     return SquareXOResult(winner=winner, scores=state.score, terminal=state.is_terminal, reason=reason)
-

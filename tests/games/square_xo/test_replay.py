@@ -1,6 +1,12 @@
-from src.games.square_xo.domain import ClaimEdge, Edge, Player, Point, create_game
-from src.games.square_xo.domain.replay import envelope_for_replay, move_to_canonical, state_from_dict, state_hash, state_to_dict
 from src.games.square_xo.application.result_submission import verify_square_xo_replay
+from src.games.square_xo.domain import ClaimEdge, Edge, Player, Point, create_game
+from src.games.square_xo.domain.replay import (
+    envelope_for_replay,
+    move_to_canonical,
+    state_from_dict,
+    state_hash,
+    state_to_dict,
+)
 from src.platform.blockchain.domain.commitment import result_commitment_for_envelope
 from src.platform.blockchain.domain.result import CanonicalMatchResult, ReplayVerificationRequest
 

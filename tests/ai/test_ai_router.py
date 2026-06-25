@@ -3,7 +3,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.ai.ai import get_ai_move
+from src.games.color_wars.ai.ai import get_ai_move
 
 
 class TestAI(unittest.TestCase):
@@ -13,9 +13,10 @@ class TestAI(unittest.TestCase):
         board = [[0]]
         dots = [[0]]
 
-        with patch("src.ai.ai.get_ez_move", return_value=(0, 0)) as ez_mock, patch(
-            "src.ai.ai.get_med_move", return_value=(1, 1)
-        ) as med_mock:
+        with (
+            patch("src.games.color_wars.ai.ai.get_ez_move", return_value=(0, 0)) as ez_mock,
+            patch("src.games.color_wars.ai.ai.get_med_move", return_value=(1, 1)) as med_mock,
+        ):
             move = get_ai_move(board, dots, "ez")
 
         self.assertEqual(move, (0, 0))
@@ -26,9 +27,10 @@ class TestAI(unittest.TestCase):
         board = [[0]]
         dots = [[0]]
 
-        with patch("src.ai.ai.get_ez_move", return_value=(0, 0)) as ez_mock, patch(
-            "src.ai.ai.get_med_move", return_value=(1, 1)
-        ) as med_mock:
+        with (
+            patch("src.games.color_wars.ai.ai.get_ez_move", return_value=(0, 0)) as ez_mock,
+            patch("src.games.color_wars.ai.ai.get_med_move", return_value=(1, 1)) as med_mock,
+        ):
             move = get_ai_move(board, dots, "med")
 
         self.assertEqual(move, (1, 1))
@@ -39,7 +41,7 @@ class TestAI(unittest.TestCase):
         board = [[0]]
         dots = [[0]]
 
-        with patch("src.ai.ai.get_hard_move", return_value=(2, 2)) as hard_mock:
+        with patch("src.games.color_wars.ai.ai.get_hard_move", return_value=(2, 2)) as hard_mock:
             move = get_ai_move(board, dots, "hard")
 
         self.assertEqual(move, (2, 2))

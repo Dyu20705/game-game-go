@@ -13,4 +13,3 @@ class ResultService:
         if not verification.accepted:
             return verification, None
         return verification, self.registry.submit_result(envelope)
-

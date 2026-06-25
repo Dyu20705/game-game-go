@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import hashlib
 import json
+from dataclasses import dataclass
 from typing import Mapping
 
 from src.platform.blockchain.domain.result import MatchEnvelope
-
 
 COMMITMENT_DOMAIN = "GGG_RESULT_COMMITMENT_V1"
 COMMITMENT_SCHEMA_VERSION = 1

@@ -2,8 +2,8 @@
 
 import unittest
 
-from src.engine.explosion import resolve_explosions
-from src.engine.rules import EMPTY, PLAYER_RED
+from src.games.color_wars.engine.explosion import resolve_explosions
+from src.games.color_wars.engine.rules import EMPTY, PLAYER_RED
 
 
 class TestExplosion(unittest.TestCase):

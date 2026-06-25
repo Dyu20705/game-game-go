@@ -1,10 +1,10 @@
 """Tests for music manager behavior."""
 
-from pathlib import Path
 import unittest
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from src.game.audio import MusicManager
+from src.games.color_wars.runtime.audio import MusicManager
 
 
 class TestMusicManager(unittest.TestCase):
@@ -14,10 +14,15 @@ class TestMusicManager(unittest.TestCase):
         manager = MusicManager()
         tracks = [Path("a.mp3"), Path("b.mp3")]
 
-        with patch("src.game.audio._resolve_music_paths", return_value=tracks), patch(
-            "src.game.audio.pygame.mixer.get_init",
-            return_value=True,
-        ), patch("src.game.audio.pygame.mixer.init"), patch("src.game.audio.random.shuffle", lambda seq: None):
+        with (
+            patch("src.games.color_wars.runtime.audio._resolve_music_paths", return_value=tracks),
+            patch(
+                "src.games.color_wars.runtime.audio.pygame.mixer.get_init",
+                return_value=True,
+            ),
+            patch("src.games.color_wars.runtime.audio.pygame.mixer.init"),
+            patch("src.games.color_wars.runtime.audio.random.shuffle", lambda seq: None),
+        ):
             manager.start_new_menu_session()
             first_theme = manager._theme_track
             manager.start_new_menu_session()
@@ -30,7 +35,7 @@ class TestMusicManager(unittest.TestCase):
         manager._mixer_ready = True
         manager._tracks = [Path("a.mp3")]
 
-        with patch("src.game.audio.pygame.mixer.music") as music:
+        with patch("src.games.color_wars.runtime.audio.pygame.mixer.music") as music:
             manager.apply_audio_preferences(False, 0.3)
 
         music.set_volume.assert_called_once_with(0.3)
@@ -42,7 +47,7 @@ class TestMusicManager(unittest.TestCase):
         manager._tracks = [Path("a.mp3")]
         manager._active_track = Path("a.mp3")
 
-        with patch("src.game.audio.pygame.mixer.music") as music:
+        with patch("src.games.color_wars.runtime.audio.pygame.mixer.music") as music:
             music.get_busy.return_value = False
             manager.apply_audio_preferences(True, 0.5)
 
@@ -57,7 +62,7 @@ class TestMusicManager(unittest.TestCase):
         manager.apply_audio_preferences = MagicMock()
         manager._load_and_play = MagicMock()
 
-        with patch("src.game.audio.pygame.mixer.music.get_busy", return_value=True):
+        with patch("src.games.color_wars.runtime.audio.pygame.mixer.music.get_busy", return_value=True):
             manager.enter_gameplay()
 
         manager._load_and_play.assert_not_called()

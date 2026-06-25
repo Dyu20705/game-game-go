@@ -14,7 +14,9 @@ new adapter                       -> src/games/color_wars/game.py
 new manifest                      -> src/games/color_wars/manifest.py
 ```
 
-Các module legacy vẫn còn ở path cũ để test cũ và import cũ tiếp tục hoạt động trong giai đoạn chuyển tiếp. Adapter platform đã gọi runtime mới ở `src.games.color_wars.runtime.loop`.
+Các module legacy root đã được xóa sau khi test và production imports chuyển sang
+namespace mới. Adapter platform gọi runtime ở
+`src.games.color_wars.runtime.loop`.
 
 ## Preserved Behavior
 

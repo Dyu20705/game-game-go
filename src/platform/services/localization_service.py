@@ -1,6 +1,5 @@
 """Small key-based localization service for platform text."""
 
-
 TRANSLATIONS = {
     "vi": {
         "platform.home.title": "Game Game Go",
@@ -48,4 +47,3 @@ class LocalizationService:
 
     def get(self, key: str) -> str:
         return TRANSLATIONS.get(self.language, {}).get(key) or TRANSLATIONS["en"].get(key) or key
-

@@ -18,5 +18,3 @@ def draw_home_scene(screen, panel, fonts, palette, rects):
         palette["btn_red"],
         fonts["button"],
     )
-
-

@@ -16,4 +16,3 @@ class ChainHealth:
     rofl: ChainHealthStatus
     mode: str
     message: str | None = None
-

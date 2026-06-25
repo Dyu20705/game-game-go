@@ -1,8 +1,8 @@
 """Desktop-first game hub scene driven by GameRegistry."""
 
+import random
 from dataclasses import dataclass
 from datetime import date
-import random
 
 from src.platform.blockchain.domain.network import ChainHealthStatus
 from src.platform.games import GameCapability
@@ -10,7 +10,6 @@ from src.platform.scenes.base import PlatformAction, SceneResult
 from src.platform.ui import theme
 from src.platform.ui.components import draw_button, draw_text
 from src.platform.ui.icons import draw_fallback_icon
-
 
 TOP_NAV_HEIGHT = 78
 SIDEBAR_WIDTH = 224
@@ -176,7 +175,9 @@ def wallet_summary(context) -> dict[str, str]:
     health = blockchain.health()
     network = "Oasis Sapphire"
     if config and getattr(config, "mode", None):
-        network = "Oasis Sapphire" if config.mode.value == "oasis_testnet" else config.mode.value.replace("_", " ").title()
+        network = (
+            "Oasis Sapphire" if config.mode.value == "oasis_testnet" else config.mode.value.replace("_", " ").title()
+        )
 
     if health.mode == "local":
         status = "connected"
@@ -294,10 +295,27 @@ def _draw_top_nav(pygame, screen, rect, fonts, wallet):
             (188, 218, 228),
         )
         right -= 106
-        _draw_pill(pygame, screen, pygame.Rect(right - 124, 18, 124, 42), "Sapphire", fonts["small_bold"], theme.BLUE, (255, 255, 255))
+        _draw_pill(
+            pygame,
+            screen,
+            pygame.Rect(right - 124, 18, 124, 42),
+            "Sapphire",
+            fonts["small_bold"],
+            theme.BLUE,
+            (255, 255, 255),
+        )
     elif rect.width >= 900:
         right = wallet_rect.left - 10
-        _draw_pill(pygame, screen, pygame.Rect(right - 118, 18, 118, 42), "---- ROSE", fonts["small_bold"], (255, 255, 255), (55, 62, 75), (188, 218, 228))
+        _draw_pill(
+            pygame,
+            screen,
+            pygame.Rect(right - 118, 18, 118, 42),
+            "---- ROSE",
+            fonts["small_bold"],
+            (255, 255, 255),
+            (55, 62, 75),
+            (188, 218, 228),
+        )
 
 
 def _top_nav_targets(pygame, width, wallet, nav_font):
@@ -359,7 +377,15 @@ def _draw_sidebar(pygame, screen, rect, fonts, selected_filter, daily_game_title
     pygame.draw.rect(screen, (228, 244, 249), footer, border_radius=theme.RADIUS_MD)
     pygame.draw.rect(screen, (188, 218, 228), footer, 1, border_radius=theme.RADIUS_MD)
     screen.blit(fonts["small_bold"].render("Daily Challenge", True, (55, 62, 75)), (footer.x + 14, footer.y + 12))
-    _draw_truncated_text(pygame, screen, fonts["small"], daily_game_title, (footer.x + 14, footer.y + 38), footer.width - 28, (76, 98, 111))
+    _draw_truncated_text(
+        pygame,
+        screen,
+        fonts["small"],
+        daily_game_title,
+        (footer.x + 14, footer.y + 38),
+        footer.width - 28,
+        (76, 98, 111),
+    )
     screen.blit(fonts["small"].render("Daily streak: 3", True, (76, 98, 111)), (footer.x + 14, footer.y + 64))
     return clickable
 
@@ -415,7 +441,9 @@ def _draw_artwork(pygame, screen, rect, descriptor, asset_service=None):
         for index in range(4):
             x = rect.x + 38 + index * max(42, rect.width // 5)
             pygame.draw.circle(screen, c2 if index % 2 else c3, (x, rect.y + 40), 24)
-            pygame.draw.rect(screen, c2 if index % 2 else c3, pygame.Rect(x - 12, rect.y + 66, 24, 48), border_radius=theme.RADIUS_SM)
+            pygame.draw.rect(
+                screen, c2 if index % 2 else c3, pygame.Rect(x - 12, rect.y + 66, 24, 48), border_radius=theme.RADIUS_SM
+            )
     screen.set_clip(previous_clip)
 
 
@@ -428,12 +456,16 @@ def _draw_game_card(pygame, screen, rect, fonts, game, hover_amount=0.0, focused
     shadow_color = (7, 10, 14) if interactive_amount < 0.5 else (4, 8, 12)
     pygame.draw.rect(screen, shadow_color, shadow, border_radius=theme.RADIUS_XL)
     pygame.draw.rect(screen, theme.HOVER if interactive_amount else theme.PANEL, card, border_radius=theme.RADIUS_XL)
-    pygame.draw.rect(screen, theme.BORDER if interactive_amount else theme.BORDER_SUBTLE, card, 2, border_radius=theme.RADIUS_XL)
+    pygame.draw.rect(
+        screen, theme.BORDER if interactive_amount else theme.BORDER_SUBTLE, card, 2, border_radius=theme.RADIUS_XL
+    )
     if focused:
         _draw_focus_ring(pygame, screen, card)
 
     padding = theme.SPACE_4
-    art = pygame.Rect(card.x + padding, card.y + padding, card.width - padding * 2, int((card.width - padding * 2) * 9 / 16))
+    art = pygame.Rect(
+        card.x + padding, card.y + padding, card.width - padding * 2, int((card.width - padding * 2) * 9 / 16)
+    )
     art.height = min(art.height, 142)
     _draw_artwork(pygame, screen, art, descriptor, asset_service)
     pygame.draw.rect(screen, (255, 255, 255), art, 1, border_radius=theme.RADIUS_LG)
@@ -449,7 +481,9 @@ def _draw_game_card(pygame, screen, rect, fonts, game, hover_amount=0.0, focused
     mode_label = "2P" if descriptor.max_players >= 2 else "1P"
     fee_label = entry_fee_label(descriptor)
     footer_y = card.bottom - 54
-    _draw_pill(pygame, screen, pygame.Rect(card.x + padding, footer_y + 6, 48, 32), mode_label, fonts["small_bold"], theme.BLUE)
+    _draw_pill(
+        pygame, screen, pygame.Rect(card.x + padding, footer_y + 6, 48, 32), mode_label, fonts["small_bold"], theme.BLUE
+    )
     _draw_pill(
         pygame,
         screen,
@@ -472,7 +506,9 @@ def _draw_game_detail_strip(pygame, screen, rect, fonts, game):
     x = rect.x + theme.SPACE_4
     mode_label = "2 Players" if descriptor.max_players >= 2 else "1 Player"
     summary = f"{descriptor.title}  |  {mode_label}"
-    _draw_truncated_text(pygame, screen, fonts["small_bold"], summary, (x, rect.y + 12), rect.width - 220, (205, 216, 225))
+    _draw_truncated_text(
+        pygame, screen, fonts["small_bold"], summary, (x, rect.y + 12), rect.width - 220, (205, 216, 225)
+    )
     settlement = settlement_mode(descriptor).replace("-", " ").title()
     _draw_pill(
         pygame,
@@ -536,7 +572,9 @@ def _draw_game_browser(
     screen.blit(subtitle, (rect.x, rect.y + 42))
 
     control_y = rect.y + 82
-    tabs = _draw_mode_tabs(pygame, screen, pygame.Rect(rect.x, control_y, min(384, rect.width), 44), fonts, selected_mode)
+    tabs = _draw_mode_tabs(
+        pygame, screen, pygame.Rect(rect.x, control_y, min(384, rect.width), 44), fonts, selected_mode
+    )
     detail_top = control_y + 58
     detail_height = 44 if games and rect.width > 520 else 0
     grid_top = control_y + 70 + detail_height
@@ -547,7 +585,9 @@ def _draw_game_browser(
         filter_btn = pygame.Rect(rect.right - 138, control_y, 66, 44)
         sort_btn = pygame.Rect(rect.right - 64, control_y, 64, 44)
         _draw_search_box(pygame, screen, search, fonts, search_query, search_active)
-        _draw_pill(pygame, screen, filter_btn, "Filter", fonts["small_bold"], theme.PANEL, theme.TEXT, theme.BORDER_SUBTLE)
+        _draw_pill(
+            pygame, screen, filter_btn, "Filter", fonts["small_bold"], theme.PANEL, theme.TEXT, theme.BORDER_SUBTLE
+        )
         _draw_pill(pygame, screen, sort_btn, "Sort", fonts["small_bold"], theme.PANEL, theme.TEXT, theme.BORDER_SUBTLE)
         search_target = search
         control_targets["filter"] = filter_btn
@@ -561,10 +601,21 @@ def _draw_game_browser(
 
     if games and detail_height:
         focused_game = games[max(0, min(focused_index, len(games) - 1))]
-        _draw_game_detail_strip(pygame, screen, pygame.Rect(rect.x, detail_top, rect.width, detail_height), fonts, focused_game)
+        _draw_game_detail_strip(
+            pygame, screen, pygame.Rect(rect.x, detail_top, rect.width, detail_height), fonts, focused_game
+        )
     elif search_query or selected_filter != MODE_ALL or selected_mode != MODE_ALL:
         reset_rect = pygame.Rect(rect.x, detail_top, min(220, rect.width), 34)
-        _draw_pill(pygame, screen, reset_rect, "No matches - reset filters", fonts["small_bold"], theme.PANEL, theme.TEXT, theme.BORDER_SUBTLE)
+        _draw_pill(
+            pygame,
+            screen,
+            reset_rect,
+            "No matches - reset filters",
+            fonts["small_bold"],
+            theme.PANEL,
+            theme.TEXT,
+            theme.BORDER_SUBTLE,
+        )
 
     grid = pygame.Rect(rect.x, grid_top, rect.width, rect.bottom - grid_top)
     columns = grid_columns(grid.width)
@@ -619,7 +670,15 @@ def _draw_right_panel(pygame, screen, rect, fonts, wallet):
     y = rect.y + 18
     screen.blit(fonts["body_bold"].render("Wallet", True, theme.TEXT), (x, y))
     y += 38
-    _draw_pill(pygame, screen, pygame.Rect(x, y, rect.width - 36, 38), wallet["network"], fonts["small_bold"], theme.BLUE, (255, 255, 255))
+    _draw_pill(
+        pygame,
+        screen,
+        pygame.Rect(x, y, rect.width - 36, 38),
+        wallet["network"],
+        fonts["small_bold"],
+        theme.BLUE,
+        (255, 255, 255),
+    )
     y += 54
     screen.blit(fonts["small"].render("Status", True, theme.MUTED), (x, y))
     screen.blit(fonts["body_bold"].render(wallet["status"].replace("-", " ").title(), True, theme.TEXT), (x, y + 20))
@@ -661,7 +720,9 @@ def _draw_tournament_dock(pygame, screen, rect, fonts, eligible_count=0):
     player_w = min(210, rect.width // 5)
     left = pygame.Rect(theme.SPACE_6, rect.y + 12, player_w, rect.height - 24)
     right = pygame.Rect(rect.right - player_w - 58, rect.y + 12, player_w, rect.height - 24)
-    cta = pygame.Rect(left.right + theme.SPACE_5, rect.y + 13, right.left - left.right - theme.SPACE_10, rect.height - 26)
+    cta = pygame.Rect(
+        left.right + theme.SPACE_5, rect.y + 13, right.left - left.right - theme.SPACE_10, rect.height - 26
+    )
     pygame.draw.rect(screen, (68, 48, 55), left, border_radius=theme.RADIUS_LG)
     pygame.draw.rect(screen, (40, 68, 78), right, border_radius=theme.RADIUS_LG)
     pygame.draw.circle(screen, theme.PLAYER_ONE, (left.x + 28, left.centery), 18)
@@ -690,7 +751,10 @@ def _draw_tournament_lobby(pygame, screen, fonts, games):
     for index, game in enumerate(games):
         row = pygame.Rect(overlay.x + 24, y + index * 48, overlay.width - 48, 38)
         pygame.draw.rect(screen, theme.PANEL, row, border_radius=theme.RADIUS_MD)
-        screen.blit(fonts["body_bold"].render(f"{index + 1}. {game.descriptor.title}", True, theme.TEXT), (row.x + 14, row.y + 8))
+        screen.blit(
+            fonts["body_bold"].render(f"{index + 1}. {game.descriptor.title}", True, theme.TEXT),
+            (row.x + 14, row.y + 8),
+        )
     hint = fonts["small"].render("Local 2-player tournament. Press Esc to close.", True, theme.SUBTLE)
     screen.blit(hint, (overlay.x + 24, overlay.bottom - 38))
 
@@ -738,11 +802,7 @@ def run_library_scene(pygame, context, registry) -> SceneResult:
             focused_card_index = 0
         layout = compute_hub_layout(pygame, screen.get_size())
         wallet = wallet_summary(context)
-        hovered_game_ids = {
-            game.descriptor.game_id
-            for rect, game in card_targets
-            if rect.collidepoint(mouse_pos)
-        }
+        hovered_game_ids = {game.descriptor.game_id for rect, game in card_targets if rect.collidepoint(mouse_pos)}
         visible_game_ids = {game.descriptor.game_id for game in visible_games}
         for game_id in list(hover_amounts):
             if game_id not in visible_game_ids:

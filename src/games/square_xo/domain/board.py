@@ -34,4 +34,3 @@ def legal_edges(state: SquareXOState) -> tuple[Edge, ...]:
     if state.is_terminal:
         return tuple()
     return tuple(edge for edge in state.edges if edge.taken_by is None)
-

@@ -21,4 +21,3 @@ def test_save_service_round_trips_document(tmp_path):
     service.save({"schema_version": 1, "platform": {"language": "en"}})
 
     assert service.load()["platform"]["language"] == "en"
-

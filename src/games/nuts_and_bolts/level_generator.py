@@ -38,14 +38,8 @@ class LevelGenerator:
 
     def _completed_board(self, difficulty: Difficulty) -> list[Screw]:
         colors = COLOR_ORDER[: difficulty.color_count]
-        screws = [
-            Screw(color, difficulty.capacity, [color] * difficulty.capacity)
-            for color in colors
-        ]
-        screws.extend(
-            Screw(None, difficulty.capacity, [])
-            for _ in range(difficulty.spare_count)
-        )
+        screws = [Screw(color, difficulty.capacity, [color] * difficulty.capacity) for color in colors]
+        screws.extend(Screw(None, difficulty.capacity, []) for _ in range(difficulty.spare_count))
         return screws
 
     def _scramble(self, screws: list[Screw], move_count: int) -> None:
@@ -81,10 +75,7 @@ class LevelGenerator:
 
     @staticmethod
     def _has_expected_counts(screws: list[Screw], difficulty: Difficulty) -> bool:
-        expected = {
-            color: difficulty.capacity
-            for color in COLOR_ORDER[: difficulty.color_count]
-        }
+        expected = {color: difficulty.capacity for color in COLOR_ORDER[: difficulty.color_count]}
         actual: Counter[str] = Counter()
         for screw in screws:
             actual.update(screw.nuts)

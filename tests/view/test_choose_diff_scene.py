@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pygame
 
-from src.view.choose_diff_scene.scene import draw_choose_diff_scene
+from src.games.color_wars.view.choose_diff_scene.scene import draw_choose_diff_scene
 
 
 class TestChooseDiffScene(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestChooseDiffScene(unittest.TestCase):
             "medium": pygame.Surface((140, 140), pygame.SRCALPHA),
         }
 
-        with patch("src.view.choose_diff_scene.scene.blit_fitted_text") as mock_text:
+        with patch("src.games.color_wars.view.choose_diff_scene.scene.blit_fitted_text") as mock_text:
             draw_choose_diff_scene(screen, panel, fonts, colors, rects, "medium", icons)
 
         rendered = [call.args[2] for call in mock_text.call_args_list]

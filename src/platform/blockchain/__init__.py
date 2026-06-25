@@ -4,4 +4,3 @@ from .config import BlockchainMode, OasisNetworkConfig
 from .errors import BlockchainError, BlockchainErrorCode
 
 __all__ = ["BlockchainError", "BlockchainErrorCode", "BlockchainMode", "OasisNetworkConfig"]
-

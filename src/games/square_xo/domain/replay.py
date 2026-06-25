@@ -5,7 +5,7 @@ import json
 
 from src.platform.blockchain.domain.result import CanonicalMatchResult, CanonicalMove, MatchEnvelope
 
-from .board import create_game, edge_key
+from .board import create_game
 from .move import ClaimEdge
 from .result import result_from_state
 from .rules import apply_move
@@ -26,10 +26,7 @@ def state_to_dict(state: SquareXOState) -> dict[str, object]:
             }
             for edge in state.edges
         ],
-        "boxes": [
-            {"row": box.row, "col": box.col, "owner": box.owner.value}
-            for box in state.boxes
-        ],
+        "boxes": [{"row": box.row, "col": box.col, "owner": box.owner.value} for box in state.boxes],
         "currentPlayer": state.current_player.value,
         "score": state.score,
     }
@@ -116,4 +113,3 @@ def envelope_for_replay(match_id: str, initial: SquareXOState, moves: tuple[Clai
         result=CanonicalMatchResult(winner=result.winner, scores=result.scores, terminal_reason=result.reason),
         metadata={"rows": initial.rows, "cols": initial.cols},
     )
-

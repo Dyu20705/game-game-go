@@ -4,7 +4,7 @@ import unittest
 
 import pygame
 
-from src.view.commons.tutorial_overlay import draw_tutorial_overlay
+from src.games.color_wars.view.commons.tutorial_overlay import draw_tutorial_overlay
 
 
 class TestTutorialOverlay(unittest.TestCase):

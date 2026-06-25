@@ -14,4 +14,3 @@ class SapphireClient:
     def require_configured(self):
         if not self.config.rpc_endpoint:
             raise BlockchainError(BlockchainErrorCode.CONTRACT_NOT_CONFIGURED, "Sapphire RPC is not configured")
-

@@ -88,7 +88,12 @@ def run_settings_scene(pygame, context) -> SceneResult:
         volume = context.settings.platform.master_volume
         bar = pygame.Rect(sound_card.x + 22, sound_card.y + 142, sound_card.width - 44, 10)
         pygame.draw.rect(screen, theme.PANEL_ALT, bar, border_radius=theme.RADIUS_PILL)
-        pygame.draw.rect(screen, theme.BRAND_PRIMARY, pygame.Rect(bar.x, bar.y, int(bar.width * volume), bar.height), border_radius=theme.RADIUS_PILL)
+        pygame.draw.rect(
+            screen,
+            theme.BRAND_PRIMARY,
+            pygame.Rect(bar.x, bar.y, int(bar.width * volume), bar.height),
+            border_radius=theme.RADIUS_PILL,
+        )
         screen.blit(body_font.render(f"Volume {int(volume * 100)}%", True, theme.MUTED), (bar.x, bar.y - 24))
 
         _draw_card(pygame, screen, exp_card)

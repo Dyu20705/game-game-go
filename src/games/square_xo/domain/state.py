@@ -55,4 +55,3 @@ class SquareXOState:
         if not self.is_terminal or self.score_x == self.score_o:
             return None
         return Player.X if self.score_x > self.score_o else Player.O
-

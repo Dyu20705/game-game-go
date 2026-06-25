@@ -7,4 +7,3 @@ class ContractRegistry:
 
     def get(self, name: str) -> str | None:
         return self.addresses.get(name)
-

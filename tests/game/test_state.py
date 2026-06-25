@@ -2,8 +2,8 @@
 
 import unittest
 
-from src.engine.rules import EMPTY, PLAYER_BLUE
-from src.game.state import GameState
+from src.games.color_wars.engine.rules import EMPTY, PLAYER_BLUE
+from src.games.color_wars.runtime.state import GameState
 
 
 class TestGameState(unittest.TestCase):

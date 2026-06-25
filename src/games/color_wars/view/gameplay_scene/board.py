@@ -4,7 +4,15 @@ import pygame
 
 from src.games.color_wars.engine.rules import EMPTY, PLAYER_BLUE
 
-from ..constants import BLUE_COLOR, BORDER_WIDTH, CELL_BLUE_TINT, CELL_BORDER_COLOR, CELL_EMPTY_COLOR, CELL_RED_TINT, RED_COLOR
+from ..constants import (
+    BLUE_COLOR,
+    BORDER_WIDTH,
+    CELL_BLUE_TINT,
+    CELL_BORDER_COLOR,
+    CELL_EMPTY_COLOR,
+    CELL_RED_TINT,
+    RED_COLOR,
+)
 
 
 def drawNode(screen, rect, fill_color):
@@ -71,4 +79,3 @@ def drawBoard(screen, board, dots, layout):
 
             color = BLUE_COLOR if board[row][col] == PLAYER_BLUE else RED_COLOR
             drawDot(screen, x, y, dots[row][col], color, cell_size)
-

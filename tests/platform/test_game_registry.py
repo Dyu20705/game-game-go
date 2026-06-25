@@ -26,4 +26,3 @@ def test_registry_reports_missing_game():
 
     with pytest.raises(GameNotFoundError):
         registry.get("missing")
-

@@ -2,13 +2,13 @@
 
 import pygame
 
+from src.games.color_wars import view
 from src.games.color_wars.ai import get_ai_move
 from src.games.color_wars.controller import apply_move, get_scores
 from src.games.color_wars.engine.rules import PLAYER_BLUE, PLAYER_RED
-from src.games.color_wars.runtime.settings import AppSettings, clamp01
 from src.games.color_wars.runtime.core import CoreSystems
+from src.games.color_wars.runtime.settings import AppSettings, clamp01
 from src.games.color_wars.runtime.state import GameState
-from src.games.color_wars import view
 from src.games.color_wars.view.commons import draw_tutorial_overlay, make_icon_surface
 from src.games.color_wars.view.setting_scene import draw_setting_scene
 
@@ -62,6 +62,7 @@ def run_game(game_mode=MODE_PVBOT, difficulty="easy", settings=None, music=None,
         music.apply_audio_preferences(settings.sound_enabled, settings.sound_volume)
 
     running = True
+    tutorial_overlay_rects = {}
 
     def get_corner_rects():
         width, _ = screen.get_size()
@@ -244,7 +245,7 @@ def run_game(game_mode=MODE_PVBOT, difficulty="easy", settings=None, music=None,
                         settings_dragging = True
                     continue
 
-                if tutorial_open and "tutorial_overlay_rects" in locals():
+                if tutorial_open:
                     close_rect = tutorial_overlay_rects.get("close_rect")
                     if close_rect and close_rect.collidepoint(mouse):
                         tutorial_open = False
@@ -341,5 +342,3 @@ def run_game(game_mode=MODE_PVBOT, difficulty="easy", settings=None, music=None,
         clock.tick(FPS)
 
     return None
-
-

@@ -1,7 +1,7 @@
 """Background music controller with session-aware menu/game playlists."""
 
-from pathlib import Path
 import random
+from pathlib import Path
 
 import pygame
 
@@ -121,4 +121,3 @@ def set_music_enabled(enabled, volume=0.75):
 def update_music_volume(volume):
     """Backwards-compatible wrapper to update volume only."""
     _GLOBAL_MUSIC_MANAGER.apply_audio_preferences(_GLOBAL_MUSIC_MANAGER._enabled, volume)
-

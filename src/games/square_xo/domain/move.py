@@ -9,4 +9,3 @@ from .state import Edge, Player
 class ClaimEdge:
     edge: Edge
     player: Player
-

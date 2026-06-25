@@ -5,7 +5,6 @@ import random
 from src.games.color_wars.engine.explosion import resolve_explosions
 from src.games.color_wars.engine.rules import PLAYER_BLUE, PLAYER_RED, get_move_dot_increment, get_valid_moves
 
-
 EZ_WEAK_PICK_PROB = 0.80
 
 
@@ -52,4 +51,3 @@ def get_ez_move(board, dots):
         return random.choice(weaker_moves)
 
     return random.choice(moves)
-

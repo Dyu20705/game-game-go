@@ -36,4 +36,3 @@ class GameExitResult:
 
     def __post_init__(self):
         object.__setattr__(self, "payload", MappingProxyType(dict(self.payload)))
-

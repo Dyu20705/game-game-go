@@ -93,4 +93,3 @@ def _draw_tutorial_glyph(surface, center, radius, color):
     font = pygame.font.SysFont("segoeui", max(12, int(radius * 0.95)), bold=True)
     text = font.render("?", True, color)
     surface.blit(text, text.get_rect(center=center))
-

@@ -71,5 +71,3 @@ def apply_move(state, row, col, player=None, explosion_callback=None):
         state.current_player = PLAYER_RED if active_player == PLAYER_BLUE else PLAYER_BLUE
 
     return True
-
-

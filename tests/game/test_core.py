@@ -3,7 +3,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from src.game.core import CoreSystems, LaunchConfig, SceneName
+from src.games.color_wars.runtime.core import CoreSystems, LaunchConfig, SceneName
 
 
 class TestCoreSystems(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestCoreSystems(unittest.TestCase):
 
     def test_begin_home_session_calls_music_menu_flow(self):
         fake_music = MagicMock()
-        with patch("src.game.core.get_music_manager", return_value=fake_music):
+        with patch("src.games.color_wars.runtime.core.get_music_manager", return_value=fake_music):
             core = CoreSystems()
 
         core.begin_home_session()
@@ -21,7 +21,7 @@ class TestCoreSystems(unittest.TestCase):
 
     def test_enter_gameplay_updates_scene_and_launch(self):
         fake_music = MagicMock()
-        with patch("src.game.core.get_music_manager", return_value=fake_music):
+        with patch("src.games.color_wars.runtime.core.get_music_manager", return_value=fake_music):
             core = CoreSystems()
 
         launch = LaunchConfig(game_mode="pvp", difficulty="hard")
@@ -34,7 +34,7 @@ class TestCoreSystems(unittest.TestCase):
 
     def test_enter_home_and_quit(self):
         fake_music = MagicMock()
-        with patch("src.game.core.get_music_manager", return_value=fake_music):
+        with patch("src.games.color_wars.runtime.core.get_music_manager", return_value=fake_music):
             core = CoreSystems()
 
         core.enter_home()

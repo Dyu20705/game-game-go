@@ -31,7 +31,9 @@ class OasisNetworkConfig:
     @classmethod
     def from_environment(cls):
         raw_mode = os.environ.get("BLOCKCHAIN_MODE", os.environ.get("GAME_GAME_GO_MODE", "offline")).strip().lower()
-        mode = BlockchainMode(raw_mode) if raw_mode in {item.value for item in BlockchainMode} else BlockchainMode.OFFLINE
+        mode = (
+            BlockchainMode(raw_mode) if raw_mode in {item.value for item in BlockchainMode} else BlockchainMode.OFFLINE
+        )
         if mode != BlockchainMode.OASIS_TESTNET:
             return cls(mode=mode, network_name=mode.value)
         config = cls(
@@ -43,8 +45,10 @@ class OasisNetworkConfig:
             rofl_app_id=os.environ.get("ROFL_APP_ID") or os.environ.get("OASIS_ROFL_APP_ID"),
             rofl_service_url=os.environ.get("ROFL_SERVICE_URL"),
             contract_addresses={
-                "match_registry": os.environ.get("MATCH_REGISTRY_ADDRESS") or os.environ.get("GGG_CONTRACT_MATCH_REGISTRY", ""),
-                "achievement_registry": os.environ.get("ACHIEVEMENT_REGISTRY_ADDRESS") or os.environ.get("GGG_CONTRACT_ACHIEVEMENTS", ""),
+                "match_registry": os.environ.get("MATCH_REGISTRY_ADDRESS")
+                or os.environ.get("GGG_CONTRACT_MATCH_REGISTRY", ""),
+                "achievement_registry": os.environ.get("ACHIEVEMENT_REGISTRY_ADDRESS")
+                or os.environ.get("GGG_CONTRACT_ACHIEVEMENTS", ""),
             },
             request_timeout_seconds=_float_or_default(os.environ.get("REQUEST_TIMEOUT_SECONDS"), 8.0),
             confirmation_count=_int_or_default(os.environ.get("CONFIRMATION_COUNT"), 1),

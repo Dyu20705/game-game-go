@@ -13,4 +13,3 @@ class SquareXOMatchController:
         self.state = apply_move(self.state, move)
         self.moves.append(move)
         return self.state
-

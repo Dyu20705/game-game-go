@@ -28,4 +28,3 @@ def test_descriptor_accepts_optional_metadata():
 
     assert descriptor.game_id == "sample"
     assert descriptor.tags == ("demo",)
-

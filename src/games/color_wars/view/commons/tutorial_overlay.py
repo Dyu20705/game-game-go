@@ -95,5 +95,3 @@ def draw_tutorial_overlay(screen, panel, fonts, colors, lines, close_label="Đó
     draw_interactive_button(screen, close_rect, close_label, (66, 146, 212), fonts["body"], border_radius=8)
 
     return {"overlay": overlay, "close_rect": close_rect}
-
-

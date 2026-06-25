@@ -40,5 +40,3 @@ def draw_choose_gamemode_scene(screen, panel, fonts, colors, rects, icons):
 
     draw_mode_card(rects["pvp_btn"], icons["mode_pvp"], icons["mode_pvp"], colors["btn_blue"])
     draw_mode_card(rects["pvbot_btn"], icons["mode_pvp"], icons["mode_pvbot"], colors["btn_green"])
-
-

@@ -18,4 +18,3 @@ def test_square_xo_create_session_defaults_to_no_stake_local_mock():
     assert session.launch_options.mode == "local_1v1"
     assert session.launch_options.custom["stake_mode"] == "NO_STAKE"
     assert session.launch_options.custom["blockchain_mode"] == "LOCAL_MOCK"
-

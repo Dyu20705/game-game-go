@@ -4,7 +4,7 @@ from dataclasses import replace
 
 from .board import edge_key
 from .move import ClaimEdge
-from .state import BoxClaim, Edge, Player, SquareXOState
+from .state import BoxClaim, Player, SquareXOState
 
 
 def square_edge_keys(row: int, col: int) -> tuple[str, str, str, str]:
@@ -40,8 +40,7 @@ def apply_move(state: SquareXOState, move: ClaimEdge) -> SquareXOState:
     taken_before = {edge_key(edge) for edge in state.edges if edge.taken_by is not None}
     completed_before = completed_square_positions(state, taken_before)
     new_edges = tuple(
-        replace(edge, taken_by=move.player) if index == target_index else edge
-        for index, edge in enumerate(state.edges)
+        replace(edge, taken_by=move.player) if index == target_index else edge for index, edge in enumerate(state.edges)
     )
     taken_after = set(taken_before)
     taken_after.add(move_key)
@@ -62,4 +61,3 @@ def apply_move(state: SquareXOState, move: ClaimEdge) -> SquareXOState:
         score_x=state.score_x + (newly_completed if move.player == Player.X else 0),
         score_o=state.score_o + (newly_completed if move.player == Player.O else 0),
     )
-

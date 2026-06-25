@@ -15,4 +15,3 @@ __all__ = [
     "SettingsService",
     "clamp01",
 ]
-

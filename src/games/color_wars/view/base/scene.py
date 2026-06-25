@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 class BaseScene(ABC):
     """Abstract base class for all game scenes.
-    
+
     Enforces consistent interface for scene lifecycle and rendering.
     Subclasses must implement render() and handle_event().
     """
@@ -25,7 +25,7 @@ class BaseScene(ABC):
     @abstractmethod
     def render(self, screen, **kwargs):
         """Render the scene to screen.
-        
+
         Args:
             screen: pygame display surface
             **kwargs: scene-specific rendering context
@@ -35,11 +35,11 @@ class BaseScene(ABC):
     @abstractmethod
     def handle_event(self, event, **kwargs):
         """Process pygame event.
-        
+
         Args:
             event: pygame.event.Event
             **kwargs: scene-specific event context
-            
+
         Returns:
             bool indicating if event was handled
         """
@@ -48,7 +48,7 @@ class BaseScene(ABC):
 
 class SceneController:
     """Manages active scene and transitions.
-    
+
     Provides a simple state machine for scene management with
     automatic initialization/deinitialization.
     """
@@ -59,7 +59,7 @@ class SceneController:
 
     def set_scene(self, scene: BaseScene):
         """Transition to a new scene.
-        
+
         Args:
             scene: BaseScene subclass instance
         """
@@ -83,5 +83,3 @@ class SceneController:
     def get_current_scene(self) -> BaseScene | None:
         """Get currently active scene."""
         return self._current_scene
-
-

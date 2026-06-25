@@ -1,8 +1,8 @@
 """Canonical result verification types."""
 
-from dataclasses import dataclass, field
 import hashlib
 import json
+from dataclasses import dataclass, field
 from typing import Mapping
 
 
@@ -40,10 +40,7 @@ class MatchEnvelope:
             "match_id": self.match_id,
             "players": list(self.players),
             "initial_state_hash": self.initial_state_hash,
-            "moves": [
-                {"move_type": move.move_type, "payload": dict(move.payload)}
-                for move in self.moves
-            ],
+            "moves": [{"move_type": move.move_type, "payload": dict(move.payload)} for move in self.moves],
             "final_state_hash": self.final_state_hash,
             "result": {
                 "winner": self.result.winner,
@@ -68,4 +65,3 @@ class VerificationResult:
     accepted: bool
     result_hash: str | None = None
     reason: str | None = None
-

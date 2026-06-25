@@ -1,8 +1,8 @@
 """Test fixtures that keep temporary files inside the writable workspace."""
 
-from pathlib import Path
 import re
 import shutil
+from pathlib import Path
 
 import pytest
 
@@ -19,4 +19,3 @@ def tmp_path(request):
     yield path
     if path.exists():
         shutil.rmtree(path)
-

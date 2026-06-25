@@ -114,5 +114,3 @@ def draw_setting_scene(screen, panel, fonts, colors, back_rect, back_icon, contr
         fonts["body"],
         border_radius=14,
     )
-
-

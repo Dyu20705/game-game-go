@@ -34,7 +34,14 @@ def run_rewards_scene(pygame, context) -> SceneResult:
         pygame.draw.circle(screen, theme.BRAND_PRIMARY, icon.center, 26)
         pygame.draw.circle(screen, theme.WARNING, icon.center, 11)
         draw_text(pygame, screen, title_font, "NFT Rewards", (card.centerx, card.y + 170))
-        draw_text(pygame, screen, body_font, "Collectible rewards are being prepared.", (card.centerx, card.y + 220), theme.MUTED)
+        draw_text(
+            pygame,
+            screen,
+            body_font,
+            "Collectible rewards are being prepared.",
+            (card.centerx, card.y + 220),
+            theme.MUTED,
+        )
         draw_text(pygame, screen, body_font, "Coming soon", (card.centerx, card.y + 258), theme.BRAND_PRIMARY)
         pygame.display.flip()
         clock.tick(60)

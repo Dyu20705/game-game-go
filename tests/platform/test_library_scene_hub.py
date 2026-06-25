@@ -1,5 +1,5 @@
-from types import SimpleNamespace
 from datetime import date
+from types import SimpleNamespace
 
 from src.platform.blockchain.domain.network import ChainHealth, ChainHealthStatus
 from src.platform.games import GameCapability, GameDescriptor
@@ -9,15 +9,15 @@ from src.platform.scenes.library_scene import (
     TOURNAMENT_DOCK_HEIGHT,
     compute_hub_layout,
     daily_challenge_title,
-    entry_fee_label,
     eligible_tournament_games,
+    entry_fee_label,
     filter_games,
     game_mode,
     grid_columns,
-    settlement_mode,
-    wallet_summary,
-    wallet_requirement_label,
     select_tournament_games,
+    settlement_mode,
+    wallet_requirement_label,
+    wallet_summary,
 )
 
 

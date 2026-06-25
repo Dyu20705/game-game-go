@@ -3,7 +3,6 @@ import random
 from src.games.color_wars.engine.explosion import resolve_explosions
 from src.games.color_wars.engine.rules import PLAYER_BLUE, PLAYER_RED, get_move_dot_increment, get_valid_moves
 
-
 MED_TOP_K = 3
 MED_TIE_NOISE_THRESHOLD = 0.55
 MED_TOP_RANDOM_PROB = 0.24
@@ -117,5 +116,3 @@ def get_med_move(board, dots):
         second_move = response_scores[1][0]
         return random.choice([best_move, second_move])
     return best_move
-
-

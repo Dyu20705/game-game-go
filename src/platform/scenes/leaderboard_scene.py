@@ -38,10 +38,15 @@ def run_leaderboard_scene(pygame, context) -> SceneResult:
         _panel(pygame, screen, friends)
         screen.blit(section_font.render("Match History", True, theme.TEXT), (history.x + 24, history.y + 24))
         screen.blit(body_font.render("No matches yet.", True, theme.MUTED), (history.x + 24, history.y + 76))
-        screen.blit(body_font.render("Play a game to start your history.", True, theme.SUBTLE), (history.x + 24, history.y + 106))
+        screen.blit(
+            body_font.render("Play a game to start your history.", True, theme.SUBTLE),
+            (history.x + 24, history.y + 106),
+        )
         screen.blit(section_font.render("Friends", True, theme.TEXT), (friends.x + 24, friends.y + 24))
         screen.blit(body_font.render("No friends ranking yet.", True, theme.MUTED), (friends.x + 24, friends.y + 76))
-        screen.blit(body_font.render("Local profiles will appear here.", True, theme.SUBTLE), (friends.x + 24, friends.y + 106))
+        screen.blit(
+            body_font.render("Local profiles will appear here.", True, theme.SUBTLE), (friends.x + 24, friends.y + 106)
+        )
         pygame.display.flip()
         clock.tick(60)
 

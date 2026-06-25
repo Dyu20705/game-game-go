@@ -39,4 +39,3 @@ class MatchRecord:
     status: MatchStatus
     players: tuple[PlayerRef, ...]
     result_hash: str | None = None
-

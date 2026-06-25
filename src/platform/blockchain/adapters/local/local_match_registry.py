@@ -3,8 +3,8 @@
 from dataclasses import replace
 from itertools import count
 
-from src.platform.blockchain.domain.match import CreateMatchRequest, MatchRecord, MatchReference, MatchStatus
 from src.platform.blockchain.domain.commitment import result_commitment_for_envelope
+from src.platform.blockchain.domain.match import CreateMatchRequest, MatchRecord, MatchReference, MatchStatus
 from src.platform.blockchain.domain.result import MatchEnvelope
 from src.platform.blockchain.domain.transaction import SubmissionReceipt
 from src.platform.blockchain.errors import BlockchainError, BlockchainErrorCode

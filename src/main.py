@@ -15,5 +15,6 @@ def main():
 
     return run_platform()
 
+
 if __name__ == "__main__":
     main()

@@ -5,7 +5,6 @@ from math import hypot
 from src.games.square_xo.domain.board import legal_edges
 from src.games.square_xo.domain.state import Edge, Point, SquareXOState
 
-
 COLORS = {
     "bg": (24, 30, 36),
     "panel": (39, 50, 59),
@@ -77,7 +76,9 @@ def draw_gameplay(pygame, screen, state: SquareXOState, hover: Edge | None, stat
         overlay = font.render(f"Finished: {winner}    R: Restart    Esc: Library", True, COLORS["text"])
         screen.blit(overlay, overlay.get_rect(center=(screen.get_width() // 2, screen.get_height() - 42)))
     else:
-        help_text = small.render("Click an open edge. Complete a square to keep your turn. Esc returns to library.", True, COLORS["muted"])
+        help_text = small.render(
+            "Click an open edge. Complete a square to keep your turn. Esc returns to library.", True, COLORS["muted"]
+        )
         screen.blit(help_text, help_text.get_rect(center=(screen.get_width() // 2, screen.get_height() - 34)))
 
 
@@ -110,4 +111,3 @@ def _edge_points_key(edge: Edge | None):
         return None
     points = sorted((edge.from_point, edge.to_point))
     return points[0], points[1]
-

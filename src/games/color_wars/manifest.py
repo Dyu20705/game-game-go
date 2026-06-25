@@ -4,7 +4,6 @@ from pathlib import Path
 
 from src.platform.games import GameDescriptor
 
-
 DESCRIPTOR = GameDescriptor(
     game_id="color_wars",
     title="Color Wars",
@@ -19,6 +18,3 @@ DESCRIPTOR = GameDescriptor(
     min_players=1,
     max_players=2,
 )
-
-
-

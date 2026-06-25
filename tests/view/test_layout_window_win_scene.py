@@ -5,10 +5,10 @@ from unittest.mock import patch
 
 import pygame
 
-from src.engine.rules import PLAYER_BLUE
-from src.view.layout import compute_layout, get_cell_from_mouse
-from src.view.win_scene.scene import draw_win_scene, get_win_action_rects
-from src.view.window import toggle_fullscreen
+from src.games.color_wars.engine.rules import PLAYER_BLUE
+from src.games.color_wars.view.layout import compute_layout, get_cell_from_mouse
+from src.games.color_wars.view.win_scene.scene import draw_win_scene, get_win_action_rects
+from src.games.color_wars.view.window import toggle_fullscreen
 
 
 class TestLayoutWindowWinScene(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestLayoutWindowWinScene(unittest.TestCase):
 
     def test_toggle_fullscreen_switches_state(self):
         fake_screen = object()
-        with patch("src.view.window.drawScreen", return_value=fake_screen) as draw_mock:
+        with patch("src.games.color_wars.view.window.drawScreen", return_value=fake_screen) as draw_mock:
             screen, is_full = toggle_fullscreen(False, None)
 
         self.assertIs(screen, fake_screen)

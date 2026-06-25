@@ -2,7 +2,7 @@
 
 import unittest
 
-from src.game.settings import AppSettings, clamp01
+from src.games.color_wars.runtime.settings import AppSettings, clamp01
 
 
 class TestSettings(unittest.TestCase):

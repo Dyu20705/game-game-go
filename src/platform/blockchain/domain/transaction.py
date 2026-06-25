@@ -9,4 +9,3 @@ class SubmissionReceipt:
     reference: str
     tx_hash: str | None = None
     message: str | None = None
-

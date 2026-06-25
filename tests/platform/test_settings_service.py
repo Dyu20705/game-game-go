@@ -27,4 +27,3 @@ def test_game_settings_are_namespaced():
 
     assert service.get_game_settings("color_wars") == {"last_mode": "pvp"}
     assert service.get_game_settings("demo_game") == {}
-
