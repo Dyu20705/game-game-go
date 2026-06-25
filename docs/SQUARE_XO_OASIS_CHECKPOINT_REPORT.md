@@ -1,5 +1,11 @@
 # SquareXO + Oasis Checkpoint Report
 
+Current status note: later blockchain prephase work is tracked in
+`docs/BLOCKCHAIN_PREPHASE_AUDIT.md`, `docs/RESULT_COMMITMENT_SPEC.md` and
+`docs/THREAT_MODEL.md`. Local adapters, SquareXO replay verification, result
+commitments and the Python ROFL service boundary are now unit-tested; live
+Oasis/ROFL deployment remains unvalidated.
+
 ## CHECKPOINT 0 STATUS
 
 1. Objective: audit Game Game Go and SquareXO source before integration.
@@ -222,4 +228,3 @@
    - no live Pygame manual play.
 15. Next checkpoint:
    - run full suite and manual play in a Pygame-capable environment, then implement non-blocking testnet integrations.
-

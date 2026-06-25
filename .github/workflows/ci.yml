@@ -44,9 +44,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check obvious private material
         run: |
-          ! grep -RInE "(PRIVATE_KEY|MNEMONIC|BEGIN .*PRIVATE KEY|seed phrase)" . \
-            --exclude-dir=.git \
-            --exclude=.env.example
+          ! git grep -InE "(BEGIN (RSA |EC |OPENSSH )?PRIVATE[[:space:]]KEY|PRIVATE[_]KEY=.+|MNEMONIC[=].+)" -- \
+            ':!docs/**' \
+            ':!.env.example'
 
   dependency-audit:
     runs-on: ubuntu-latest

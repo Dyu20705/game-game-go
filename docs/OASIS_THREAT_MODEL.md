@@ -13,5 +13,9 @@ payloads.
 Oasis/ROFL improves integrity and auditability but does not make cheating
 impossible. Availability failures must not break offline play.
 
-Current Oasis validation level: `STATIC_VALIDATION`.
+Current Oasis validation level: local adapters, SquareXO replay verification,
+result commitments and the Python ROFL service boundary are unit-tested. Live
+Oasis/ROFL deployment remains unvalidated.
 
+The current detailed prephase threat model is maintained in
+`docs/THREAT_MODEL.md`.

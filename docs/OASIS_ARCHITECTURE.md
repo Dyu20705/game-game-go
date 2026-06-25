@@ -35,11 +35,13 @@ the commitment on-chain.
 
 ## Oasis Adapters
 
-Current status: `STATIC_VALIDATION`.
+Current status: local adapters, SquareXO replay verification, result
+commitments and the Python ROFL service boundary are unit-tested. Live RPC
+calls, signer flows, ROFL bundle builds and testnet deployment are not claimed
+in the current validation.
 
 Typed adapter boundaries exist for Sapphire, ROFL, contract address lookup and
-transaction error mapping. Live RPC calls, signer flows, ROFL bundle builds and
-testnet deployment are not claimed in the current validation.
+transaction error mapping.
 
 See `docs/BLOCKCHAIN_PREPHASE_AUDIT.md` and `docs/THREAT_MODEL.md` for trust and
 authorization details.

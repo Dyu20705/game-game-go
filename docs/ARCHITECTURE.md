@@ -11,6 +11,10 @@ games must not depend on other games
 legacy compatibility modules may re-export old Color Wars paths during migration
 ```
 
+Compatibility migration đã hoàn tất cho root Color Wars legacy: `src/ai`,
+`src/engine`, `src/game`, `src/view` và `src/controller.py` không còn tồn tại.
+Architecture tests khóa rule này trong `tests/architecture`.
+
 ## Platform
 
 `src/platform` gồm:
@@ -20,7 +24,8 @@ legacy compatibility modules may re-export old Color Wars paths during migration
 - `services`: settings, save, audio, localization, asset resolver/cache.
 - `scenes`: home, game library, settings, about, scene result/action.
 - `ui`: shared button/text/layout/theme/icon helpers.
-- `app.py`: boot Pygame, tạo context, chạy scene flow và launch game qua registry.
+- `bootstrap`: composition root, đăng ký public game adapters và wire services.
+- `app.py`: boot Pygame, chạy scene flow và launch game qua registry.
 
 Scene flow hiện tại là transitional blocking flow:
 
@@ -58,7 +63,8 @@ Contract dùng `typing.Protocol` thay vì base class để nhẹ và linh hoạt
 - sort ổn định bằng `sort_order`, `title`, `game_id`;
 - báo lỗi rõ khi game không tồn tại.
 
-Đăng ký hiện là static trong `build_default_registry()`. Cấu trúc đủ để sau này chuyển sang manifest discovery.
+Đăng ký hiện là static trong `src.platform.bootstrap.build_default_registry()`.
+Cấu trúc đủ để sau này chuyển sang manifest discovery.
 
 ## Services
 

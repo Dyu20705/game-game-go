@@ -12,3 +12,12 @@ fees, token payouts, NFT payouts or mainnet value settlement.
 SquareXO source wagering contract was audited and intentionally not connected to
 the user-facing flow.
 
+Current blockchain trust/authorization details are tracked in:
+
+- `docs/BLOCKCHAIN_PREPHASE_AUDIT.md`
+- `docs/RESULT_COMMITMENT_SPEC.md`
+- `docs/THREAT_MODEL.md`
+
+Only authorized verifier roles may write result commitments or achievement
+evidence in the prephase contract boundary. Local/offline play remains wallet
+free and is not treated as authoritative on-chain settlement.

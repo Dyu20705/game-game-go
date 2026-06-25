@@ -36,15 +36,23 @@ Các module legacy vẫn còn ở path cũ để test cũ và import cũ tiếp 
 - asset resolver;
 - platform home/library/settings/about scenes.
 
-## Compatibility Shims And Debt
+## Legacy Root Removal
 
-Compatibility hiện là giữ nguyên source path cũ thay vì xóa ngay. Điều này làm repo có một giai đoạn duplicate code giữa legacy path và package mới. Lý do là giảm rủi ro cho test cũ và tránh rewrite toàn bộ trong một bước.
+Compatibility runtime shims đã được xóa. Root legacy không còn là public import
+path:
+
+- `src/controller.py`
+- `src/ai/`
+- `src/engine/`
+- `src/game/`
+- `src/view/`
+
+Test cũ vẫn được giữ nhưng import trực tiếp namespace mới
+`src.games.color_wars.*`.
 
 Technical debt còn lại:
 
-- chuyển test cũ sang `tests/games/color_wars` và import namespace mới;
-- loại bỏ legacy `src/ai`, `src/engine`, `src/game`, `src/view`, `src/controller.py` sau khi migration test hoàn tất;
+- chuyển vị trí vật lý của các test cũ sang `tests/games/color_wars` nếu muốn dọn cây test;
 - migrate toàn bộ text Color Wars sang localization key;
 - chuyển asset vật lý của Color Wars vào `src/games/color_wars/assets` hoặc package data;
 - hợp nhất legacy `MusicManager` với `AudioService` sâu hơn.
-
