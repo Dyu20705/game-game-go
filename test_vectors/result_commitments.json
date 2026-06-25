@@ -1,0 +1,105 @@
+{
+  "vectors": [
+    {
+      "commitment": "0xa80611bc244f3e89fad4bf2417b4451e991c2fb6404c6bcfb3fbe1e564c3ef4f",
+      "envelope": {
+        "final_state_hash": "87281cbe73cbc924814dc892ac78166bebf4252a1b29f19833077dc5076b9d9d",
+        "game_id": "square_xo",
+        "initial_state_hash": "a27140c96e4c72ebd6e299f806533a1b2e4bbbe7c28c33814ac40d36067c44ef",
+        "match_id": "vector-square-xo-1",
+        "metadata": {
+          "cols": 1,
+          "rows": 1
+        },
+        "moves": [
+          {
+            "move_type": "claim_edge",
+            "payload": {
+              "from": {
+                "col": 0,
+                "row": 0
+              },
+              "player": "X",
+              "to": {
+                "col": 1,
+                "row": 0
+              }
+            }
+          },
+          {
+            "move_type": "claim_edge",
+            "payload": {
+              "from": {
+                "col": 0,
+                "row": 1
+              },
+              "player": "O",
+              "to": {
+                "col": 1,
+                "row": 1
+              }
+            }
+          },
+          {
+            "move_type": "claim_edge",
+            "payload": {
+              "from": {
+                "col": 0,
+                "row": 0
+              },
+              "player": "X",
+              "to": {
+                "col": 0,
+                "row": 1
+              }
+            }
+          },
+          {
+            "move_type": "claim_edge",
+            "payload": {
+              "from": {
+                "col": 1,
+                "row": 0
+              },
+              "player": "O",
+              "to": {
+                "col": 1,
+                "row": 1
+              }
+            }
+          }
+        ],
+        "players": [
+          "X",
+          "O"
+        ],
+        "protocol_version": "1",
+        "result": {
+          "scores": {
+            "O": 1,
+            "X": 0
+          },
+          "terminal_reason": "complete",
+          "winner": "O"
+        },
+        "ruleset_version": "square_xo.port.v1"
+      },
+      "name": "square_xo_1x1_o_wins",
+      "payload": {
+        "domain": "GGG_RESULT_COMMITMENT_V1",
+        "environment": "local",
+        "game_id": "square_xo",
+        "hash_algorithm": "sha256",
+        "match_id": "vector-square-xo-1",
+        "nonce": "vector-1",
+        "outcome_hash": "0xd15c1f6d4d84843461ee1b4a5f1bfcdede33caa0342de9016fd9d37c92c1ece2",
+        "participant_ordering": "ordered",
+        "participants_hash": "0x963f60c47060d582634b486e6f3e797cf01eb5916a817222de1f961682818c64",
+        "replay_hash": "0xe50a299d8d3dbb7fbe22d937fef98c9bf69bf51f8c4bf3285d3326b7406bb1c2",
+        "ruleset_version": "square_xo.port.v1",
+        "schema_version": 1,
+        "verifier_version": "rofl-verifier-0.1.0"
+      }
+    }
+  ]
+}
