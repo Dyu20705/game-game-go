@@ -17,7 +17,7 @@ legacy compatibility modules may re-export old Color Wars paths during migration
 
 - `games`: contract, descriptor, launch options, exit result, registry.
 - `context.py`: `PlatformContext` truyền screen, clock và services vào mini-game.
-- `services`: settings, save, audio, localization, asset resolver.
+- `services`: settings, save, audio, localization, asset resolver/cache.
 - `scenes`: home, game library, settings, about, scene result/action.
 - `ui`: shared button/text/layout/theme/icon helpers.
 - `app.py`: boot Pygame, tạo context, chạy scene flow và launch game qua registry.
@@ -69,7 +69,7 @@ Platform settings tách khỏi launch options/game preferences:
 - `SaveService`: JSON versioned document, fallback khi thiếu/hỏng file, atomic replace.
 - `AudioService`: wrapper nhỏ quanh pygame mixer, chịu lỗi mixer/file thiếu.
 - `LocalizationService`: key-based VI/EN cho platform text.
-- `AssetService`: resolver platform/game/legacy asset bằng `pathlib`.
+- `AssetService`: resolver/cache cho canonical `assets/` root, gồm brand, platform, game, audio, image scale và font fallback.
 
 ## Blockchain/Oasis Layer
 

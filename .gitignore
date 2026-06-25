@@ -57,8 +57,12 @@ Thumbs.db
 *.log
 *.tmp
 *.bak
+assets/**/*.tmp
+assets/**/.cache/
 
 pytest-cache-*/
 *tmp/
 .external/
+
+.agents/
 

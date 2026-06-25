@@ -1,0 +1,118 @@
+{
+  "assets": [
+    {
+      "path": "audio/kirara_magic_aquatic.mp3",
+      "bytes": 7021850,
+      "sha256": "7748b918688b8c468b019c0081cd13c12c34efcc92d90c50bb6573ffe5cdb56e",
+      "license": "Third-party audio; see project provenance before redistribution"
+    },
+    {
+      "path": "audio/kirara_magic_checkmate.mp3",
+      "bytes": 7488919,
+      "sha256": "547ac402bd98ba556c9fec517c2a476ef05b0e231d2bc43e6658d1fe2dcd0455",
+      "license": "Third-party audio; see project provenance before redistribution"
+    },
+    {
+      "path": "audio/sound_souler_paradise_extended_mix.mp3",
+      "bytes": 11436076,
+      "sha256": "a78dd072d51f0ddeacd34d3f5b3bcfc2cfe02ce777a88a11afb365d19ea19bcc",
+      "license": "Third-party audio; see project provenance before redistribution"
+    },
+    {
+      "path": "brand/app_icon.png",
+      "bytes": 1743,
+      "sha256": "75e0cd5e2532a472d6e0cca1410b6890491d484984bbd3527099c49106d6ade5",
+      "license": "Project-created"
+    },
+    {
+      "path": "brand/logo_mark.png",
+      "bytes": 1743,
+      "sha256": "75e0cd5e2532a472d6e0cca1410b6890491d484984bbd3527099c49106d6ade5",
+      "license": "Project-created"
+    },
+    {
+      "path": "docs/PROVENANCE.md",
+      "bytes": 272,
+      "sha256": "ab154d8f335ffca4c644bd0e7a5f0b3a0958417d7ac64ae6ae23e30372557f14",
+      "license": "Project documentation"
+    },
+    {
+      "path": "fonts/.gitkeep",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "license": "Project documentation"
+    },
+    {
+      "path": "games/color_wars/images/background.png",
+      "bytes": 152066,
+      "sha256": "ebaa2f2487f23691fb80c902116125d67048fa7335b6270c063d8d736c22d9ac",
+      "license": "Legacy Color Wars project asset"
+    },
+    {
+      "path": "games/color_wars/images/bot.png",
+      "bytes": 25563,
+      "sha256": "24f701847d5ec97360d30e6a0295f464654f690e5fe7283f47e653e094f2ed65",
+      "license": "Legacy Color Wars project asset"
+    },
+    {
+      "path": "games/color_wars/images/easy_icon.png",
+      "bytes": 147713,
+      "sha256": "4f475f4263a88a6fab340ae4742859fbefbf8862beb03d614aa038db8bed307e",
+      "license": "Legacy Color Wars project asset"
+    },
+    {
+      "path": "games/color_wars/images/game_icon.png",
+      "bytes": 87861,
+      "sha256": "7aeae495bf1247408a2da7a8ef36e634181095365fc532f4d9a98c634dda8025",
+      "license": "Legacy Color Wars project asset"
+    },
+    {
+      "path": "games/color_wars/images/hard_icon.png",
+      "bytes": 186579,
+      "sha256": "e6af673c55e596d4a581642728b4a7ad0918f29ab8b03a1e1b4e5ce911b6ab15",
+      "license": "Legacy Color Wars project asset"
+    },
+    {
+      "path": "games/color_wars/images/human.png",
+      "bytes": 18223,
+      "sha256": "f855aac1303aee3d6246a429be5558c305f354840c2b23c5771ad9dc95cdbb17",
+      "license": "Legacy Color Wars project asset"
+    },
+    {
+      "path": "games/color_wars/images/medium_icon.png",
+      "bytes": 123788,
+      "sha256": "a1feb05a2db93be1489390dac8f5f6fe3536c70569808191889b2d564358ab38",
+      "license": "Legacy Color Wars project asset"
+    },
+    {
+      "path": "games/color_wars/thumbnails/card.png",
+      "bytes": 5462,
+      "sha256": "a7360311b47e41cebb040fc1d7f483478ca1825b60c5f387c54f850aa8f31255",
+      "license": "Project-created"
+    },
+    {
+      "path": "games/nuts_and_bolts/thumbnails/card.png",
+      "bytes": 4841,
+      "sha256": "a66fc2c43e0881e4a4df591337c3b912672e2e11362f78996fabe95294d419d3",
+      "license": "Project-created"
+    },
+    {
+      "path": "games/square_xo/thumbnails/card.png",
+      "bytes": 3069,
+      "sha256": "c311bc37d7b67fad99ec9e4e7b657bac3fc99d0a359500cdfe6f883e6dde9aa4",
+      "license": "Project-created"
+    },
+    {
+      "path": "platform/fallbacks/game_thumbnail.png",
+      "bytes": 2958,
+      "sha256": "705e5697a1639a0e473fa401043fdddd6e60c0ddc7d2025559cd2047a54d2cb3",
+      "license": "Project-created"
+    },
+    {
+      "path": "README.md",
+      "bytes": 640,
+      "sha256": "47ca2d70d95feafd2585054bb5d721a3d466743556fbb718a93487d4aa556dc2",
+      "license": "Project documentation"
+    }
+  ]
+}
