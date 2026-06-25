@@ -56,13 +56,17 @@ class PlatformApp:
             match_registry=LocalMatchRegistry(),
             result_verifier=verifier,
         )
-        audio_dir = self.config.repository_root / "asset" / "aud"
+        audio_dir = assets.audio("")
         if audio_dir.exists():
             audio.set_music_paths(sorted(Path(audio_dir).glob("*.mp3")))
 
         flags = pygame.FULLSCREEN if settings.platform.fullscreen else pygame.RESIZABLE
         screen = pygame.display.set_mode(settings.platform.window_size, flags)
         pygame.display.set_caption(self.config.app_name)
+        try:
+            pygame.display.set_icon(assets.image(pygame, assets.brand("app_icon.png"), fallback_size=(64, 64)))
+        except pygame.error:
+            pass
         clock = pygame.time.Clock()
         return PlatformContext(
             screen=screen,

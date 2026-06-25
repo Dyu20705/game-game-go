@@ -26,6 +26,13 @@ Implemented:
 
 These work without RPC, wallet, Docker, Oasis CLI or network.
 
+## Commitment Boundary
+
+Result commitments are specified in `docs/RESULT_COMMITMENT_SPEC.md` and tested
+against `test_vectors/result_commitments.json`. In this pre-testnet phase,
+contracts store verifier-supplied `bytes32` commitments; they do not recompute
+the commitment on-chain.
+
 ## Oasis Adapters
 
 Current status: `STATIC_VALIDATION`.
@@ -34,3 +41,5 @@ Typed adapter boundaries exist for Sapphire, ROFL, contract address lookup and
 transaction error mapping. Live RPC calls, signer flows, ROFL bundle builds and
 testnet deployment are not claimed in the current validation.
 
+See `docs/BLOCKCHAIN_PREPHASE_AUDIT.md` and `docs/THREAT_MODEL.md` for trust and
+authorization details.

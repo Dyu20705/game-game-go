@@ -12,6 +12,7 @@ class BlockchainErrorCode(str, Enum):
     INVALID_NETWORK = "invalid_network"
     ROFL_UNAVAILABLE = "rofl_unavailable"
     VERIFICATION_FAILED = "verification_failed"
+    INVALID_LIFECYCLE = "invalid_lifecycle"
 
 
 class BlockchainError(RuntimeError):
@@ -20,4 +21,3 @@ class BlockchainError(RuntimeError):
     def __init__(self, code: BlockchainErrorCode, message: str):
         super().__init__(message)
         self.code = code
-

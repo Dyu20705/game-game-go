@@ -4,8 +4,10 @@ from dataclasses import replace
 from itertools import count
 
 from src.platform.blockchain.domain.match import CreateMatchRequest, MatchRecord, MatchReference, MatchStatus
+from src.platform.blockchain.domain.commitment import result_commitment_for_envelope
 from src.platform.blockchain.domain.result import MatchEnvelope
 from src.platform.blockchain.domain.transaction import SubmissionReceipt
+from src.platform.blockchain.errors import BlockchainError, BlockchainErrorCode
 
 
 class LocalMatchRegistry:
@@ -29,7 +31,8 @@ class LocalMatchRegistry:
         if record is None:
             reference = MatchReference(envelope.match_id, envelope.game_id, envelope.ruleset_version)
             record = MatchRecord(reference=reference, status=MatchStatus.CREATED, players=tuple())
-        result_hash = envelope.digest()
+        if record.status in {MatchStatus.RESOLVED, MatchStatus.CANCELLED}:
+            raise BlockchainError(BlockchainErrorCode.INVALID_LIFECYCLE, "match is already finalized")
+        result_hash = result_commitment_for_envelope(envelope)
         self._records[envelope.match_id] = replace(record, status=MatchStatus.RESOLVED, result_hash=result_hash)
         return SubmissionReceipt(submitted=True, reference=envelope.match_id, tx_hash=None, message=result_hash)
-
