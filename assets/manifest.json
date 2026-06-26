@@ -1,6 +1,18 @@
 {
   "assets": [
     {
+      "path": "audio/Citlali Theme Music Indonesian Style EXTENDED - The Gaze of the Stars (tnbee mix) _ Genshin Impact - (320 Kbps).mp3",
+      "bytes": 11368622,
+      "sha256": "c65b98f49dd201629f82aef3a8c25fa624affb099504a578cf1d95fb42d77e1f",
+      "license": "Third-party audio; see project provenance before redistribution"
+    },
+    {
+      "path": "audio/Halv - OMG.flac",
+      "bytes": 20231924,
+      "sha256": "1f6066a8bc274a1f273e0aaaaf8305894cc81a0ae27fe894ce5afab9e5ef0c23",
+      "license": "Third-party audio; see project provenance before redistribution"
+    },
+    {
       "path": "audio/kirara_magic_aquatic.mp3",
       "bytes": 7021850,
       "sha256": "7748b918688b8c468b019c0081cd13c12c34efcc92d90c50bb6573ffe5cdb56e",
@@ -19,16 +31,100 @@
       "license": "Third-party audio; see project provenance before redistribution"
     },
     {
-      "path": "brand/app_icon.png",
-      "bytes": 1743,
-      "sha256": "75e0cd5e2532a472d6e0cca1410b6890491d484984bbd3527099c49106d6ade5",
-      "license": "Project-created"
+      "path": "backgrounds/menu_background_1920x1080.png",
+      "bytes": 852946,
+      "sha256": "e66f01072e5455134383e7c5d61498477056c0113689d9fb41cff518fad5949c",
+      "license": "Provided Game Game Go branding asset"
     },
     {
-      "path": "brand/logo_mark.png",
-      "bytes": 1743,
-      "sha256": "75e0cd5e2532a472d6e0cca1410b6890491d484984bbd3527099c49106d6ade5",
-      "license": "Project-created"
+      "path": "backgrounds/menu_background_preview.png",
+      "bytes": 85673,
+      "sha256": "c107847ed1805365a31139c6886d33356cca3b41049e408465c4a149cb5d6d9a",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon.ico",
+      "bytes": 51983,
+      "sha256": "a5c1cb05b1c64cefa122eaf1980a933f40eeb05162244683af9014dd333dd9cc",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon.png",
+      "bytes": 28726,
+      "sha256": "633936aefd9de81ea3e96e571e68ae7c6ed4baf1cd66e478b359094d261e0204",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_128.png",
+      "bytes": 10529,
+      "sha256": "2aef725cbb0261d4f43c097df7ab1eac6b35f3894cc87960d28cb552099f279d",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_256.png",
+      "bytes": 28726,
+      "sha256": "633936aefd9de81ea3e96e571e68ae7c6ed4baf1cd66e478b359094d261e0204",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_512.png",
+      "bytes": 89492,
+      "sha256": "c0c746381f8cefc82968994ab2b8dc8892bafdc9ebfffe1c54eb0b0c24a51dde",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_64.png",
+      "bytes": 3936,
+      "sha256": "0d81607853f0ae6966719f8a495fd04e5c2c940b853d43d373223796621d3f9b",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/game_logo_full.png",
+      "bytes": 472371,
+      "sha256": "57719e86deef97cb6c5cee86aca53f946c678727cfc6f5aadfbd9b9d4b0d7731",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/game_logo_full_runtime.png",
+      "bytes": 80993,
+      "sha256": "757d028629cb1144b4377366794a6919b9d33d3109f4febe3778eb9cd31e6210",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/game_logo_symbol.png",
+      "bytes": 203886,
+      "sha256": "63d5163ec9e42f8a974247b7da151a626e1880918e98f5f862179509d9dc2726",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/github_social_preview.png",
+      "bytes": 459591,
+      "sha256": "61c8e3fd9dfe1d905979981617845617b474b1e8f3cf390594e270e9f1ca0998",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/hero_banner.png",
+      "bytes": 394836,
+      "sha256": "5007b640569d3cd0e4a8557ecd9ad5eaf257194585c23c13e97ee8931d632848",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/studio_logo.png",
+      "bytes": 827220,
+      "sha256": "ed4a28726b9b530d56fe0e5928c39317917591e6429c77de55a71a6f34e21dcb",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/studio_logo_runtime.png",
+      "bytes": 128576,
+      "sha256": "4d379e117a18658fe776b4451432f0c10ffc4cec83d7148e7b2982a4452fba81",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding_manifest.json",
+      "bytes": 4306,
+      "sha256": "01da1f951d8aa18b020a7299f5ff4f98c2e93f0b7edf7f38d26c3aebd69b76a0",
+      "license": "Project documentation"
     },
     {
       "path": "docs/PROVENANCE.md",
@@ -110,9 +206,27 @@
     },
     {
       "path": "README.md",
-      "bytes": 640,
-      "sha256": "47ca2d70d95feafd2585054bb5d721a3d466743556fbb718a93487d4aa556dc2",
+      "bytes": 926,
+      "sha256": "e0fd376f4b07d0cd71c6b854118b1ec24420e667ec5dff5789212f7fd28a9410",
       "license": "Project documentation"
+    },
+    {
+      "path": "source_branding/chillody-studio-source.png",
+      "bytes": 854087,
+      "sha256": "43731fdd66560a24e027ab91f547adce04a3e60b093dd80d1b069777eb85f2ee",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "source_branding/game-game-go-background-vertical-source.png",
+      "bytes": 1794522,
+      "sha256": "34ddec77e679f57188d64920422591fae6c94688c1aa0f8a848cf2fce97dd363",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "source_branding/game-game-go-logo-source.png",
+      "bytes": 1241575,
+      "sha256": "2fffd628b10799bde02bb5b2a9fb7aa373f495b5736f1dc92d9b3626d0428d11",
+      "license": "Provided Game Game Go branding asset"
     }
   ]
 }

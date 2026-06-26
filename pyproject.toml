@@ -29,3 +29,17 @@ ignore = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.coverage.run]
+branch = true
+source = ["src", "tools", "rofl/game-service/src"]
+omit = [
+  "*/__pycache__/*",
+  "tests/*",
+  "contracts/*",
+  ".external/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true

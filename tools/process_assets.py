@@ -8,15 +8,16 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from tools.prepare_branding_assets import main as prepare_branding_assets
+
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 THUMB_SIZE = (640, 360)
-ICON_SIZE = (256, 256)
 
 
 def main() -> int:
     ensure_directories()
-    create_brand_assets()
+    prepare_branding_assets()
     create_platform_fallbacks()
     create_game_thumbnails()
     write_manifest()
@@ -25,7 +26,9 @@ def main() -> int:
 
 def ensure_directories() -> None:
     for path in (
-        ASSETS / "brand",
+        ASSETS / "source_branding",
+        ASSETS / "branding",
+        ASSETS / "backgrounds",
         ASSETS / "platform" / "fallbacks",
         ASSETS / "games" / "color_wars" / "thumbnails",
         ASSETS / "games" / "square_xo" / "thumbnails",
@@ -35,17 +38,6 @@ def ensure_directories() -> None:
         ASSETS / "docs",
     ):
         path.mkdir(parents=True, exist_ok=True)
-
-
-def create_brand_assets() -> None:
-    mark = Image.new("RGBA", ICON_SIZE, (35, 185, 211, 255))
-    draw = ImageDraw.Draw(mark)
-    draw.rounded_rectangle((18, 18, 238, 238), radius=54, fill=(42, 55, 68), outline=(255, 255, 255), width=6)
-    draw.ellipse((72, 72, 184, 184), fill=(243, 200, 75))
-    draw.ellipse((106, 106, 150, 150), fill=(255, 94, 98))
-    draw.line((72, 128, 184, 128), fill=(247, 249, 251), width=12)
-    save_png(mark, ASSETS / "brand" / "logo_mark.png")
-    save_png(mark, ASSETS / "brand" / "app_icon.png")
 
 
 def create_platform_fallbacks() -> None:
@@ -155,6 +147,8 @@ def license_for(path: Path) -> str:
     relative = path.relative_to(ASSETS).as_posix()
     if relative.startswith("audio/"):
         return "Third-party audio; see project provenance before redistribution"
+    if relative.startswith(("source_branding/", "branding/", "backgrounds/")):
+        return "Provided Game Game Go branding asset"
     if relative.startswith("games/color_wars/images/"):
         return "Legacy Color Wars project asset"
     if path.suffix.lower() == ".png":

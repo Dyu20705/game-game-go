@@ -15,7 +15,12 @@ from src.platform.services import AssetService
 def test_asset_service_resolves_canonical_namespaces(tmp_path):
     service = AssetService(Path(tmp_path))
 
-    assert service.brand("logo_mark.png") == tmp_path / "assets" / "brand" / "logo_mark.png"
+    assert service.brand("app_icon.png") == tmp_path / "assets" / "branding" / "app_icon.png"
+    assert service.branding("game_logo_full.png") == tmp_path / "assets" / "branding" / "game_logo_full.png"
+    assert (
+        service.background("menu_background_1920x1080.png")
+        == tmp_path / "assets" / "backgrounds" / "menu_background_1920x1080.png"
+    )
     assert (
         service.platform("fallbacks/game_thumbnail.png")
         == tmp_path / "assets" / "platform" / "fallbacks" / "game_thumbnail.png"
@@ -59,6 +64,21 @@ def test_scaled_image_cache_is_bounded_and_reused():
         assert image is again
         assert service.stats.scaled_hits >= 1
         assert service.cache_sizes()["scaled_images"] == 2
+    finally:
+        pygame.quit()
+
+
+def test_cover_image_preserves_target_size_and_uses_cache():
+    pygame.init()
+    try:
+        service = AssetService(Path.cwd(), max_scaled_images=2)
+        path = service.background("menu_background_1920x1080.png")
+        image = service.cover_image(pygame, path, (1280, 800))
+        again = service.cover_image(pygame, path, (1280, 800))
+
+        assert image.get_size() == (1280, 800)
+        assert image is again
+        assert service.cache_sizes()["cover_images"] == 1
     finally:
         pygame.quit()
 

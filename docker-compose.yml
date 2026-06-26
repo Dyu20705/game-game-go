@@ -1,0 +1,36 @@
+services:
+  test:
+    build: .
+    profiles: ["test"]
+    command: ["test"]
+    environment:
+      SDL_VIDEODRIVER: dummy
+      SDL_AUDIODRIVER: dummy
+      BLOCKCHAIN_MODE: local
+
+  smoke:
+    build: .
+    profiles: ["smoke"]
+    command: ["smoke"]
+    environment:
+      SDL_VIDEODRIVER: dummy
+      SDL_AUDIODRIVER: dummy
+      BLOCKCHAIN_MODE: local
+
+  demo:
+    build: .
+    profiles: ["demo"]
+    command: ["demo"]
+    ports:
+      - "127.0.0.1:6080:6080"
+    environment:
+      SDL_VIDEODRIVER: x11
+      SDL_AUDIODRIVER: dummy
+      DISPLAY: ":99"
+      BLOCKCHAIN_MODE: local
+    healthcheck:
+      test: ["CMD", "python", "-m", "tools.smoke_test"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s

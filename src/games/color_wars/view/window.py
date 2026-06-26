@@ -15,7 +15,7 @@ def _load_window_icon():
     if _ICON_SURFACE is not None:
         return _ICON_SURFACE
 
-    icon_path = Path(__file__).resolve().parents[4] / "assets" / "brand" / "app_icon.png"
+    icon_path = Path(__file__).resolve().parents[4] / "assets" / "branding" / "app_icon.png"
     try:
         _ICON_SURFACE = pygame.image.load(str(icon_path)).convert_alpha()
     except (pygame.error, FileNotFoundError, OSError):
@@ -36,7 +36,7 @@ def drawScreen(fullscreen=False, size=(DEFAULT_WIDTH, DEFAULT_HEIGHT)):
     flags = pygame.FULLSCREEN if fullscreen else pygame.RESIZABLE
     screen_size = (0, 0) if fullscreen else size
     screen = pygame.display.set_mode(screen_size, flags)
-    pygame.display.set_caption("Color Wars")
+    pygame.display.set_caption("Game Game Go - Color Wars")
     icon = _load_window_icon()
     if icon is not None:
         pygame.display.set_icon(icon)

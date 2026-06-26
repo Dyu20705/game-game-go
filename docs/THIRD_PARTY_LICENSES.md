@@ -16,3 +16,9 @@ Integrated work:
 - no frontend source copied verbatim;
 - no source contract wagering flow connected to Game Game Go.
 
+## Branding
+
+The Game Game Go product logo, Chillody Studio logo and abstract background are
+provided project branding assets for this repository. Source files are kept in
+`assets/source_branding/`; optimized runtime derivatives are generated into
+`assets/branding/` and `assets/backgrounds/`.

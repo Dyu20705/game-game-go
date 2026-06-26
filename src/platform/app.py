@@ -10,6 +10,7 @@ from src.platform.scenes.leaderboard_scene import run_leaderboard_scene
 from src.platform.scenes.library_scene import run_library_scene
 from src.platform.scenes.rewards_scene import run_rewards_scene
 from src.platform.scenes.settings_scene import run_settings_scene
+from src.platform.scenes.studio_intro_scene import run_studio_intro_scene
 
 
 class PlatformApp:
@@ -27,6 +28,7 @@ class PlatformApp:
 
         pygame.init()
         context = self._build_context(pygame)
+        run_studio_intro_scene(pygame, context)
         context.audio.play_menu_music()
         scene = PlatformAction.HOME
 

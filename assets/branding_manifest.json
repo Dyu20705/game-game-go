@@ -1,0 +1,115 @@
+{
+  "studio": "Chillody Studio",
+  "product": "Game Game Go",
+  "generated_by": "tools/prepare_branding_assets.py",
+  "assets": [
+    {
+      "path": "source_branding/chillody-studio-source.png",
+      "bytes": 854087,
+      "sha256": "43731fdd66560a24e027ab91f547adce04a3e60b093dd80d1b069777eb85f2ee",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "source_branding/game-game-go-background-vertical-source.png",
+      "bytes": 1794522,
+      "sha256": "34ddec77e679f57188d64920422591fae6c94688c1aa0f8a848cf2fce97dd363",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "source_branding/game-game-go-logo-source.png",
+      "bytes": 1241575,
+      "sha256": "2fffd628b10799bde02bb5b2a9fb7aa373f495b5736f1dc92d9b3626d0428d11",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon.png",
+      "bytes": 28726,
+      "sha256": "633936aefd9de81ea3e96e571e68ae7c6ed4baf1cd66e478b359094d261e0204",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_128.png",
+      "bytes": 10529,
+      "sha256": "2aef725cbb0261d4f43c097df7ab1eac6b35f3894cc87960d28cb552099f279d",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_256.png",
+      "bytes": 28726,
+      "sha256": "633936aefd9de81ea3e96e571e68ae7c6ed4baf1cd66e478b359094d261e0204",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_512.png",
+      "bytes": 89492,
+      "sha256": "c0c746381f8cefc82968994ab2b8dc8892bafdc9ebfffe1c54eb0b0c24a51dde",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon_64.png",
+      "bytes": 3936,
+      "sha256": "0d81607853f0ae6966719f8a495fd04e5c2c940b853d43d373223796621d3f9b",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/game_logo_full.png",
+      "bytes": 472371,
+      "sha256": "57719e86deef97cb6c5cee86aca53f946c678727cfc6f5aadfbd9b9d4b0d7731",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/game_logo_full_runtime.png",
+      "bytes": 80993,
+      "sha256": "757d028629cb1144b4377366794a6919b9d33d3109f4febe3778eb9cd31e6210",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/game_logo_symbol.png",
+      "bytes": 203886,
+      "sha256": "63d5163ec9e42f8a974247b7da151a626e1880918e98f5f862179509d9dc2726",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/github_social_preview.png",
+      "bytes": 459591,
+      "sha256": "61c8e3fd9dfe1d905979981617845617b474b1e8f3cf390594e270e9f1ca0998",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/hero_banner.png",
+      "bytes": 394836,
+      "sha256": "5007b640569d3cd0e4a8557ecd9ad5eaf257194585c23c13e97ee8931d632848",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/studio_logo.png",
+      "bytes": 827220,
+      "sha256": "ed4a28726b9b530d56fe0e5928c39317917591e6429c77de55a71a6f34e21dcb",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/studio_logo_runtime.png",
+      "bytes": 128576,
+      "sha256": "4d379e117a18658fe776b4451432f0c10ffc4cec83d7148e7b2982a4452fba81",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "branding/app_icon.ico",
+      "bytes": 51983,
+      "sha256": "a5c1cb05b1c64cefa122eaf1980a933f40eeb05162244683af9014dd333dd9cc",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "backgrounds/menu_background_1920x1080.png",
+      "bytes": 852946,
+      "sha256": "e66f01072e5455134383e7c5d61498477056c0113689d9fb41cff518fad5949c",
+      "license": "Provided Game Game Go branding asset"
+    },
+    {
+      "path": "backgrounds/menu_background_preview.png",
+      "bytes": 85673,
+      "sha256": "c107847ed1805365a31139c6886d33356cca3b41049e408465c4a149cb5d6d9a",
+      "license": "Provided Game Game Go branding asset"
+    }
+  ]
+}

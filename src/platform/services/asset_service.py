@@ -36,6 +36,7 @@ class AssetService:
         self.max_fonts = max_fonts
         self._image_cache: OrderedDict[Path, Any] = OrderedDict()
         self._scaled_cache: OrderedDict[tuple[Path, tuple[int, int], bool], Any] = OrderedDict()
+        self._cover_cache: OrderedDict[tuple[Path, tuple[int, int], tuple[float, float], bool], Any] = OrderedDict()
         self._font_cache: OrderedDict[tuple[str, int, bool, bool], Any] = OrderedDict()
         self._stats = {
             "image_hits": 0,
@@ -47,7 +48,13 @@ class AssetService:
         }
 
     def brand(self, relative_path: str | Path) -> Path:
-        return self._asset_path("brand", relative_path)
+        return self.branding(relative_path)
+
+    def branding(self, relative_path: str | Path) -> Path:
+        return self._asset_path("branding", relative_path)
+
+    def background(self, relative_path: str | Path) -> Path:
+        return self._asset_path("backgrounds", relative_path)
 
     def platform(self, relative_path: str | Path) -> Path:
         return self._asset_path("platform", relative_path)
@@ -127,6 +134,41 @@ class AssetService:
         self._put_lru(self._scaled_cache, key, scaled, self.max_scaled_images)
         return scaled
 
+    def cover_image(
+        self,
+        pygame,
+        path: str | Path | None,
+        size: tuple[int, int],
+        *,
+        focal: tuple[float, float] = (0.5, 0.5),
+        smooth: bool = True,
+    ):
+        width, height = max(1, int(size[0])), max(1, int(size[1]))
+        resolved = self.resolve(path)
+        key_path = resolved.resolve() if resolved is not None and resolved.exists() else self.fallback_image()
+        focal = (min(1.0, max(0.0, float(focal[0]))), min(1.0, max(0.0, float(focal[1]))))
+        key = (key_path, (width, height), focal, smooth)
+        cached = self._get_lru(self._cover_cache, key)
+        if cached is not None:
+            self._stats["scaled_hits"] += 1
+            return cached
+
+        self._stats["scaled_misses"] += 1
+        source = self.image(pygame, resolved, fallback_size=(width, height))
+        scale = max(width / source.get_width(), height / source.get_height())
+        scaled_size = (
+            max(width, int(source.get_width() * scale + 0.5)),
+            max(height, int(source.get_height() * scale + 0.5)),
+        )
+        transform = pygame.transform.smoothscale if smooth else pygame.transform.scale
+        scaled = transform(source, scaled_size)
+        max_left = max(0, scaled.get_width() - width)
+        max_top = max(0, scaled.get_height() - height)
+        crop = pygame.Rect(int(max_left * focal[0]), int(max_top * focal[1]), width, height)
+        covered = scaled.subsurface(crop).copy()
+        self._put_lru(self._cover_cache, key, covered, self.max_scaled_images)
+        return covered
+
     def font(self, pygame, font_id: str = "body", size: int = 16, *, bold: bool = False, italic: bool = False):
         key = (font_id, int(size), bool(bold), bool(italic))
         cached = self._get_lru(self._font_cache, key)
@@ -165,6 +207,7 @@ class AssetService:
         return {
             "images": len(self._image_cache),
             "scaled_images": len(self._scaled_cache),
+            "cover_images": len(self._cover_cache),
             "fonts": len(self._font_cache),
         }
 

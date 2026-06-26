@@ -4,7 +4,9 @@
 
 ```text
 assets/
-  brand/       App logo and brand marks.
+  source_branding/  Original supplied studio, product logo, and vertical background art.
+  branding/         Optimized runtime logos, icons, social preview, and hero art.
+  backgrounds/      Runtime PC menu backgrounds and previews.
   platform/    Shared platform UI assets and fallbacks.
   games/       Game-owned thumbnails, covers, icons, and images.
   audio/       Menu/game audio files.
@@ -14,8 +16,14 @@ assets/
 
 Use `src.platform.services.AssetService` to resolve and load assets. Runtime code should not depend on the current working directory or load from the legacy `asset/` root.
 
-Generated project assets and checksums are maintained by:
+Branding derivatives are maintained by:
 
 ```bash
-py tools/process_assets.py
+py -m tools.prepare_branding_assets
+```
+
+All generated project assets and checksums are maintained by:
+
+```bash
+py -m tools.process_assets
 ```

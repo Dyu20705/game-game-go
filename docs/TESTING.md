@@ -39,6 +39,7 @@ Results in the current environment:
 - Blockchain/ROFL/SquareXO focused subset: 30 passed.
 - Architecture boundary tests: 7 passed.
 - Full `py -m pytest -q -p no:cacheprovider`: 157 passed.
+- Coverage baseline: 42% total branch coverage from `py -m pytest --cov --cov-report=term-missing --cov-report=xml -q -p no:cacheprovider`.
 - Compileall: passed.
 - Ruff check: passed.
 - Ruff format check: passed.

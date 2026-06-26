@@ -8,7 +8,9 @@ Current canonical root:
 
 ```text
 assets/
-  brand/
+  source_branding/
+  branding/
+  backgrounds/
   platform/
   games/
     color_wars/
@@ -34,7 +36,8 @@ The old `asset/img/Hero/*` sprites had no references in `src/`, `tests/`, docs, 
 ## Hard-Coded Paths Fixed
 
 - Platform boot audio now uses `AssetService.audio("")`.
-- PyInstaller spec now bundles `assets/`.
+- The stale PyInstaller spec was removed because it still built a Color Wars-named app.
+  Future desktop packaging must use the Game Game Go name and bundle `assets/`.
 - Color Wars compatibility audio/window/home-scene helpers now resolve from `assets/`.
 - Game manifests now declare thumbnails.
 - Library cards load thumbnails through `AssetService` instead of importing game internals or drawing game-specific fake art.

@@ -240,14 +240,18 @@ def _draw_truncated_text(pygame, screen, font, text, pos, max_width, color):
     return surface
 
 
-def _draw_top_nav(pygame, screen, rect, fonts, wallet):
+def _draw_top_nav(pygame, screen, rect, fonts, wallet, asset_service=None):
     pygame.draw.rect(screen, (228, 244, 249), rect)
     pygame.draw.line(screen, (188, 218, 228), (0, rect.bottom - 1), (rect.width, rect.bottom - 1), 1)
 
     logo = pygame.Rect(18 if rect.width < 760 else 24, 15, 48, 48)
-    pygame.draw.rect(screen, (89, 115, 132), logo, border_radius=14)
-    pygame.draw.circle(screen, theme.AMBER, logo.center, 13)
-    pygame.draw.circle(screen, theme.DANGER, logo.center, 5)
+    if asset_service is not None:
+        logo_image = asset_service.scaled_image(pygame, asset_service.branding("app_icon_64.png"), logo.size)
+        screen.blit(logo_image, logo)
+    else:
+        pygame.draw.rect(screen, (89, 115, 132), logo, border_radius=14)
+        pygame.draw.circle(screen, theme.AMBER, logo.center, 13)
+        pygame.draw.circle(screen, theme.DANGER, logo.center, 5)
 
     title_font = fonts["body_bold"] if rect.width < 760 else fonts["title"]
     title = title_font.render("Game Game Go", True, (55, 62, 75))
@@ -901,7 +905,7 @@ def run_library_scene(pygame, context, registry) -> SceneResult:
                         return SceneResult(PlatformAction.LAUNCH_GAME, game_id=game.descriptor.game_id)
 
         screen.fill(theme.BG)
-        _draw_top_nav(pygame, screen, layout.top_nav, fonts, wallet)
+        _draw_top_nav(pygame, screen, layout.top_nav, fonts, wallet, context.assets)
         next_top_nav_targets = _top_nav_targets(pygame, screen.get_width(), wallet, fonts["body_bold"])
         next_sidebar_targets = _draw_sidebar(
             pygame, screen, layout.sidebar, fonts, selected_filter, daily_challenge_title(games)
