@@ -3,14 +3,13 @@
 from src.platform.bootstrap import build_default_registry, build_platform_context
 from src.platform.config import PlatformConfig
 from src.platform.games import GameExitAction, GameLaunchOptions, GameRegistry
+from src.platform.scenes.arcade_shelf_scene import run_arcade_shelf_scene
 from src.platform.scenes.base import PlatformAction
 from src.platform.scenes.game_details_scene import run_about_scene
 from src.platform.scenes.leaderboard_scene import run_leaderboard_scene
 from src.platform.scenes.rewards_scene import run_rewards_scene
 from src.platform.scenes.settings_scene import run_settings_scene
 from src.platform.scenes.studio_intro_scene import run_studio_intro_scene
-
-from src.platform.scenes.arcade_shelf_scene import run_arcade_shelf_scene
 
 
 class FocusedPlatformApp:
