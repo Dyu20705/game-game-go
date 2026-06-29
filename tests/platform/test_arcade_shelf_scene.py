@@ -1,4 +1,7 @@
-from src.platform.scenes.arcade_shelf_scene import compute_arcade_shelf_layout, compute_shelf_cards
+from src.platform.scenes.arcade_shelf_scene import (
+    compute_arcade_shelf_layout,
+    compute_shelf_cards,
+)
 
 
 def test_arcade_layout_prioritizes_hero_and_shelf():
