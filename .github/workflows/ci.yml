@@ -40,12 +40,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -r requirements.txt
-      - run: python -m pytest rofl/game-service/tests tests/platform/blockchain/test_result_commitments.py -q --junitxml=rofl-results.xml
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: rofl-test-results
-          path: rofl-results.xml
+      - run: python -m pip install pytest
+      - run: python -m pytest rofl/game-service/tests tests/platform/blockchain/test_result_commitments.py -q
 
   secret-scan:
     runs-on: ubuntu-latest
