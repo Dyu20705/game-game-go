@@ -7,7 +7,7 @@ if __package__ is None or __package__ == "":
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.platform.app import main as run_platform
+from src.platform.focused_app import main as run_platform
 
 
 def main():
